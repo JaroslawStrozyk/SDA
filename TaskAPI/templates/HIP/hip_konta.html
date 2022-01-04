@@ -1,0 +1,99 @@
+{% extends "dashboard.html" %}
+
+{% block leftbutton %}
+                    <li class="dropdown">
+
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                            <i class="fa fa-clone fa-fw"></i> &nbsp;Lista kont sieciowych <i class="fa fa-caret-down"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="{% url 'hip_konta' pk=1 %}"><i class="fa fa-certificate fa-fw"></i> VPN PPTP</a></li>
+                            <li><a href="{% url 'hip_konta' pk=2 %}"><i class="fa fa-certificate fa-fw"></i> VPN OpenVPN</a></li>
+                            <li><a href="{% url 'hip_konta' pk=3 %}"><i class="fa fa-certificate fa-fw"></i> AnyDesk</a></li>
+                            <li><a href="{% url 'hip_konta' pk=4 %}"><i class="fa fa-certificate fa-fw"></i> Teamviewer</a></li>
+                            <li><a href="{% url 'hip_konta' pk=5 %}"><i class="fa fa-certificate fa-fw"></i> RDC</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{% url 'hip_konta' pk=6 %}"><i class="fa fa-certificate fa-fw"></i> Samba</a></li>
+                            <li><a href="{% url 'hip_konta' pk=7 %}"><i class="fa fa-certificate fa-fw"></i> AFP</a></li>
+							<li class="divider"></li>
+							<li><a href="{% url 'hip_konta' pk=8 %}"><i class="fa fa-certificate fa-fw"></i> iCloud</a></li>
+                        </ul>
+
+                    </li>
+{% endblock %} 
+
+
+{% block retbutton %}
+                        <li>
+                            <a href="{% url 'hip_start' %}"><i class="fa fa-credit-card fa-fw"></i> Hasła i profile</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'desktop' %}"><i class="fa fa-dashboard fa-fw"></i> Pulpit</a>
+                        </li>
+{% endblock %}
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+Lista kont sieciowych
+{% endblock %}
+
+{% block leftmenu %}
+                    <li><br>
+                    </li>
+
+{% endblock %}
+
+
+
+{% block content %}
+                <div class="col-lg-12">
+                    <br><br>
+                    <div class="panel panel-green"  id="panel_glowny">
+                        <div class="panel-heading">
+                            <strong>{{ tytul }}</strong>
+                        </div>
+                        <div class="panel-body">
+                                     <table width="100%" class="table table-striped">
+                                        <thead>
+                                            <tr><th>Sprzęt</th><th>Użytkownik</th><th>Konto</th><th>Hasło</th><th>Adres</th><th>Uwagi</th></tr>
+                                        </thead>
+                                        <tbody>
+                                     {% for prog in program %}
+                                            <tr><td>{{ prog.sprzet }}</td><td>{{ prog.sprzet.usr }}</td><td>{{ prog.konto }}</td><td><input value="{{ prog.haslo }}" type="password" id="password" name="password" class="form-control" data-toggle="password" style="background-color: transparent;"></td><td>{{ prog.adres }}</td><td>{{ prog.uwagi|linebreaks }}</td></tr>
+                                     {% endfor %}
+                                        </tbody>
+                                    </table>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                </div>
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

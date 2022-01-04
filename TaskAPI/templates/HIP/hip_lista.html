@@ -1,0 +1,99 @@
+{% extends "dashboard.html" %}
+
+{% block leftbutton %}
+                    <li class="dropdown">
+
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                            <i class="fa fa-clone fa-fw"></i> &nbsp;Lista programów <i class="fa fa-caret-down"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="{% url 'hip_lista' pk=1 %}"><i class="fa fa-certificate fa-fw"></i> Microsoft Windows</a></li>
+                           <li><a href="{% url 'hip_lista' pk=2 %}"><i class="fa fa-certificate fa-fw"></i> Microsoft Office</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{% url 'hip_lista' pk=3 %}"><i class="fa fa-certificate fa-fw"></i> Zwcad</a></li>
+                            <li><a href="{% url 'hip_lista' pk=4 %}"><i class="fa fa-certificate fa-fw"></i> Corel Draw</a></li>
+                            <li><a href="{% url 'hip_lista' pk=5 %}"><i class="fa fa-certificate fa-fw"></i> Adobe Illustrator</a></li>
+                            <li><a href="{% url 'hip_lista' pk=6 %}"><i class="fa fa-certificate fa-fw"></i> Adobe Photoshop</a></li>
+                            <li><a href="{% url 'hip_lista' pk=7 %}"><i class="fa fa-certificate fa-fw"></i> Autodesk 3dsmax</a></li>
+                        </ul>
+
+                    </li>
+{% endblock %} 
+
+
+{% block retbutton %}
+                        <li>
+                            <a href="{% url 'hip_start' %}"><i class="fa fa-credit-card fa-fw"></i> Hasła i profile</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'desktop' %}"><i class="fa fa-dashboard fa-fw"></i> Pulpit</a>
+                        </li>
+{% endblock %}
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+Lista programów
+{% endblock %}
+
+{% block leftmenu %}
+
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+                <div class="col-lg-12">
+                    <br><br>
+                    <div class="panel panel-green" id="panel_glowny">
+                        <div class="panel-heading">
+                            <strong>{{ tytul }}</strong>
+                        </div>
+                        <div class="panel-body">
+                                     <table width="100%" class="table table-striped">
+                                        <thead>
+                                            <tr><th>Sprzęt</th><th>Użytkownik</th><th>Program</th><th>Kod</th><th>Adres</th><th>Uwagi</th></tr>
+                                        </thead>
+                                        <tbody>
+                                     {% for prog in program %}
+                                            <tr><td>{{ prog.sprzet }}</td><td>{{ prog.sprzet.usr }}</td><td>{{ prog.rodzaj_konta }}</td><td>{{ prog.kod }}</td><td>{{ prog.adres }}</td><td>{{ prog.uwagi }}</td></tr>
+                                     {% endfor %}
+                                        </tbody>
+                                    </table>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                </div>
+
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="{{ ab.EMAIL }}">{{ ab.NEMAIL }}</a>
+                                     <br>{{ ab.TEL }}<br>
+                                 </td></tr>
+{% endblock %}

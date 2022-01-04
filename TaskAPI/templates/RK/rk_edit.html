@@ -1,0 +1,85 @@
+{% extends "dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+{% endblock %}
+
+
+{% block retbutton %}
+{% endblock %}
+
+{% block userlog %}
+{{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+{{ tytul }}
+{% endblock %}
+
+{% block logo %}
+                    <table width="100%" height="200" border="0"><tr><td align="center" valign="middle"><img src="{% static 'img/ico_pp1.png' %}" width="128"></td></tr></table>
+{% endblock %}
+
+{% block leftmenu %}
+
+{% endblock %}
+
+
+{% block content %}
+
+
+                <div class="col-lg-12">
+				     <div class="alert alert-danger" role="alert">
+                      Uwaga!!!<br>
+					  <strong>BILANS OTWARCIA</strong> : To jest kwota stanu kasy wpisywana do bazy przed wpisaniem pierwszego dokumenty do programu. Przez cały czas ta kwota musi pozostać niezmieniona gdyż na jej podstawie wyliczane są wszytkie wartości w czasie odświerzania bazy danych.<br>
+					  <strong>STAN</strong> : To jest obecny stan kasy w dowolnej chwili po wpisaniu do programu dokumentów KW/KP. Suma ta jest równa bilansowi otwarcia tylko w momencie zakładania kasy. W trakcie pracy jest automatycznie aktualizowana i nie zalecia się jej ręcznej modyfikacji.<br> 
+                     </div>
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <strong>{{ kasa_name }}</strong>
+                        </div>
+                        <div class="panel-body">
+                            <form method="POST"  class="post-form">{% csrf_token %}
+
+                                        <table  class="table table-striped">
+                                            {{ firmy.as_table }}
+                                        </table>
+                             <!--</form>      -->
+                        </div>
+                        <div class="panel-footer">
+                                        <button type="submit" class="save btn btn-success">Zapisz</button>
+                                        <a href="{% url 'rk_start' %}" class="primary btn btn-danger">Anuluj</a>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}
+
+

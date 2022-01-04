@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SmartDesign</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="{% static 'vendor/metisMenu/metisMenu.min.css' %}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{% static 'dist/css/sb-admin-2.css' %}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	<style>
+	  body { 
+		    background: url("{% static 'img/login2.jpg' %}") no-repeat center center fixed;
+		    -webkit-background-size: cover;
+		    -moz-background-size: cover;
+		    -o-background-size: cover;
+		    background-size: cover;
+	  }
+	  #okno {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+	  }
+
+
+	</style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default" id="okno">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <table width="100%" border="0">
+                                <tr><td><img src="{% static 'img/iconfinder_Symbol_-_Check_58687.png' %}" width="48">Logowanie do SDA</td><td align="right"><h6><a href="/admin/"><i class="fa fa-wrench fa-fw"></i></a>&nbsp;<!--<a href="#" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-info fa-fw"></i></a>--></h6></td></tr>
+                            </table>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form"  method="post">
+                            {% csrf_token %}
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Nazwa użytkownika" name="username" type="text" autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Hasło" name="password" type="password" value="">
+                                </div>
+                                <button type="submit" class="btn btn-lg btn-success btn-block">Wejście</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                            {% if form.non_field_errors %}
+                                <div class="card">
+                                    <!--<div class="card-content table-responsive">-->
+                                        <font color="#ff0000"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Błędne hasło lub użytkownik !!!</strong></font>
+                                    <!--</div>-->
+                                </div>
+                            {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default" id="okno">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <table width="100%">
+                                <tr><td><img src="{% static 'img/ico_twoje_faktury1.png' %}" width="48">&nbsp;Dokumenty [bez logowania]</td><td align="right"></td></tr>
+                            </table>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <a href="{% url 'delegacja_add' %}"  class="btn btn-lg btn-primary btn-block">Zgłoszenie delegacji.</a>
+                        <a href="{% url 'faktura_add' %}"  class="btn btn-lg btn-warning btn-block">Zgłoszenie faktury.</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--<div class="footer site-footer">
+      <div class="container">
+          <font color="white">TEST 123</font>
+      </div>
+    </div>-->
+
+    <!-- jQuery -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="{% static 'vendor/metisMenu/metisMenu.min.js' %}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{% static 'dist/js/sb-admin-2.js' %}"></script>
+
+</body>
+
+</html>

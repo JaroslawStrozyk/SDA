@@ -1,0 +1,13 @@
+	
+[Unit]
+Description=Asynchroniczny System Powiadomien dla SDA
+After=multi-user.target
+Conflicts=getty@tty1.service
+
+[Service]
+Type=simple
+ExecStart=/opt/SD/env/bin/python3 /opt/SD/SDA/BACKGROUND/sda-msg_service.py
+StandardInput=tty-force
+
+[Install]
+WantedBy=multi-user.target

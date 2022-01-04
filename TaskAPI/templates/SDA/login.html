@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href="{% static 'LOGIN/login_style.css' %}" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row ">
+			<!-- IMAGE CONTAINER BEGIN -->
+			<div class="col-lg-8 col-md-8 d-none d-md-block infinity-image-container"></div>
+			<!-- IMAGE CONTAINER END -->
+
+			<!-- FORM CONTAINER BEGIN -->
+			<div class="col-lg-4 col-md-4 infinity-form-container">				
+				<div class="col-lg-9 col-md-12 col-sm-9 col-xs-12 infinity-form">
+					<!-- Company Logo -->
+					<div class="text-center mb-3 mt-5">
+						<img src="{% static 'LOGIN/logo.png' %}" width="150px">
+					</div>
+					<div class="text-center mb-4">
+			            <h4>Logowanie do SDA</h4>
+			        </div>
+			    <!-- Form -->
+					<form class="px-3"  role="form"  method="post">{% csrf_token %}
+						<!-- Input Box -->
+						<div class="form-input">
+							<span><i class="fa fa-user-o"></i></span>
+							<input type="text" name="username" placeholder="użytkownik" tabindex="10"required>
+						</div>
+						<div class="form-input">
+							<span><i class="fa fa-lock"></i></span>
+							<input type="password" name="password" placeholder="hasło" required>
+						</div>
+						<div class="row mb-3">
+                         
+			 	        </div>
+			 	    <!-- Login Button -->
+			            <div class="mb-3"> 
+							<button type="submit" class="btn btn-block">Logowanie</button>
+						</div>
+					{% if form.errors %}
+					<div class="alert alert-danger" role="alert">
+						Wprowadź poprawne wartości pól użytkownik oraz hasło. <br><strong>Uwaga:</strong> wielkość liter ma znaczenie.
+                    </div>
+
+					{% endif %}
+					</form>
+
+                    <div class="row mb-3">
+                      <br>
+                      
+                      <br><br>
+                    </div>
+                    <div class="row mb-3">
+                           <a href="{% url 'delegacja_add' %}"  class="btn btn-lg btn-primary btn-block">Zgłoszenie delegacji.</a>
+                           <a href="{% url 'faktura_add' %}"  class="btn btn-lg btn-warning btn-block">Zgłoszenie faktury.</a> 
+                    </div>
+				</div>
+                    <div class="row mb-4">
+                         <!-- <a href="/admin/"><i class="fa fa-wrench fa-fw"></i></a>-->
+                    </div>
+                  					
+			</div>
+			<!-- FORM CONTAINER END -->
+		</div>
+	</div>	
+</body>
+</html>

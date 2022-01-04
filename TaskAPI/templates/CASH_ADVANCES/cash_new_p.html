@@ -1,0 +1,196 @@
+{% extends "cash_advances_dashboard.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block leftbutton %}
+{% endblock %} 
+
+
+{% block retbutton %}
+
+{% endblock %}
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+
+{% block content %}
+                <style>
+                   #tabela {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   #id_kwota_netto_0, #id_kwota_brutto_0 {
+                        width: 100px;
+                        height: 34px;
+                        text-align: right;
+                        font-size: 14px;
+                        border-radius: 4px;
+                        border-width: 1px;
+                        border: 1px solid #ccc;
+                        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                        color: #555;
+                        background-color: #fff;
+                   }
+                   #id_kwota_netto_1, #id_kwota_brutto_1 {
+                        width: 60px;
+                        height: 34px;
+                        font-size: 14px;
+                        border-radius: 4px;
+                   }
+
+                   #id_data_zak {
+                        text-align: center;
+                   }
+
+                   #id_data_zam {
+                        text-align: center;
+                   }
+
+                   #id_kwota_netto_1 {
+                        background-color: #0000ff;
+                        color: #ffff00;
+                   }
+                   #id_kwota_brutto_1 {
+                        width: 0px;
+                        display:none;
+                   }
+
+
+                </style>
+                <div class="col-lg-2"> &nbsp;</div>
+                <div class="col-lg-8">
+                    <br><br>
+                    <div class="panel panel-green" id="tabela">
+                        <div class="panel-heading">
+                            <strong> {{ tytul }} </strong>
+                        </div>
+                        <div class="panel-body">
+                            <form method="POST"  class="post-form" enctype="multipart/form-data">{% csrf_token %}
+
+                                <!--             'nr_roz', 'kontrahent', 'nr_fv', 'kwota_netto', 'kwota_brutto', 'data_zak', 'opis',
+            'nr_sde', 'nr_mpk'-->
+                                <div class="form-row">
+                                                  <div class="form-group col-md-3 mb-0">
+                                                        {{ form.nr_roz|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-5 mb-0">
+                                                        {{ form.kontrahent|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-4 mb-0">
+                                                        {{ form.nr_fv|as_crispy_field }}
+                                                  </div>
+                                </div>
+
+                                <div class="form-row">
+                                                  <div class="form-group col-md-3 mb-0">
+
+                                                  </div>
+                                                  <div class="form-group col-md-3 mb-0">
+                                                        {{ form.kwota_netto|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-3 mb-0">
+                                                        {{ form.kwota_brutto|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-3 mb-0">
+                                                  </div>
+                                </div>
+                                <div class="form-row">
+                                                   <div class="form-group col-md-12 mb-0">
+                                                        {{ form.opis|as_crispy_field }}
+                                                  </div>
+                                </div>
+                                <div class="form-row">
+                                                  <div class="form-group col-md-2 mb-0">
+                                                  </div>
+                                                  <div class="form-group col-md-4 mb-0">
+                                                        {{ form.data_zam|as_crispy_field }}
+                                                  </div>
+                                                   <div class="form-group col-md-4 mb-0">
+                                                        {{ form.data_zak|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                  </div>
+                                </div>
+                                <div class="form-row">
+                                                  <div class="form-group col-md-12 mb-0">
+                                                      <hr>
+                                                  </div>
+                                </div>
+                                <div class="form-row">
+                                                  <div class="form-group col-md-2 mb-0">
+                                                  </div>
+                                                  <div class="form-group col-md-4 mb-0">
+                                                        {{ form.nr_sde|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-4 mb-0">
+                                                        {{ form.nr_mpk|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                  </div>
+                                </div>
+
+
+                        </div>
+                        <div class="panel-footer">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td align="right" width="45%"><button type="submit" class="save btn btn-success">Zapisz</button></td>
+                                    <td width="20">&nbsp;</td>
+                                    <td align="left"><a href="{% url 'cash_start_p' %}" class="primary btn btn-danger">Anuluj</a></td>
+                                    {% if edycja %}
+                                       <td align="right"><a href="#"  data-toggle="modal" data-target="#info1" class="primary btn btn-warning"><i class="fa fa-trash-o fa-fw"></i></a></td>
+                                    {% endif %}
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-2"> &nbsp;</div>
+
+
+    <div class="modal fade" id="info1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-title   panel-green" id="exampleModalLongTitle1">Kasowanie...</span>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                            Czy jesteś pewien, że chcesz nieodwracalnie skasować bieżące dane?
+                </div>
+                <div class="modal-footer">
+                    <a href="{% url 'cash_delete_p' pk=cash_id %}" class="primary btn btn-danger">&nbsp;&nbsp;TAK&nbsp;&nbsp;</a>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">&nbsp;&nbsp;NIE&nbsp;&nbsp;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

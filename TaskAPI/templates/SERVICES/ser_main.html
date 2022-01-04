@@ -1,0 +1,255 @@
+{% extends "ser_dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+
+{% endblock %} 
+
+
+{% block retbutton %}
+                        <li>
+                            <a href="{% url 'desktop' %}"><i class="fa fa-dashboard fa-fw"></i> Pulpit</a>
+                        </li>
+{% endblock %}
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+
+{% block logo %}
+
+{% endblock %}
+
+
+
+{% block title %}
+<table width="100%" height="80px"><tr><td style="width:120px;"><img src="{% static 'img/ser2.png' %}" width="80px"></td><td>Usługi</td></tr></table>
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+{% block content %}
+                <div class="col-lg-12">
+                    <div class="panel panel-green" id="panel_glowny">
+                        <div class="panel-heading">
+                            <table width="100%">
+                                <tr>
+                                    <td><strong>{{ tytul_tabeli }}</strong></td>
+                                    <td align="right">
+                                        <a href="{% url 'ser_new_u' %}" class="primary btn btn-danger">&nbsp;
+                                            <font color="#ffffff"> <strong>Nowy wpis</strong> </font>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body">
+                                     <table width="100%" class="table table-striped  table-condensed">
+                                        <thead>
+                                        <tr>
+                                            <th>Usługa</th>
+                                            <th>Użytkownik</th>
+                                            <th>Dostawca</th>
+                                            <th>Hosting</th>
+                                            <th style="text-align:center;">Termin płatności</th>
+                                            <th style="text-align:center;">Uwagi</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                     {% for usluga in uslugi %}
+                                     <tr>
+                                         <td style="vertical-align:middle"><a {% if admini %} href="{% url 'ser_detail' pk=usluga.pk %}" {% else %} href="#" {% endif %}>{{ usluga.nazwa_siec }}</a></td>
+                                         <td style="vertical-align:middle">{{ usluga.usr }}</td>
+                                         <td style="vertical-align:middle">{{ usluga.dostawca }}</td>
+                                         <td style="vertical-align:middle">{{ usluga.hosting }}</td>
+                                         <td
+                                               {% if   usluga.termin == 0 %} style="vertical-align:middle; text-align:center; width:150px;"
+                                               {% elif usluga.termin == 1 %} style="vertical-align:middle; text-align:center; background-color:#00ff69; width:150px;"
+                                               {% elif usluga.termin == 2 %} style="vertical-align:middle; text-align:center; background-color:#ffff7d; width:150px;"
+                                               {% elif usluga.termin == 3 %} style="vertical-align:middle; text-align:center; background-color:#ff3600; width:150px;"
+                                               {% endif %}
+                                         >
+                                             {{ usluga.data_waznosci|date:'Y-m-d' }}
+                                         </td>
+                                         <td {% if sprzet.mag %} style="vertical-align:middle;text-align:center; background-color:yellow;" {% else %} style="vertical-align:middle;text-align:center;" {% endif %}>
+                                             {% if usluga.uwagi != "" %}
+                                             <a href="#" data-toggle="modal" data-target="#EMC{{ usluga.id }}"><i class="fa fa-comment-o fa-fw"></i></a>
+                                             {% endif %}
+                                             <div class="modal fade" id="EMC{{ usluga.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                 <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                         <div class="modal-header">
+                                                             <span class="modal-title" id="exampleModalLongTitle">Komentarz do uslugi</span>
+                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                             </button>
+                                                         </div>
+                                                         <div class="modal-body">
+                                                             <table width="100%">
+                                                                 <tr><td width="60" align="left">UŻYTKOWNIK</td><td width="10">:</td><td>{{ usluga.usr }}</td></tr>
+                                                                 <tr><td align="left">USŁUGA</td><td>:</td><td>{{ usluga.nazwa_siec }}</td></tr>
+                                                                 <tr><td align="left">UWAGI</td><td>:</td><td>{{ usluga.uwagi|linebreaks }}</td></tr>
+                                                             </table>
+                                                         </div>
+                                                         <div class="modal-footer">
+                                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                         </div>
+                                                    </div>
+                                                 </div>
+                                             </div>
+
+                                         </td>
+                                         <td style="vertical-align:middle;text-align:center;"><a href="{% url 'ser_edit_usluga' pk=usluga.id %}"><i class="fa fa-pencil-square-o fa-fw"></i></a></td>
+                                     </tr>
+                                     {% endfor %}
+                                        </tbody>
+                                    </table>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="panel panel-green" id="panel_glowny">
+                        <div class="panel-heading">
+                            <table width="100%">
+                                <tr>
+                                    <td><strong>{{ tytul_tabeli2 }}</strong></td>
+                                    <td align="right">
+                                        <!--<a href="{% url 'ser_new_u' %}" class="primary btn btn-danger">&nbsp;
+                                            <font color="#ffffff"> <strong>Nowy wpis</strong> </font>
+                                        </a>-->
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body">
+                                <table width="100%" class="table table-striped  table-condensed">
+                                        <thead>
+                                        <tr>
+                                            <th style="text-align: center; ">Użytkownik</th>
+                                            <th style="text-align: center; ">Sprzęt</th>
+                                            <th style="text-align: center; ">Usługa/program</th>
+                                            <th style="text-align: center; ">Termin płatności</th>
+                                            <th style="text-align: center; ">Auto płatność</th>
+                                            <th style="text-align: center; ">Karta</th>
+                                            <th style="text-align: center; ">Konto</th>
+                                            <th style="text-align: center; ">Hasło</th>
+                                            <th style="text-align: center; ">Adres</th>
+                                            <th style="text-align: center; ">Uwagi</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for konto in konta %}
+                                        <tr style="text-align: center; ">
+                                            <td style="vertical-align:middle">{{ konto.sprzet.usr }}</td>
+                                            <td style="vertical-align:middle">{{ konto.sprzet.typ }} [{{ konto.sprzet.kik }}]</td>
+                                            <td style="vertical-align:middle">{{ konto.rodzaj_konta }}</td>
+                                            <td
+                                               {% if konto.termin == 0 %}   style="vertical-align:middle; text-align:center; width:150px;"
+                                               {% elif konto.termin == 1 %} style="vertical-align:middle; text-align:center; background-color:#00ff69; width:150px;"
+                                               {% elif konto.termin == 2 %} style="vertical-align:middle; text-align:center; background-color:#ffff7d; width:150px;"
+                                               {% elif konto.termin == 3 %} style="vertical-align:middle; text-align:center; background-color:#ff3600; width:150px;"
+                                               {% endif %}
+
+                                            >
+                                                {{ konto.data_waznosci|date:'Y-m-d' }}
+                                            </td>
+                                            <td style="vertical-align:middle">{{ konto.auto_platnosc }}</td>
+                                            <td style="vertical-align:middle">{{ konto.karta }}</td>
+                                            <td style="vertical-align:middle">{{ konto.konto }}</td>
+                                            <td style="vertical-align:middle; width:200px;">
+                                                <input value="{{ konto.haslo }}" type="password" id="password" name="password"
+                                                class="form-control" data-toggle="password"
+                                                style="background-color: transparent;">
+                                            </td>
+                                            <td style="vertical-align:middle; text-align:center;">
+                                                {% if konto.adres != "" %}
+                                                     <a href="https://{{ konto.adres }}" target="_blank">
+                                                         <i class="fa fa-globe fa-fw"></i>
+                                                     </a>
+                                                {% endif %}
+                                            </td>
+                                            <td style="vertical-align:middle; text-align:center;">
+
+                                                                                {% if konto.uwagi != "" %}
+                                <a href="#" data-toggle="modal" data-target="#EMC{{ konto.id }}">
+                                    <i class="fa fa-comment-o fa-fw"></i></a>
+                                {% endif %}
+                                            <div class="modal fade" id="EMC{{ konto.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <span class="modal-title" id="exampleModalLongTitle">Komentarz do profilu</span>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <table width="100%">
+                                                    <tr>
+                                                        <td width="160" align="left">RODZAJ KONTA</td>
+                                                        <td width="10">:</td>
+                                                        <td>{{ konto.rodzaj_konta }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="left">KONTO</td>
+                                                        <td>:</td>
+                                                        <td>{{ konto.konto }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="left">UWAGI</td>
+                                                        <td>:</td>
+                                                        <td>{{ konto.uwagi|linebreaks }}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">
+                                                    &nbsp;&nbsp;OK&nbsp;&nbsp;
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </td>
+
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                </table>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+
+                </div>
+             
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

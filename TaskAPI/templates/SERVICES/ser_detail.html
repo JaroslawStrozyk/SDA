@@ -1,0 +1,169 @@
+{% extends "dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+{% endblock %} 
+
+
+{% block retbutton %}
+                        <li>
+                            <a href="{% url 'ser_start' %}"><i class="fa fa-dashboard fa-fw"></i> Lista usług</a>
+                        </li>
+{% endblock %}
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+{% block logo %}
+                    <table width="100%" height="200" border="0"><tr><td align="center" valign="middle"><img src="{% static 'img/ser2.png' %}" width="128"></td></tr></table>
+{% endblock %}
+
+
+{% block title %}
+Usługa - Profile
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+
+{% block content %}
+                <div class="col-lg-12">
+                    <br><br>
+                    <div class="panel panel-primary" id="panel_glowny">
+                        <div class="panel-heading">
+                                    <table width="100%" class="table" border="0">
+                                    {% for usluga in uslugi %}
+                                        <tr>
+                                            <td align="right" width="150"><strong>Nazwa</strong></td><td width="30">:</td><td width="300">{{ usluga.nazwa_siec }}</td><td rowspan="4" align="right">
+
+                                        <!--{% if sprzet.zdj == "" %}
+                                            <img src="{% static 'images/brak.png' %}" height="150"/>
+                                        {% else %}-->
+                                            <img src="{{ usluga.zdj.url }}" height="150"/>
+                                        <!--{% endif %}-->
+
+                                            </td>
+                                        </tr>
+                                        <tr><td align="right"><strong>Użytkownik</strong></td><td>:</td><td>{{ usluga.usr }}</td></tr>
+										<tr><td align="right"><strong>Dostawca</strong></td><td>:</td><td>{{ usluga.dostawca }}</td></tr>
+                                        <tr><td align="right"><strong>Hosting</strong></td><td>:</td><td>{{ usluga.hosting }}</td></tr>
+
+                                        <tr><td align="right"><strong>Uwagi:</strong></td><td>:</td><td colspan="3">{{ usluga.uwagi|linebreaksbr }}</td></tr>
+                                    {% endfor %}
+                                    </table>
+                        </div>
+                        <div class="panel-body">
+                            <div class="panel panel-green" >
+                                <div class="panel-heading">
+                                    <table width="100%"><tr><td><strong>Profile</strong></td><td align="right"><a href="{% url 'ser_new_profil' pk=PK %}" class="primary btn btn-danger"><font color="#ffffff"> &nbsp;Nowy wpis </font></a></td></tr></table>
+                                </div>
+                                <div class="panel-body">
+                                    <table width="100%" class="table-striped" border="0">
+                                        <tr height="50" align="center">
+                                            <th>&nbsp;&nbsp;&nbsp;Rodzaj konta/Program</th>
+                                            <th>Konto</th>
+                                            <th width="200">Hasło</th>
+                                            <th>&nbsp;&nbsp;&nbsp;Adres IP</th>
+                                            <th>Uwagi</th>
+                                            <th></th>
+                                        </tr>
+                                    {% for profil in profile %}  
+                                        <tr>
+                                            <td>&nbsp;&nbsp;&nbsp;{{ profil.rodzaj_konta }}</td>
+                                            <td>{{ profil.konto }}</td>
+                                            <td>
+                                                <input value="{{ profil.haslo }}" type="password" id="password" name="password" class="form-control" data-toggle="password" style="background-color: transparent;">
+                                            </td>
+                                            <td align="center">
+                                                {% if profil.adres != "" %}
+                                                   <a href="https://{{ profil.adres }}" target="_blank"><i class="fa fa-globe fa-fw"></i></a>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+
+
+                                                 {% if profil.uwagi != "" %}
+                                                    <a href="#" data-toggle="modal" data-target="#EMC{{ profil.id }}"><i class="fa fa-comment-o fa-fw"></i></a>
+                                                 {% endif %}
+
+                                             <div class="modal fade" id="EMC{{ profil.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                 <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                         <div class="modal-header">
+                                                             <span class="modal-title" id="exampleModalLongTitle">Komentarz do profilu</span>
+                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                             </button>
+                                                         </div>
+                                                         <div class="modal-body">
+                                                             <table width="100%">
+                                                                 <tr><td width="160" align="left">RODZAJ KONTA</td><td width="10">:</td>
+                                                                     <td>{{ profil.rodzaj_konta }}</td></tr>
+                                                                 <tr><td align="left">KONTO</td><td>:</td><td>{{ profil.konto }}</td></tr>
+                                                                 <tr><td align="left">UWAGI</td><td>:</td><td>{{ profil.uwagi|linebreaks }}</td></tr>
+                                                             </table>
+                                                         </div>
+                                                         <div class="modal-footer">
+                                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                         </div>
+                                                    </div>
+                                                 </div>
+                                             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            </td>
+                                            <td align="center">
+                                                <a href="{% url 'ser_edit_profil' pk=profil.usluga.id lp=profil.pk %}"><i class="fa fa-pencil-square-o fa-fw"></i></a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </table>
+                                <div>
+                           </div>     
+                        </div>
+                        <div class="panel-footer">
+                            
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                        <br><a href="{{ ab.EMAIL }}">{{ ab.NEMAIL }}</a>
+                                        <br>{{ ab.TEL }}<br>
+                                     {% endfor %}
+                                 </td></tr>
+{% endblock %}

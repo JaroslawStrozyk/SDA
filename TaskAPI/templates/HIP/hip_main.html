@@ -1,0 +1,325 @@
+{% extends "dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                            <i class="fa fa-users fa-fw"></i> &nbsp;Użytkownicy <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                        <li>
+                            <a href="{% url 'hip_start' %}">
+                                <i class="fa fa-certificate fa-fw"></i>
+                                Wszystkie Działy
+                            </a>
+                        </li>
+                            <li class="divider"></li>
+                    {% for system in systemy %}
+                        <li><a href="{% url 'hip_filtr' pk=system.pk %}">
+                                <i class="fa fa-certificate fa-fw"></i>
+                                    {{ system.nazwa }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                        </ul>
+                    </li>
+
+
+                    <li class="dropdown">
+
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                            <i class="fa fa-clone fa-fw"></i> &nbsp;Lista programów <i class="fa fa-caret-down"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="{% url 'hip_lista' pk=1 %}"><i class="fa fa-certificate fa-fw"></i> Microsoft Windows</a></li>
+                            <li><a href="{% url 'hip_lista' pk=2 %}"><i class="fa fa-certificate fa-fw"></i> Microsoft Office</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{% url 'hip_lista' pk=3 %}"><i class="fa fa-certificate fa-fw"></i> Zwcad</a></li>
+                            <li><a href="{% url 'hip_lista' pk=4 %}"><i class="fa fa-certificate fa-fw"></i> Corel Draw</a></li>
+                            <li><a href="{% url 'hip_lista' pk=5 %}"><i class="fa fa-certificate fa-fw"></i> Adobe Illustrator</a></li>
+                            <li><a href="{% url 'hip_lista' pk=6 %}"><i class="fa fa-certificate fa-fw"></i> Adobe Photoshop</a></li>
+                            <li><a href="{% url 'hip_lista' pk=7 %}"><i class="fa fa-certificate fa-fw"></i> Autodesk 3dsmax</a></li>
+                        </ul>
+
+                    </li>
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                            <i class="fa fa-clone fa-fw"></i> &nbsp;Lista kont sieciowych <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="{% url 'hip_konta' pk=10 %}"><i class="fa fa-certificate fa-fw"></i> VPN L2TP</a></li>			
+                            <li><a href="{% url 'hip_konta' pk=1 %}"><i class="fa fa-certificate fa-fw"></i> VPN PPTP</a></li>
+                            <li><a href="{% url 'hip_konta' pk=2 %}"><i class="fa fa-certificate fa-fw"></i> VPN OpenVPN</a></li>
+                            <li><a href="{% url 'hip_konta' pk=3 %}"><i class="fa fa-certificate fa-fw"></i> AnyDesk</a></li>
+                            <li><a href="{% url 'hip_konta' pk=4 %}"><i class="fa fa-certificate fa-fw"></i> Teamviewer</a></li>
+                            <li><a href="{% url 'hip_konta' pk=5 %}"><i class="fa fa-certificate fa-fw"></i> RDC</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{% url 'hip_konta' pk=6 %}"><i class="fa fa-certificate fa-fw"></i> Samba</a></li>
+                            <li><a href="{% url 'hip_konta' pk=7 %}"><i class="fa fa-certificate fa-fw"></i> AFP</a></li>
+                            <li><a href="{% url 'hip_konta' pk=11 %}"><i class="fa fa-certificate fa-fw"></i> CRM</a></li>
+
+              		    <li class="divider"></li>
+			    <li><a href="{% url 'hip_konta' pk=8 %}"><i class="fa fa-certificate fa-fw"></i> iCloud</a></li>
+                            <li><a href="{% url 'hip_konta' pk=9 %}"><i class="fa fa-certificate fa-fw"></i> Google Docs</a></li>
+                            <li><a href="{% url 'hip_konta' pk=12 %}"><i class="fa fa-certificate fa-fw"></i> Poczta</a></li>
+
+                        </ul>
+                    </li>
+
+{% endblock %} 
+
+
+{% block retbutton %}
+                        <li>
+                            <a href="{% url 'desktop' %}"><i class="fa fa-dashboard fa-fw"></i> Pulpit</a>
+                        </li>
+{% endblock %}
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+
+{% block logo %}
+                    <!--<table width="100%" height="200" border="0">
+                        <tr>
+                            <td align="center" valign="middle">
+                                <img src="{% static 'img/iconfinder_Keys_58675.png' %}" width="128">
+                            </td>
+                        </tr>
+                    </table>-->
+{% endblock %}
+
+
+
+{% block title %}
+<table width="100%" height="80px"><tr><td style="width:120px;"><img src="{% static 'img/iconfinder_Keys_58675.png' %}" width="80px"></td><td>Hasła i profile</td></tr></table>
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+{% block content %}
+
+                <div class="col-lg-12">
+                    <div class="panel panel-green" id="panel_glowny">
+                        <div class="panel-heading">
+                            <table width="100%">
+                                <tr>
+                                    <td style="width:250px;">
+                                            <form metod="GET" action="{% url 'hip_search' %}">
+                                                {% csrf_token %}
+                                                <div class="input-group custom-search-form">
+                                                    <input type="text" name="SZUKAJ" class="form-control" placeholder="Szukaj...">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                                                    </span>
+                                                </div>
+                                            </form>
+                                    </td>
+                                    <td align="center">
+                                        <strong>{{ tytul_tabeli }}</strong>
+                                    </td>
+                                    <td align="right" width="150px;">
+                                        <a href="{% url 'hip_new_sprzet' %}" class="primary btn btn-danger">&nbsp;<font color="#ffffff"><strong>Nowy wpis</strong></font> </a>&nbsp;&nbsp;<a href="#" data-toggle="modal" data-target="#pomoc" class="primary btn btn-info"><font color="#ffffff"><strong>?</strong></font> </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                                             <div class="modal fade" id="pomoc" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                 <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                         <div class="modal-header">
+                                                             <span class="modal-title" id="exampleModalLongTitlex" style="color:#000000;"><strong>POMOC</strong></span>
+                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                             </button>
+                                                         </div>
+                                                         <div class="modal-body">
+                                                             <table width="100%" style="color:#000000;">
+                                                                 <tr><td colspan="4" height="40" style="text-align:center; background:#eeeeee;"><strong>Stan sprzętu:</strong></td></tr>
+                                                                 <tr><td colspan="4">&nbsp;</td></tr>
+                                                                 <tr><td width="50"></td><td style="vertical-align:middle;text-align: center;background-color:#00ff69;" width="40" height="40"><i class="fa fa-thumbs-o-up fa-fw"></i></td><td width="10"></td><td>Nowy z gwarancją.</td></tr>
+                                                                 <tr><td></td><td style="vertical-align:middle;text-align: center;background-color:#00dd00;" width="40" height="40"><i class="fa fa-thumbs-o-up fa-fw"></i></td><td width="10"></td><td>Bardzo dobry.</td></tr>
+                                                                 <tr><td></td><td style="vertical-align:middle;text-align: center;background-color:#ffff7d;" width="40" height="40"><i class="fa fa-thumbs-o-up fa-fw"></i></td><td width="10"></td><td>Dobry.</td></tr>
+                                                                 <tr><td></td><td style="vertical-align:middle;text-align: center;background-color:#5ec1f7;" width="40" height="40"><i class="fa fa-thumbs-o-up fa-fw"></i></td><td width="10"></td><td>Dostateczny</td></tr>
+                                                                 <tr><td></td><td style="vertical-align:middle;text-align: center;background-color:#ff3600;" width="40" height="40"><i class="fa fa-thumbs-o-up fa-fw"></i></td><td width="10"></td><td>Do kasacji lub uszkodzony.</td></tr>
+                                                                 <tr><td></td><td style="vertical-align:middle;text-align: center;background-color:#ffffff;" width="40" height="40">n/d</td><td width="10"></td><td>Nie dotyczy.</td></tr>
+                                                             </table>
+                                                         </div>
+                                                         <div class="modal-footer">
+                                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                         </div>
+                                                    </div>
+                                                 </div>
+                                             </div>
+
+                        </div>
+                        <div class="panel-body">
+                                     <table width="100%" class="table table-striped  table-condensed"><!-- <th>System</th> <td>{{ sprzet.system }}</td> -->
+                                        <thead>
+                                        <tr>
+                                            <th>Użytkownik</th>
+                                            <th>Host</th>
+                                            <th>Typ sprzętu</th>
+                                            <th>Nazwa sieć</th>
+                                            <th>Oznaczenie</th>
+                                            <th>Nr ser. sprzętu</th>
+                                            <th>Stan</th>
+                                            <th style="text-align:center;">P.P.</th>
+                                            <th style="text-align:center;">P.Z.</th>
+                                            <th style="text-align:center;">U.</th>
+                                            <th style="text-align:center;">E.</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                     {% for sprzet in sprzety %}
+                                     <tr>
+                                         <td style="vertical-align:middle">
+                                             <a {% if admini %} href="{% url 'hip_detail' pk=sprzet.pk %}" {% else %} href="#" {% endif %}>
+                                                 <font color="#7c91ab">{{ sprzet.usr }}</font>
+                                             </a>
+                                         </td>
+                                         <td style="vertical-align:middle">{{ sprzet.host }}</td>
+                                         <td style="vertical-align:middle">{{ sprzet.typ }}</td>
+                                         <td style="vertical-align:middle">{{ sprzet.nazwa_siec }}</td>
+                                         <td style="vertical-align:middle">{{ sprzet.kik }}</td>
+                                         <td style="vertical-align:middle">{{ sprzet.snk }}</td>
+                                         <td {% if   sprzet.stan == 4 %} style="vertical-align:middle;text-align: center;background-color:#00ff69;"
+                                             {% elif sprzet.stan == 3 %} style="vertical-align:middle;text-align: center;background-color:#00dd00;"
+                                             {% elif sprzet.stan == 2 %} style="vertical-align:middle;text-align: center;background-color:#ffff7d;"
+                                             {% elif sprzet.stan == 1 %} style="vertical-align:middle;text-align: center;background-color:#5ec1f7;"
+                                             {% elif sprzet.stan == 0 %} style="vertical-align:middle;text-align: center;background-color:#ff3600;"
+                                             {% elif sprzet.stan < 0  %} style="vertical-align:middle;text-align: center;background-color:#ffffff;"
+                                             {% endif %}
+                                         >
+                                             {% if sprzet.stan < 0  %} n/d
+                                             {% else  %}                 <a href="#" data-toggle="modal" data-target="#ST{{ sprzet.id }}" style="color:black;"><i class="fa fa-thumbs-o-up fa-fw"></i></a>
+                                             {% endif %}
+                                             <div class="modal fade" id="ST{{ sprzet.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                 <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                         <div class="modal-header"
+                                                                   {% if   sprzet.stan == 4 %} style="vertical-align:middle;text-align: center;background-color:#00ff69;"
+                                                                   {% elif sprzet.stan == 3 %} style="vertical-align:middle;text-align: center;background-color:#00dd00;"
+                                                                   {% elif sprzet.stan == 2 %} style="vertical-align:middle;text-align: center;background-color:#ffff7d;"
+                                                                   {% elif sprzet.stan == 1 %} style="vertical-align:middle;text-align: center;background-color:#5ec1f7;"
+                                                                   {% elif sprzet.stan == 0 %} style="vertical-align:middle;text-align: center;background-color:#ff3600;"
+                                                                   {% endif %}
+                                                         >
+                                                             <span class="modal-title" id="exampleModalLongTitle1"><strong>Opis stanu sprzętu</strong></span>
+                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                             </button>
+                                                         </div>
+                                                         <div class="modal-body">
+                                                             <table width="100%" class="table table-striped">
+                                                                 <tr><td width="140" align="left">UŻYTKOWNIK</td><td width="10">:</td><td>{{ sprzet.usr }}</td></tr>
+                                                                 <tr><td align="left">SPRZĘT</td><td>:</td><td>{{ sprzet.typ }}</td></tr>
+                                                                 <tr><td align="left">STAN SPRZĘTU</td><td>:</td><td><strong>
+                                                                   {% if sprzet.stan == 4 %} Nowy z gwarancją.
+                                                                   {% elif sprzet.stan == 3 %}Bardzo dobry.
+                                                                   {% elif sprzet.stan == 2 %}Dobry.
+                                                                   {% elif sprzet.stan == 1 %}Dostateczny.
+                                                                   {% elif sprzet.stan == 0 %}Do kasacji lub uszkodzony.
+                                                                   {% endif %}
+                                                                 </strong></td></tr>
+                                                                 <tr><td align="left">OPIS</td><td>:</td><td>{{ sprzet.opis }}</td></tr>
+                                                                 <tr><td align="left">HISTORIA</td><td>:</td><td>{{ sprzet.historia }}</td></tr>
+                                                                 <tr><td align="left">GWARANCJA DO</td><td>:</td><td>{{ sprzet.gw }}</td></tr>
+                                                                 <tr><td align="left">UWAGI</td><td>:</td><td>{{ sprzet.uwagi|linebreaks }}</td></tr>
+                                                             </table>
+
+                                                         </div>
+                                                         <div class="modal-footer">
+                                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                         </div>
+                                                    </div>
+                                                 </div>
+                                             </div>
+
+                                         </td>
+                                         <td {% if sprzet.mag %} style="vertical-align:middle;text-align:center; background-color:yellow;" {% else %} style="vertical-align:middle;text-align:center;" {% endif %}>
+                                             {% if sprzet.doc == "" %}
+                                                         <a href="{% url 'hip_sprzet_pp' pk=sprzet.id %}"><i class="fa fa-asterisk fa-fw"></i>
+                                             {% else %}
+                                                         <a href="{{ sprzet.doc.url }}"><i class="fa fa-file-pdf-o  fa-fw"></i></a>
+                                             {% endif %}
+                                         </td>
+                                         <td {% if sprzet.mag %} style="vertical-align:middle;text-align:center; background-color:yellow;" {% else %} style="vertical-align:middle;text-align:center;" {% endif %}>
+                                             {% if sprzet.docz == "" %}
+                                                         <a href="{% url 'hip_sprzet_pz' pk=sprzet.id %}"><i class="fa fa-asterisk fa-fw"></i>
+                                             {% else %}
+                                                         <a href="{{ sprzet.docz.url }}"><i class="fa fa-file-pdf-o  fa-fw"></i></a>
+                                             {% endif %}
+                                         </td>
+                                         <td {% if sprzet.mag %} style="vertical-align:middle;text-align:center; background-color:yellow;" {% else %} style="vertical-align:middle;text-align:center;" {% endif %}>
+                                             {% if sprzet.uwagi != "" %}
+                                             <a href="#" data-toggle="modal" data-target="#EMC{{ sprzet.id }}"><i class="fa fa-comment-o fa-fw"></i></a>
+                                             {% endif %}
+                                             <div class="modal fade" id="EMC{{ sprzet.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                 <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                         <div class="modal-header" style="background-color: #ddffdd;">
+                                                             <span class="modal-title" id="exampleModalLongTitle">Komentarz do sprzętu</span>
+                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                             </button>
+                                                         </div>
+                                                         <div class="modal-body">
+                                                             <table width="100%">
+                                                                 <tr><td width="60" align="left">UŻYTKOWNIK</td><td width="10">:</td><td>{{ sprzet.usr }}</td></tr>
+                                                                 <tr><td align="left">SPRZĘT</td><td>:</td><td>{{ sprzet.typ }}</td></tr>
+                                                                 <tr><td align="left">OPIS</td><td>:</td><td>{{ sprzet.opis }}</td></tr>
+                                                                 <tr><td colspan="3"><hr></td></tr>
+                                                                 <tr><td align="left">UWAGI</td><td>:</td><td>{{ sprzet.uwagi }}</td></tr>
+                                                             </table>
+                                                         </div>
+                                                         <div class="modal-footer" style="background-color: #eeeeee;">
+                                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                         </div>
+                                                    </div>
+                                                 </div>
+                                             </div>
+
+                                         </td>
+                                         <td style="vertical-align:middle;text-align:center;">
+                                             <a href="{% url 'hip_edit_sprzet' pk=sprzet.id %}">
+                                                <font  color="#7c91ab" ><i class="fa fa-pencil-square-o fa-fw"></i></font>
+                                             </a>
+                                         </td>
+                                     </tr>
+                                     {% endfor %}
+                                        </tbody>
+                                    </table>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                </div>
+             
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

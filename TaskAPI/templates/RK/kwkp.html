@@ -1,0 +1,167 @@
+{% extends "dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+                        <!--<li>
+                            <a href="{% url 'kwkp_new' idk=idkas %}"><i class="fa fa-plus fa-fw"></i>&nbsp;Nowy wpis</a>
+                        </li>-->
+                        <li>
+                            <a href="{% url 'rk_start' %}"><i class="fa fa-industry fa-fw"></i> Firmy i Kasy</a>
+                        </li>
+{% endblock %}
+
+
+{% block retbutton %}
+                       <!-- <li>
+                            <a href="{% url 'rk_start' %}"><i class="fa fa-industry fa-fw"></i> Firmy i Kasy</a>
+                        </li>-->
+                        <li>
+                            <a href="{% url 'desktop' %}"><i class="fa fa-dashboard fa-fw"></i> Pulpit</a>
+                        </li>
+{% endblock %}
+
+{% block userlog %}
+{{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+{{ tytul }}
+{% endblock %}
+
+{% block logo %}
+                    <table width="100%" height="200" border="0"><tr><td align="center" valign="middle"><img src="{% static 'img/ico_pp1.png' %}" width="128"></td></tr></table>
+{% endblock %}
+
+
+
+
+{% block leftmenu %}
+             {% for sk in stankasy %}
+                    <li><br>
+                        &nbsp;&nbsp;&nbsp;<strong>Suma:</strong><br>
+                        &nbsp;&nbsp;&nbsp;Przychód:
+                                <button disabled class="btn btn-default" style="width: 150px;margin-left: 10px;color:blue;">
+                                    <div id="data"><strong>{{ sk.sum_przychod }}</strong></div>
+                                </button>
+                        &nbsp;&nbsp;&nbsp;Rozchód:
+                                <button disabled class="btn btn-default" style="width: 150px;margin-left: 13px;color:blue;">
+                                    <div id="data"><strong>{{ sk.sum_rozchod }}</strong></div>
+                                </button>
+                        <br><br>
+                    </li>
+                    <li><br>
+                        &nbsp;&nbsp;&nbsp;<strong>Stan kasy:</strong><br>
+                        &nbsp;&nbsp;&nbsp;Poprzedni:
+                                <button disabled class="btn btn-default" style="width: 150px;margin-left: 6px;color:green;">
+                                    <div id="data"><strong>{{ sk.stan_poprzedni }}</strong></div>
+                                </button>
+                        &nbsp;&nbsp;&nbsp;Obecny:
+                                <button disabled class="btn btn-default" style="width: 150px;margin-left: 20px;color:red;">
+                                    <div id="data"><strong>{{ sk.stan_obecny }}</strong></div>
+                                </button>
+                        <br><br>
+                    </li>
+                    <li><br>
+                        &nbsp;&nbsp;&nbsp;Raport kasowy:
+                                <button disabled class="btn btn-default" style="width: 125px;margin-left: 5px;color:brown;">
+                                    <div id="data"><strong>{{ sk.data|date:'d/m/Y'}}</strong></div>
+                                </button>
+                        <br><br>
+                    </li>
+                    <li>
+                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KW:
+                                <button disabled class="btn btn-default" style="width: 50px;margin-left: 5px;">
+                                    <div id="data"><strong>{{ sk.kw }}</strong></div>
+                                </button>
+                           &nbsp;&nbsp;&nbsp;KP:
+                                <button disabled class="btn btn-default" style="width: 50px;margin-left: 5px;">
+                                    <div id="data"><strong>{{ sk.kp }}</strong></div>
+                                </button>
+                    </li>
+                    <li><br></li>
+                    <li>
+                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KW:
+                                <button disabled class="btn btn-default" style="width: 50px;margin-left: 5px;">
+                                    <div id="data"><strong>{{ sk.mkw }}</strong></div>
+                                </button>
+                           &nbsp;&nbsp;&nbsp;KP:
+                                <button disabled class="btn btn-default" style="width: 50px;margin-left: 5px;">
+                                    <div id="data"><strong>{{ sk.mkp }}</strong></div>
+                                </button>
+                           &nbsp;[m-c]
+                    </li>
+             {% endfor %}
+{% endblock %}
+
+
+{% block content %}
+
+
+                <div class="col-lg-12">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <table width="100%"><tr><td>{{ naglowek }}</td><td align="right"><a href="{% url 'kwkp_new' idk=idkas %}" class="primary btn btn-danger">&nbsp;Nowy wpis </a></td></tr></table>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-striped">
+                                <tr><th>Rodzaj</th><th>Numer</th><th>Data</th><th>Kto nazwa</th><th>Kto adres</th><th>Kto miasto</th><th>Opis</th><td align="right"><strong>Przychód</strong></td><td align="right"><strong>Rozchód</strong></td><th>Dok.</th></tr>
+                                {% for doc in docr %}
+                                <tr><td>{{ doc.rodzaj }}</td><td><a href="{% url 'kwkp_edit' idk=idkas pk=doc.id %}">{{ doc.numer }}</a></td><td>{{ doc.data }}</td><td>{{ doc.nazwa }}</td><td>{{ doc.adres }}</td><td>{{ doc.miasto }}</td><td>{{ doc.opis }}</td><td align="right">{{ doc.przychod }}</td><td align="right">{{ doc.rozchod }}</td><td align="center"><a href="{% url 'kwkp_print' pk=doc.id idk=idkas %}"><i class="fa fa-file-pdf-o fa-fw"></i> </a></td></tr>
+                                {% endfor %}
+                            </table>
+
+
+                            <br>
+
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                </div>
+
+
+     <!--               <div class="pagination">
+                        <span class="step-links">
+                            {% if delegacje.has_previous %}
+                                <a href="?page=1" class="btn btn-default">&laquo; Pierwsza</a>
+                                <a href="?page={{ delegacje.previous_page_number }}" class="btn btn-default">Poprzednia</a>
+                            {% endif %}
+
+                            <span class="current">
+                                Strona {{ delegacje.number }} z {{ delegacje.paginator.num_pages }}.
+                            </span>
+
+                            {% if delegacje.has_next %}
+                                <a href="?page={{ delegacje.next_page_number }}" class="btn btn-default">Następna</a>
+                                <a href="?page={{ delegacje.paginator.num_pages }}" class="btn btn-default">Ostatnia &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>-->
+
+
+
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}
