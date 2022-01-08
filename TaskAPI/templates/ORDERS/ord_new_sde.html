@@ -57,24 +57,53 @@
                                                   <div class="form-group col-md-4 mb-0">
                                                         {{ form.nazwa|as_crispy_field }}
                                                   </div>
+                                                  <div class="form-group col-md-8 mb-0">
+                                                       <div class="alert alert-info" role="alert">
+                                                           <p align="justify">Przy dodawaniu nowej pozycji pole <strong>Nazwa</strong>
+                                                               podpowiada następny unikalny kod. Można go edytować lecz
+                                                               należy trzymać się wzorca:
+                                                               <strong>XXX_XXXX</strong> lub <strong>XXX_X_XXXX</strong>.
+                                                               Gdzie X to liczba z zakresu
+                                                               0 - 9. np. 001_2022 lub 001_2_2022.
+                                                           </p>
+                                                       </div>
+                                                  </div>
+                                </div>
+                                <div class="form-row">
                                                   <div class="form-group col-md-4 mb-0">
                                                         {{ form.klient|as_crispy_field }}
                                                   </div>
                                                   <div class="form-group col-md-4 mb-0">
                                                         {{ form.targi|as_crispy_field }}
                                                   </div>
+                                                  <div class="form-group col-md-4 mb-0">
+                                                      <br>
+                                                  </div>
                                 </div>
                                 <div class="form-row">
                                                   <div class="form-group col-md-6 mb-0">
                                                         {{ form.opis|as_crispy_field }}
                                                   </div>
-                                                  <div class="form-group col-md-2 mb-0">
+                                                  <div class="form-group col-md-6 mb-0">
+                                                       <div class="alert alert-info" role="alert">
+
+                                                           <p align="justify">Przy dodawaniu nowej pozycji pole
+                                                               <strong>Opis/Stoisko</strong> generuje się
+                                                           automatycznie. Wpisany tekst będzie dołączony do generowanego
+                                                           ciagu. Przy edytowaniu pole jest w pełni edytowalne.</p>
+                                                       </div>
+                                                  </div>
+                                </div>
+                                <div class="form-row">
+                                </div>
+                                <div class="form-row">
+                                                  <div class="form-group col-md-4 mb-0">
                                                         {{ form.mcs|as_crispy_field }}
                                                   </div>
-                                                  <div class="form-group col-md-2 mb-0">
+                                                  <div class="form-group col-md-4 mb-0">
                                                         {{ form.rks|as_crispy_field }}
                                                   </div>
-                                                  <div class="form-group col-md-2 mb-0">
+                                                  <div class="form-group col-md-4 mb-0">
                                                         {{ form.pm|as_crispy_field }}
                                                   </div>
                                 </div>

@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-from SDA.pass_file import DB, CEDU, CSDU, IEDU, ISDU, DEDU, DSDU
+from SDA.pass_file import DB, CEDU, CSDU, IEDU, ISDU, DEDU, DSDU, SEDU, SSDU
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,7 +26,7 @@ SECRET_KEY = 'ojw$3b5u&f^l9-y@yov)#-qix*&09&rd%*+%sf9)p5@28(9mjm'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0','192.168.0.230','192.168.0.240','77.65.12.246','192.168.19.151']
+ALLOWED_HOSTS = ['0.0.0.0','192.168.0.230','192.168.0.240','77.65.12.246']
 
 
 # Application definition
@@ -172,8 +172,12 @@ CARS_TO_TARGET = 2
 CARS_EMAIL_DO_USERS = CEDU
 CARS_SKYPE_DO_USERS = CSDU
 
-#
+# 1- SKYPE, 2- EMAIL
 SERVICES_DATA_SHIFT = 30
+SERVICES_TO_TARGET = 2
+SERVICES_EMAIL_DO_USERS = SEDU
+SERVICES_SKYPE_DO_USERS = SSDU
+
 
 # Wyświetlanie
 PAGIN_PAGE = 40
@@ -199,8 +203,8 @@ CRONJOBS = [
 
 INFO_PROGRAM = [
     {
-        'WERSJA'     : '4.87g',
-        'MODYFIKACJA': '02.01.2022r.',
+        'WERSJA'     : '4.88g',
+        'MODYFIKACJA': '08.01.2022r.',
         'FIRMA'      : 'EDATABIT',
         'AUTOR'      : 'Jarosław Stróżyk',
         'EMAIL'      : 'mailto:biuro@edatabit.pl',
@@ -224,5 +228,6 @@ GOOGLE_DOCS_2022 = [
     ('Nr zleceń SmartDesignExpo 2019, 2020, 2021 i 2022', '1Ev5MQW6GAg3XXsqads58orF_3WrMA35XCgKCYPFrB70', '2022', '')
 ]
 
+# Pamiętaj! Po zmainie LOG_LOOP trzeba ręcznie wykonać LOG.logs.InitLog()
 LOG_LOOP = 200
 LOG_FILE = BASE_DIR+'/LOG_FILE/'

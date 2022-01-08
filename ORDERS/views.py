@@ -235,6 +235,7 @@ def ord_search_pro(request):
         'b_rok': b_rok
     })
 
+
 @login_required(login_url='error')
 def order_search(request, src):
     if request.method == "GET":
@@ -631,14 +632,18 @@ def order_edit(request, pk, src, fl):
             if test == 0 or test == 10:
 
                 if tsde != '':
-                    ps.rok, ps.rokk = SetRokRokk(NrSDE.objects.get(id=tsde).nazwa, dataf)
+                    try:
+                        ps.rok, ps.rokk = SetRokRokk(NrSDE.objects.get(id=tsde).nazwa, dataf)
+                    except:
+                        ps.rok, ps.rokk = (rok, rok)
+                        s = "Problem przy zapisie edytowanego wiersza. Zmienne: tsde["+str(tsde)+"], dataf["+str(dataf)+"]"
+                        LogiORD(4, s, inicjaly)
                 else:
                     ps.rok, ps.rokk = (rok, rok)
 
             else:
                 ps.rok, ps.rokk = (rok, rok)
 
-            # print("TEST: "+ str(test) + " = " +str(ps.rok) + " ||| " + str(ps.rokk))
 
             ps.nr_fv = ps.nr_dok3
 
@@ -757,6 +762,11 @@ def sde_start(request):
 
     kl = "#"
 
+    if int(rok) == int(brok):
+        b_rok = True
+    else:
+        b_rok = False
+
     return render(request, 'ORDERS/ord_main_sde.html', {
         'sde': sde,
         'name_log': name_log,
@@ -765,7 +775,8 @@ def sde_start(request):
         'about': about,
         'lata': lata,
         'rok': rok,
-        'klucz' : kl
+        'klucz' : kl,
+        'b_rok': b_rok
     })
 
 
@@ -787,7 +798,6 @@ def sde_search(request):
         sde = NrSDE.objects.filter(f).filter(rok=rok).order_by('-nazwa')
 
     tytul = 'Lista pozycji SDE ' + str(rok) + ', Szukasz: '+ query
-    #sde = NrSDE.objects.filter(rokk=rok).order_by('-nazwa')
 
     kl = query
 
@@ -936,6 +946,21 @@ def sde_new(request):
             ps.rokk = rok
             ps.nazwa_id = SetNazwaId(request.POST.get("nazwa", ""))
 
+            nr_zlec = request.POST.get("nazwa", "")
+            klient = request.POST.get("klient", "")
+            targi = request.POST.get("targi", "")
+            opis = request.POST.get("opis", "")
+
+            if opis != '':
+                opis = ' ('+opis+')'
+            if klient != '':
+                klient = klient+' - '
+            if targi != '':
+                targi = targi + ' - '
+
+            ps.opis = klient + targi + nr_zlec + opis
+
+
             ps.save()
             return redirect('sde_start')
         else:
@@ -992,7 +1017,6 @@ def sde_edit(request, pk):
         'name_log': name_log,
         'about': about,
         'tytul': tytul,
-        'sde_id': pk,
         'edycja': True,
         'sde_id': pk
     })

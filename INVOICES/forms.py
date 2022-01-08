@@ -8,8 +8,8 @@ class FakturaForm(ModelForm):
 
     class Meta:
         model = Faktura
-        fields =('imie','nazwisko','rfaktura','termin','targi','stoisko','kwota','zaco','spec','uwagi')
-    termin = forms.DateField(widget=forms.SelectDateWidget(attrs={'style': 'display: inline-block;'}), label="Termin płatności", initial=datetime.date.today)
+        fields =('imie','nazwisko', 'naz_imie','rfaktura','termin','targi','stoisko','kwota','zaco','spec','uwagi','confirm')
+    #termin = forms.DateField(widget=forms.SelectDateWidget(attrs={'style': 'display: inline-block;'}), label="Termin płatności", initial=datetime.date.today)
 
 
 class EFakturaForm(ModelForm):

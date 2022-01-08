@@ -45,7 +45,7 @@ def LogiORD(i, s, kto):
 def Logi(i, s, kto):
 
     modul_id = 2 # Identyfikator modułu
-    shift = 16 # Adres od którego zaczynają się komunikaty dla tego modułu
+    shift = 19 # Adres od którego zaczynają się komunikaty dla tego modułu
     now = datetime.now()
     data = now.strftime("%Y-%m-%d")
     godz = now.strftime("%H:%M:%S")
@@ -60,7 +60,7 @@ def Logi(i, s, kto):
 def Logi_r(i, s, kto):
 
     modul_id = 3 # Identyfikator modułu
-    shift = 16 # Adres od którego zaczynają się komunikaty dla tego modułu
+    shift = 19 # Adres od którego zaczynają się komunikaty dla tego modułu
     now = datetime.now()
     data = now.strftime("%Y-%m-%d")
     godz = now.strftime("%H:%M:%S")
@@ -118,6 +118,7 @@ def InsertLog(data, godz, modul, komunikat, opis, kto):
     flg.loop_count = int(row.id)
     flg.save()
 
+
 # Funkcja podpięta pod cron-a
 def LogToFile():
     path = LOG_FILE
@@ -130,9 +131,17 @@ def LogToFile():
             os.makedirs(p)
         name_f = p + '/' + str(t.data) + ' ' + str(t.modul) + '.log'
         f = open(name_f, 'a+')
-        row = str(t.data)+'    '+str(t.godz)+'    '+str(t.modul)+'    '+str(t.status)+'   '+str(t.komunikat)+'    '+str(t.opis)+'\n'
+        row = str(t.kto)+'    '+str(t.data)+'    '+str(t.godz)+'    '+str(t.modul)+'    '+str(t.status)+'   '+str(t.komunikat)+'    '+str(t.opis)+'\n'
         f.write(row)
         f.close()
+
+        if t.status_id != 1:
+            name_f = p + '/problems.log'
+            f = open(name_f, 'a+')
+            row = str(t.kto)+'    '+str(t.data) + '    ' + str(t.godz) + '    ' + str(t.modul) + '    ' + str(t.status) + '   ' + str(
+                t.komunikat) + '    ' + str(t.opis) + '\n'
+            f.write(row)
+            f.close()
 
         r = Log.objects.get(pk=t.id)
         r.nowy = False

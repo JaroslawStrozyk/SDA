@@ -3,7 +3,7 @@ from .models import Usluga, Profil
 
 
 class UslugaAdmin(admin.ModelAdmin):
-    list_display = ['nazwa_siec', 'usr', 'dostawca', 'hosting', 'uwagi', 'zdj', 'data_waznosci', 'termin']
+    list_display = ['nazwa_siec', 'usr', 'dostawca', 'hosting', 'uwagi', 'zdj', 'okres', 'data_waznosci', 'termin']
     search_fields = ['nazwa_siec', 'usr', 'dostawca', 'hosting']
     ordering = ['nazwa_siec',]
 

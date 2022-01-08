@@ -2,12 +2,19 @@ from django.db import models
 
 
 class Usluga(models.Model):
+    CHOISES_PAY = (
+        ('ROCZNY', 'ROCZNY.'),
+        ('MIESIĘCZNY', 'MIESIECZNY.'),
+        ('BEZPŁATNY', 'BEZPŁATNY.'),
+        ('NIE DOTYCZY', 'NIE DOTYCZY.')
+    )
     nazwa_siec = models.CharField(max_length=150, verbose_name="Nazwa sieciowa")
     usr        = models.CharField(blank=True, max_length=100, verbose_name="Użytkownik")
     dostawca   = models.CharField(blank=True, max_length=150, verbose_name="Dostawca")
     hosting    = models.CharField(blank=True, max_length=100, verbose_name="Hosting")
     uwagi      = models.TextField(blank=True, verbose_name="Uwagi")
     zdj        = models.FileField(upload_to='images', verbose_name="Zdjęcie", blank=True)
+    okres      = models.CharField(max_length=20, verbose_name="Okres rozliczeniowy", choices=CHOISES_PAY, default='ROCZNY')
     data_waznosci = models.DateField(verbose_name="Data ważności", null=True, blank=True)
     termin = models.DecimalField(max_digits=4, decimal_places=0, default=0, verbose_name="Termin")
 

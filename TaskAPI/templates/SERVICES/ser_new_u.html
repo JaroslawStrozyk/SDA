@@ -46,13 +46,16 @@ Usługi
                                                   </div>
                                        </div>
                                        <div class="form-row">
-                                                  <div class="form-group col-md-4 mb-0">
+                                                  <div class="form-group col-md-3 mb-0">
                                                         {{ form.dostawca|as_crispy_field }}
                                                   </div>
-                                                  <div class="form-group col-md-4 mb-0">
+                                                  <div class="form-group col-md-3 mb-0">
                                                         {{ form.hosting|as_crispy_field }}
                                                   </div>
-                                                  <div class="form-group col-md-4 mb-0">
+                                                  <div class="form-group col-md-3 mb-0">
+                                                        {{ form.okres|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-3 mb-0">
                                                         {{ form.data_waznosci|as_crispy_field }}
                                                   </div>
                                        </div>
@@ -78,7 +81,11 @@ Usługi
                                         <a href="{% url 'ser_start' %}" class="primary btn btn-danger"><font color="#ffffff"> Anuluj</font></a>
                                     </td>
                                     {% if edycja %}
-                                       <td align="right"><a href="#"  data-toggle="modal" data-target="#info1" class="primary btn btn-warning"><i class="fa fa-trash-o fa-fw"></i></a></td>
+                                       <td align="right">
+                                           <a href="#"  data-toggle="modal" data-target="#info1" class="primary btn btn-warning">
+                                               <font color="#ffffff"><i class="fa fa-trash-o fa-fw"></i></font>
+                                           </a>
+                                       </td>
                                     {% endif %}
                                 </tr>
                             </table>

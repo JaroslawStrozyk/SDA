@@ -95,109 +95,203 @@
                         background-color: #595959;
                    }
 
+                   /* ============================== */
+
+
+                   .setting {
+                        cursor: default;
+                        cursor: pointer;
+                        width: 480px;
+                        height: 230px;
+                        margin-top: 20px;
+                        margin-left: 10px;
+                        margin-right: 20px;
+                        vertical-align: top;
+                   }
+
+                   .box {
+                        display: inline-block;
+                        background-color: #fff;
+                        padding: 15px 0;
+                        border-radius: 3px;
+                        -webkit-box-shadow: 0 4px 10px 0 rgba(0,0,0,.10);
+                        -moz-box-shadow: 0 4px 10px 0 rgba(0,0,0,.10);
+                        box-shadow: 0 4px 10px 0 rgba(0,0,0,.10);
+                        border: 1px solid #dddde4;
+                   }
+
+                  .box {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                  }
+
+                  .setting>img {
+                        width: 96px;
+                        height: 96px;
+                  }
+
+                  img {
+                        vertical-align: middle;
+                        border:0;
+                  }
+                  .setting>.config-name {
+                        margin-top: 0px;
+                        margin-bottom: 10px;
+                        display: block;
+                        font-size: 18px;
+                        font-weight: 600;
+                        color: #3a1a61;
+                  }
+                  a {
+                        background-color: transparent;
+                        text-decoration: none;
+                  }
+                  .setting>p {
+                        margin: 10px 35px 0;
+                        font-style: italic;
+                        font-size: 13px;
+                        color: grey;
+                  }
+
+                  .tab_tr {
+                        margin: 10px 35px 0;
+                        font-style: italic;
+                        font-size: 13px;
+                        color: grey;
+                  }
+
+                  p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+.text-center {
+    text-align: center;
+    text-decoration: none;
+}
+
+
+
 
 
 </style>
-<div class="col-lg-12">
-    <br>
-    <br>
 
-    <div class="panel panel-default" id="tabela">
-        <div class="panel-heading"  align="center">
-            <h4><strong>Moduł Samochody & Wózki</strong></h4>
-        </div>
-        <table width="100%" class="table  table-bordered table-condensed">
-            <tr>
-                <td align="right" width="50%"><strong>Medium powiadomień</strong></td><td>{{ m_ps }}</td>
+
+
+
+
+<div class="col-lg-12" align="center" style="height: 100vh">
+    <br>
+    <br>
+        <div class="setting text-center box">
+            <a class="config-name" href="{% url 'auta_start' %}">
+                Moduł Samochody & Wózki
+            </a>
+        <table class="table table-striped  table-condensed" style="width:458px;margin-left:10px;">
+            <tr class="tab_tr">
+                <td align="right"><strong>Medium powiadomień:</strong></td><td  width="200px">{{ m_ps }}</td>
             </tr>
-            <tr>
-                <td align="right"><strong>Adresy email</strong></td><td>{{ a_es }}</td>
+            <tr class="tab_tr">
+                <td align="right"><strong>Adresy email:</strong></td><td>{{ a_es }}</td>
             </tr>
-            <tr>
-                <td align="right"><strong>Adresy skype</strong></td><td>{{ a_ss }}</td>
+            <tr class="tab_tr">
+                <td align="right"><strong>Adresy skype:</strong></td><td>{{ a_ss }}</td>
             </tr>
-            <tr>
-                <td align="right"><strong>Wyprzedzenie terminu przeglądu, badania</strong></td><td>{{ w_pb }}</td>
+            <tr class="tab_tr">
+                <td align="right"><strong>Wyprzedze. terminu przeglądu, badania:</strong></td><td>{{ w_pb }}</td>
             </tr>
-            <tr>
-                <td align="right"><strong>Wyprzedzenie terminu leasingu</strong></td><td>{{ w_tl }}</td>
+            <tr class="tab_tr">
+                <td align="right"><strong>Wyprzedzenie terminu leasingu:</strong></td><td>{{ w_tl }}</td>
             </tr>
         </table>
-    </div>
-    <br>
-
-    <div class="panel panel-default" id="tabela">
-        <div class="panel-heading"  align="center">
-            <h4><strong>Moduł faktury</strong></h4>
         </div>
-        <table width="100%" class="table  table-bordered table-condensed">
-            <tr>
-                <td align="right" width="50%"><strong>Medium powiadomień</strong></td><td>{{ m_pf }}</td>
-            </tr>
-            <tr>
-                <td align="right"><strong>Adresy email</strong></td><td>{{ a_ef }}</td>
-            </tr>
-            <tr>
-                <td align="right"><strong>Adresy skype</strong></td><td>{{ a_sf }}</td>
-            </tr>
 
+        <div class="setting text-center box">
+            <a class="config-name" href="{% url 'faktura_start' %}">
+                Moduł faktury
+            </a>
+        <table class="table table-striped  table-condensed" style="width:458px;margin-left:10px;">
+            <tr class="tab_tr">
+                <td align="right" width="50%"><strong>Medium powiadomień:</strong></td><td>{{ m_pf }}</td>
+            </tr>
+            <tr class="tab_tr">
+                <td align="right"><strong>Adresy email:</strong></td><td>{{ a_ef }}</td>
+            </tr>
+            <tr class="tab_tr">
+                <td align="right"><strong>Adresy skype:</strong></td><td>{{ a_sf }}</td>
+            </tr>
         </table>
-    </div>
-    <br>
-
-    <div class="panel panel-default" id="tabela">
-        <div class="panel-heading"  align="center">
-            <h4><strong>Moduł delegacji</strong></h4>
         </div>
-        <table width="100%" class="table  table-bordered table-condensed">
-            <tr>
-                <td align="right" width="50%"><strong>Medium powiadomień</strong></td><td>{{ m_p }}</td>
-            </tr>
-            <tr>
-                <td align="right"><strong>Adresy email</strong></td><td>{{ a_e }}</td>
-            </tr>
-            <tr>
-                <td align="right"><strong>Adresy skype</strong></td><td>{{ a_s }}</td>
-            </tr>
 
+        <div class="setting text-center box">
+            <a class="config-name" href="{% url 'delegacja_lista' %}">
+                Moduł delegacji
+            </a>
+        <table class="table table-striped  table-condensed" style="width:458px;margin-left:10px;">
+            <tr class="tab_tr">
+                <td align="right" width="50%"><strong>Medium powiadomień:</strong></td><td>{{ m_p }}</td>
+            </tr>
+            <tr class="tab_tr">
+                <td align="right"><strong>Adresy email:</strong></td><td>{{ a_e }}</td>
+            </tr>
+            <tr class="tab_tr">
+                <td align="right"><strong>Adresy skype:</strong></td><td>{{ a_s }}</td>
+            </tr>
         </table>
-    </div>
-    <br>
-
-    <div class="panel panel-default" id="tabela">
-        <div class="panel-heading"  align="center">
-            <h4><strong>Waluta</strong></h4>
         </div>
-        <table width="100%" class="table  table-bordered table-condensed">
-            <tr>
-                <td align="right" width="50%"><strong>Lista walut</strong></td><td>{{ lwal }}</td>
-            </tr>
-            <tr>
-                <td align="right"><strong>Długość historii walut</strong></td><td>{{ ldni }} dni</td>
-            </tr>
-            <tr>
-                <td align="right"><strong>Częstotliwość importu notowań</strong></td><td>{{ gt }}</td>
-            </tr>
 
+        <div class="setting text-center box">
+            <a class="config-name" href="#">
+                Waluta
+            </a>
+        <table class="table table-striped  table-condensed" style="width:458px;margin-left:10px;">
+            <tr class="tab_tr">
+                <td align="right" width="50%"><strong>Lista walut:</strong></td><td>{{ lwal }}</td>
+            </tr>
+            <tr class="tab_tr">
+                <td align="right"><strong>Długość historii walut:</strong></td><td>{{ ldni }} dni</td>
+            </tr>
+            <tr class="tab_tr">
+                <td align="right"><strong>Częstotliwość importu notowań:</strong></td><td>{{ gt }}</td>
+            </tr>
         </table>
-    </div>
-    <br>
-
-    <div class="panel panel-default" id="tabela">
-        <div class="panel-heading"  align="center">
-            <h4><strong>Wyświetlanie moduł zamówienia, zaliczki</strong></h4>
         </div>
-        <table width="100%" class="table  table-bordered table-condensed">
-            <tr>
-                <td align="right" width="50%"><strong>Liczba wierszy na stronę</strong></td><td>{{ lws }}</td>
-            </tr>
-            <tr>
-                <td align="right"><strong>Tryb uproszczony</strong></td><td>{{ tu }}</td>
-            </tr>
 
+        <div class="setting text-center box">
+            <a class="config-name" href="#">
+                Moduł zamówienia, zaliczki
+            </a>
+        <table class="table table-striped  table-condensed" style="width:458px;margin-left:10px;">
+            <tr class="tab_tr">
+                <td align="right" width="50%"><strong>Liczba wierszy na stronę:</strong></td><td>{{ lws }}</td>
+            </tr>
+            <tr class="tab_tr">
+                <td align="right"><strong>Tryb uproszczony:</strong></td><td>{{ tu }}</td>
+            </tr>
         </table>
-    </div>
-    <br>
+        </div>
+
+        <div class="setting text-center box">
+            <a class="config-name" href="{% url 'ser_start' %}">
+                Usługi
+            </a>
+        <table class="table table-striped  table-condensed" style="width:458px;margin-left:10px;">
+            <tr class="tab_tr">
+                <td align="right"><strong>Medium powiadomień:</strong></td><td  width="200px">{{ stt }}</td>
+            </tr>
+            <tr class="tab_tr">
+                <td align="right"><strong>Adresy email:</strong></td><td>{{ sedu }}</td>
+            </tr>
+            <tr class="tab_tr">
+                <td align="right"><strong>Adresy skype:</strong></td><td>{{ ssdu }}</td>
+            </tr>
+            <tr class="tab_tr">
+                <td align="right"><strong>Wyprzedzenie terminu płatności:</strong></td><td>{{ sds }}</td>
+            </tr>
+        </table>
+        </div>
+
 
 </div>
 

@@ -21,6 +21,17 @@ def delegacja_lista(request):
         return redirect('error')
 
 
+def ConwertInit(naz_imie):
+    imie = ''
+    nazwisko = ''
+
+    if naz_imie != "":
+        sp = naz_imie.split()
+        imie = sp[0]
+        nazwisko = sp[1]
+
+    return imie, nazwisko
+
 
 def delegacja_add(request):
     if request.method == "POST":
@@ -28,6 +39,7 @@ def delegacja_add(request):
         if delf.is_valid():
             post = delf.save(commit=False)
             post.zrobione = False
+            post.imie, post.nazwisko = ConwertInit(request.POST.get("naz_imie", ""))
             post.save()
             return redirect('login')
     else:

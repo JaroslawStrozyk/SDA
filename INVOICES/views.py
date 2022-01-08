@@ -22,6 +22,18 @@ def faktura_start(request):
         return redirect('error')
 
 
+def ConwertInit(naz_imie):
+    imie = ''
+    nazwisko = ''
+
+    if naz_imie != "":
+        sp = naz_imie.split()
+        imie = sp[0]
+        nazwisko = sp[1]
+
+    return imie, nazwisko
+
+
 def faktura_add(request):
     if request.method == "POST":
         delf = FakturaForm(request.POST)
@@ -29,6 +41,7 @@ def faktura_add(request):
             post = delf.save(commit=False)
             post.zrobione = False
             post.sig_source = False
+            post.imie, post.nazwisko = ConwertInit(request.POST.get("naz_imie", ""))
             post.save()
             return redirect('login')
     else:

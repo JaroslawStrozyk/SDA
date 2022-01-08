@@ -27,7 +27,7 @@ def email_temp1(data):
             + '<div style="font-family: \'Helvetica Neue\', helvetica, sans-serif; font-size: 16px; line-height: 22px; margin: 6px 0 9px;"><br/>'\
             + '<span style="font-size:18px; font-weight:bold;"><span style=\'font-size:22px; font-weight:bold;\'>Raport z SDA</span>&nbsp;&nbsp;moduł powiadomień</span><br/><br/>'\
             + '<span style="font-size:18px; font-weight:bold;">'+ data +' </span><br/><br/>'\
-            + '<table style="border-spacing:0;" cellspacing="0" cellpadding="0">'
+            + '<table style="border-spacing:0;" cellspacing="0" cellpadding="0" width="100%">'
 
     return temp
 

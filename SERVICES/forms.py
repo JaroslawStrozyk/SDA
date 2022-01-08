@@ -6,7 +6,7 @@ class UslugaForm(forms.ModelForm):
     class Meta:
         model = Usluga
         fields = (
-                  'nazwa_siec', 'usr', 'dostawca', 'hosting', 'uwagi' ,'zdj', 'data_waznosci'
+                  'nazwa_siec', 'usr', 'dostawca', 'hosting', 'uwagi' ,'zdj', 'okres', 'data_waznosci'
         )
 
 class ProfilForm(forms.ModelForm):

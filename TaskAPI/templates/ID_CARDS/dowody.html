@@ -61,9 +61,16 @@
                         </div>
                         <div class="panel-body">
                             <table class="table table-striped">
-                                <tr><th>Imię</th><th>Nazwisko</th><th>Skan</th><th>Skan</th><th>Data</th><th>Uwagi</th></tr>
+                                <tr><th>Imię</th><th>Nazwisko</th><th>Skan</th><th>Skan</th><th>Data wprowadzenia</th><th>Uwagi</th></tr>
                                 {% for dow in dowody %}
-                                <tr><td>{{ dow.imie }}</td><td>{{ dow.nazwisko }}</td><td>{% if dow.img1 == "" %}-{% else %}<a href="{{ dow.img1.url }}"><i class="fa fa-file-pdf-o fa-fw"></i></a>{% endif %}</td><td>{% if dow.img2 == "" %}-{% else %}<a href="{{ dow.img2.url }}"><i class="fa fa-file-pdf-o fa-fw"></i></a>{% endif %}</td><td>{{ dow.data }}</td><td>{{ dow.uwagi }}</td></tr>
+                                <tr>
+                                    <td>{{ dow.imie }}</td>
+                                    <td>{{ dow.nazwisko }}</td>
+                                    <td>{% if dow.img1 == "" %}-{% else %}<a href="{{ dow.img1.url }}"><i class="fa fa-file-pdf-o fa-fw"></i></a>{% endif %}</td>
+                                    <td>{% if dow.img2 == "" %}-{% else %}<a href="{{ dow.img2.url }}"><i class="fa fa-file-pdf-o fa-fw"></i></a>{% endif %}</td>
+                                    <td>{{ dow.data |date:'d-m-Y' }}</td>
+                                    <td>{{ dow.uwagi }}</td>
+                                </tr>
                                 {% endfor %}
                             </table>
 

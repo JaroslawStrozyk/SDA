@@ -15,29 +15,29 @@ class SprzetForm(forms.ModelForm):
 
 
 
-    gw = forms.DateField(widget=forms.SelectDateWidget(
-                               attrs={'style': 'display: inline-block; width: 33%;'},
-                               years=YEARS
-                         ),
-                               label="Termin Gwaracji",
-                               initial=datetime.date.today
-                         )
-
-    pr = forms.DateField(widget=forms.SelectDateWidget(
-                               attrs={'style': 'display: inline-block; width: 33%;'},
-                               years=YEARS
-                         ),
-                               label="Data przyjęcia do użytku",
-                               initial=datetime.date.today
-                         )
-
-    pz = forms.DateField(widget=forms.SelectDateWidget(
-                               attrs={'style': 'display: inline-block; width: 33%;'},
-                               years=YEARS
-                         ),
-                               label="Data zdania",
-                               initial=datetime.date.today
-                         )
+    # gw = forms.DateField(widget=forms.SelectDateWidget(
+    #                            attrs={'style': 'display: inline-block; width: 33%;'},
+    #                            years=YEARS
+    #                      ),
+    #                            label="Termin Gwaracji",
+    #                            initial=datetime.date.today
+    #                      )
+    #
+    # pr = forms.DateField(widget=forms.SelectDateWidget(
+    #                            attrs={'style': 'display: inline-block; width: 33%;'},
+    #                            years=YEARS
+    #                      ),
+    #                            label="Data przyjęcia do użytku",
+    #                            initial=datetime.date.today
+    #                      )
+    #
+    # pz = forms.DateField(widget=forms.SelectDateWidget(
+    #                            attrs={'style': 'display: inline-block; width: 33%;'},
+    #                            years=YEARS
+    #                      ),
+    #                            label="Data zdania",
+    #                            initial=datetime.date.today
+    #                      )
 
 class ProfilForm(forms.ModelForm):
     class Meta:

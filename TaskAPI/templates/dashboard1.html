@@ -34,6 +34,9 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
+    <link href="{% static 'DP/bootstrap-datetimepicker.min.css' %}" rel="stylesheet" type="text/css">
+
 </head>
 
 <body>
@@ -173,6 +176,46 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
 
+
+
+        <script type="text/javascript" src="{% static 'DP/bootstrap-datetimepicker.js' %}" charset="UTF-8"></script>
+<script type="text/javascript" src="{% static 'DP/bootstrap-datetimepicker.pl.js' %}" charset="UTF-8"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script type="text/javascript">
+        $('#id_termin').datetimepicker({
+              language:  'pl',
+              format: 'dd.mm.yyyy',
+              todayBtn:  1,
+              autoclose: 1,
+              minView: 2,
+              startDate: "2009-01-01",
+        });
+
+        $('#id_data_od').datetimepicker({
+              language:  'pl',
+              format: 'dd.mm.yyyy',
+              todayBtn:  1,
+              autoclose: 1,
+              minView: 2,
+              startDate: "2009-01-01",
+        });
+
+        $('#id_data_do').datetimepicker({
+              language:  'pl',
+              format: 'dd.mm.yyyy',
+              todayBtn:  1,
+              autoclose: 1,
+              minView: 2,
+              startDate: "2009-01-01",
+        });
+
+    </script>
+
+
+
+
+
     <!-- Metis Menu Plugin JavaScript -->
     <script src="{% static 'vendor/metisMenu/metisMenu.min.js' %}"></script>
 
@@ -183,7 +226,9 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="{% static 'dist/js/sb-admin-2.js' %}"></script>
-    <script type="text/javascript">$("#password").password('toggle');</script>
+<script type="text/javascript">$("#password").password('toggle');</script>
+
+
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-show-password/1.0.3/bootstrap-show-password.min.js"></script>
 
 </body>

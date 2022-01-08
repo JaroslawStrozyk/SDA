@@ -4,7 +4,7 @@ from .models import Usluga, Profil
 from .forms import UslugaForm, ProfilForm
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
-#from .out_doc import hippdfpp, hippdfpz
+from TaskAPI.cron import ServiceDataTest
 from django.conf import settings
 from HIP.models import Profil as HProfil
 
@@ -26,11 +26,12 @@ def ser_start(request):
     name_log = request.user.first_name + " " + request.user.last_name
     about = settings.INFO_PROGRAM
     tytul = 'Lista usług zewnętrznych.'
-    tytul2 = 'Lista czasowych usług zewnętrznych.'
+    tytul2 = 'Lista licencji czasowych.'
 
     usluga = Usluga.objects.all().order_by('usr')
     konta = HProfil.objects.all().exclude(data_waznosci=None).order_by('rodzaj_konta')
 
+    ServiceDataTest()
 
     return render(request, 'SERVICES/ser_main.html', {
         'uslugi': usluga,

@@ -2,10 +2,18 @@
 {% load static %}
 
 {% block leftbutton %}
+
                     <li class="dropdown">
+                        {% if b_rok %}
                         <a class="dropdown-toggle btn btn-success" data-toggle="dropdown" href="#" aria-expanded="false">
-                            <i class="fa fa-calendar fa-fw"></i> &nbsp;Rok => [ {{ rok }} ]<i class="fa fa-caret-down"></i>
+                            <i class="fa fa-calendar fa-fw"></i> &nbsp;Bieżący Rok => [ {{ rok }} ]&nbsp;<i class="fa fa-caret-down"></i>
                         </a>
+                        {% else %}
+                        <a class="dropdown-toggle btn btn-warning" data-toggle="dropdown" href="#" aria-expanded="false" title="Ustawiony rok nie jest zbieżny z rokiem kalendarzowym !">
+                            <i class="fa fa-calendar fa-fw"></i> &nbsp;Bieżący Rok => [ {{ rok }} ]<i class="fa fa-caret-down"></i>
+                        </a>
+                        {% endif %}
+
                         <ul class="dropdown-menu dropdown-user">
                             {% for r in lata %}
                                 <li>
@@ -14,6 +22,22 @@
                             {% endfor %}
                         </ul>
                     </li>
+
+
+
+
+<!--                    <li class="dropdown">-->
+<!--                        <a class="dropdown-toggle btn btn-success" data-toggle="dropdown" href="#" aria-expanded="false">-->
+<!--                            <i class="fa fa-calendar fa-fw"></i> &nbsp;Rok => [ {{ rok }} ]<i class="fa fa-caret-down"></i>-->
+<!--                        </a>-->
+<!--                        <ul class="dropdown-menu dropdown-user">-->
+<!--                            {% for r in lata %}-->
+<!--                                <li>-->
+<!--                                    <a href="{% url 'sde_rok_akt' pk=r %}"><i class="fa fa-calendar fa-fw"></i>&nbsp;&nbsp;{{ r }}</a>-->
+<!--                                </li>-->
+<!--                            {% endfor %}-->
+<!--                        </ul>-->
+<!--                    </li>-->
 
 {% endblock %} 
 

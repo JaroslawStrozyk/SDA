@@ -53,6 +53,7 @@
                                             <th>Użytkownik</th>
                                             <th>Dostawca</th>
                                             <th>Hosting</th>
+                                            <th>Okres rozliczeniowy</th>
                                             <th style="text-align:center;">Termin płatności</th>
                                             <th style="text-align:center;">Uwagi</th>
                                             <th></th>
@@ -65,6 +66,7 @@
                                          <td style="vertical-align:middle">{{ usluga.usr }}</td>
                                          <td style="vertical-align:middle">{{ usluga.dostawca }}</td>
                                          <td style="vertical-align:middle">{{ usluga.hosting }}</td>
+                                         <td style="vertical-align:middle">{{ usluga.okres }}</td>
                                          <td
                                                {% if   usluga.termin == 0 %} style="vertical-align:middle; text-align:center; width:150px;"
                                                {% elif usluga.termin == 1 %} style="vertical-align:middle; text-align:center; background-color:#00ff69; width:150px;"

@@ -79,9 +79,9 @@ def logs_start(request):
 
 @login_required(login_url='error')
 def logs_startp(request):
-    lata, rok = test_rok(request)
+    #lata, rok = test_rok(request)
     name_log, inicjaly = test_osoba(request)
-    tytul_tabeli = "Zestawienie kursów walut"
+    #tytul_tabeli = "Zestawienie kursów walut"
     about = settings.INFO_PROGRAM
 
     cron = settings.CRONJOBS
@@ -160,6 +160,26 @@ def logs_startp(request):
         tu = "Wyłaczone"
 
 
+    mp = settings.SERVICES_TO_TARGET
+    if mp == 1:
+        stt = "SKYPE"
+    else:
+        stt = "E-MAIL"
+
+    sds = str(settings.SERVICES_DATA_SHIFT) + " dni"
+
+    ssdu = settings.SERVICES_SKYPE_DO_USERS
+    s = ""
+    for l in ssdu:
+        s = s + l + ", "
+    ssdu = s[:-2]
+
+    sedu = settings.SERVICES_EMAIL_DO_USERS
+    s = ""
+    for l in sedu:
+        s = s + l + ", "
+    sedu = s[:-2]
+
     gt = ""
     for c in cron:
         if c[1] == "TaskAPI.cron.GetNBP":
@@ -169,7 +189,7 @@ def logs_startp(request):
 
     return render(request, 'MONIT/mainp.html',
                   {
-                      'tytul_tabeli': tytul_tabeli,
+                      #'tytul_tabeli': tytul_tabeli,
                       'name_log': name_log,
                       'about': about,
                       'lwal': lwal,
@@ -187,5 +207,9 @@ def logs_startp(request):
                       'w_pb': w_pb,
                       'w_tl': w_tl,
                       'lws' : lws,
-                      'tu'  : tu
+                      'tu'  : tu,
+                      'stt' : stt,
+                      'sds' : sds,
+                      'ssdu': ssdu,
+                      'sedu': sedu
                   })
