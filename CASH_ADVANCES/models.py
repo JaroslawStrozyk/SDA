@@ -3,8 +3,9 @@ from django.utils import timezone
 from djmoney.models.fields import MoneyField
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from TaskAPI.models import FlagaZmiany
 from ORDERS.models import NrSDE, NrMPK
+from .functions import CheckCurrency
+from TaskAPI.models import FlagaZmiany
 
 
 class Rozliczenie(models.Model):
@@ -62,14 +63,32 @@ class Pozycja(models.Model):
 
 @receiver(post_save, sender=Pozycja)
 def pozycja_po_zapisaniu(sender, instance, **kwargs):
+    aktualizacja_rozliczen(instance)
     aktualizacja_danych_p()
 
 
 @receiver(post_delete, sender=Pozycja)
 def pozycja_po_skasowaniu(sender, instance, **kwargs):
+    aktualizacja_rozliczen(instance)
     aktualizacja_danych_p()
 
 
+def aktualizacja_rozliczen(instance):
+    pk = instance.nr_roz.id
+    zal_kwota = instance.nr_roz.zal_kwota
+    zal_suma = CheckCurrency(zal_kwota)
+    poz = Pozycja.objects.filter(nr_roz=pk, data_zak__isnull=False)
+    for pz in poz:
+        zal_suma = zal_suma + pz.kwota_brutto
+    saldo = zal_kwota - zal_suma
+
+    r = Rozliczenie.objects.get(id=pk)
+    r.zal_suma = zal_suma
+    r.saldo = saldo
+    r.save()
+
+
+# przekazanie do sda-calc informacji o potrzebie przeliczenia danych
 def aktualizacja_danych_p():
     x = FlagaZmiany.objects.all().first()
     x.pozycja = 1

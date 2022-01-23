@@ -57,7 +57,7 @@ def gog_start(request):
 
 
 @login_required(login_url='error')
-def gog_kb(request):
+def gog_kp(request):
     lata, rok = test_rok(request)
     name_log, inicjaly = test_osoba(request)
     about = settings.INFO_PROGRAM
@@ -68,10 +68,11 @@ def gog_kb(request):
 
     nrsde = NrSDE.objects.filter(rokk=rok).order_by('-nazwa_id')
     tzero = Money('00.00', PLN)
-    if rok < 2022:
-        temp_file = 'GOOGLE/gog_kb.html'
-    else:
-        temp_file = 'GOOGLE/gog_nkb.html'
+    # if rok < 2022:
+    #     temp_file = 'GOOGLE/gog_kb.html'
+    # else:
+    #     temp_file = 'GOOGLE/gog_kp.html'
+    temp_file = 'GOOGLE/gog_kp.html'
     return render(request, temp_file, {
         'nrsde': nrsde,
         'tzero': tzero,
@@ -104,69 +105,69 @@ def gog_kb(request):
 
 
 @login_required(login_url='error')
-def gog_kbp(request):
-    lata, rok = test_rok(request)
-    name_log, inicjaly = test_osoba(request)
-    about = settings.INFO_PROGRAM
-    tytul = 'Zamówienia SDE ⇨ ? [SDE z 2020 płacone w 2021]'
+# def gog_kbp(request):
+#     lata, rok = test_rok(request)
+#     name_log, inicjaly = test_osoba(request)
+#     about = settings.INFO_PROGRAM
+#     tytul = 'Zamówienia SDE ⇨ ? [SDE z 2020 płacone w 2021]'
+#
+#     nrsde = NrSDE.objects.filter(rokk=rok - 1).order_by('-nazwa_id')
+#     tzero = Money('00.00', PLN)
+#
+#     return render(request, 'GOOGLE/gog_kbp.html', {
+#         'nrsde': nrsde,
+#         'tzero': tzero,
+#         'tytul_tabeli': tytul,
+#         'name_log': name_log,
+#         'admini': test_admin(request),
+#         'about': about,
+#     })
+#
+#
+# @login_required(login_url='error')
+# def gog_kg(request):
+#     lata, rok = test_rok(request)
+#     name_log, inicjaly = test_osoba(request)
+#     about = settings.INFO_PROGRAM
+#
+#     if rok == 2021:
+#         tytul = settings.GOOGLE_DOCS_2021[1][3]
+#     elif rok == 2022:
+#         tytul =  settings.GOOGLE_DOCS_2022[1][3]
+#
+#     nrsde = NrSDE.objects.filter(rokk=rok).order_by('-nazwa_id')
+#     tzero = Money('00.00', PLN)
+#     if rok < 2022:
+#         temp_file = 'GOOGLE/gog_kg.html'
+#     else:
+#         temp_file = 'GOOGLE/gog_nkg.html'
+#     return render(request, temp_file, {
+#         'nrsde': nrsde,
+#         'tzero': tzero,
+#         'tytul_tabeli': tytul,
+#         'name_log': name_log,
+#         'admini': test_admin(request),
+#         'about': about,
+#     })
 
-    nrsde = NrSDE.objects.filter(rokk=rok - 1).order_by('-nazwa_id')
-    tzero = Money('00.00', PLN)
-
-    return render(request, 'GOOGLE/gog_kbp.html', {
-        'nrsde': nrsde,
-        'tzero': tzero,
-        'tytul_tabeli': tytul,
-        'name_log': name_log,
-        'admini': test_admin(request),
-        'about': about,
-    })
-
-
-@login_required(login_url='error')
-def gog_kg(request):
-    lata, rok = test_rok(request)
-    name_log, inicjaly = test_osoba(request)
-    about = settings.INFO_PROGRAM
-
-    if rok == 2021:
-        tytul = settings.GOOGLE_DOCS_2021[1][3]
-    elif rok == 2022:
-        tytul =  settings.GOOGLE_DOCS_2022[1][3]
-
-    nrsde = NrSDE.objects.filter(rokk=rok).order_by('-nazwa_id')
-    tzero = Money('00.00', PLN)
-    if rok < 2022:
-        temp_file = 'GOOGLE/gog_kg.html'
-    else:
-        temp_file = 'GOOGLE/gog_nkg.html'
-    return render(request, temp_file, {
-        'nrsde': nrsde,
-        'tzero': tzero,
-        'tytul_tabeli': tytul,
-        'name_log': name_log,
-        'admini': test_admin(request),
-        'about': about,
-    })
-
-@login_required(login_url='error')
-def gog_kgp(request):
-    lata, rok = test_rok(request)
-    name_log, inicjaly = test_osoba(request)
-    about = settings.INFO_PROGRAM
-    tytul = 'Zaliczki SDE ⇨ ? [SDE z 2020 płacone w 2021]'
-
-    nrsde = NrSDE.objects.filter(rokk=rok-1).order_by('-nazwa_id')
-    tzero = Money('00.00', PLN)
-
-    return render(request, 'GOOGLE/gog_kgp.html', {
-        'nrsde': nrsde,
-        'tzero': tzero,
-        'tytul_tabeli': tytul,
-        'name_log': name_log,
-        'admini': test_admin(request),
-        'about': about,
-    })
+# @login_required(login_url='error')
+# def gog_kgp(request):
+#     lata, rok = test_rok(request)
+#     name_log, inicjaly = test_osoba(request)
+#     about = settings.INFO_PROGRAM
+#     tytul = 'Zaliczki SDE ⇨ ? [SDE z 2020 płacone w 2021]'
+#
+#     nrsde = NrSDE.objects.filter(rokk=rok-1).order_by('-nazwa_id')
+#     tzero = Money('00.00', PLN)
+#
+#     return render(request, 'GOOGLE/gog_kgp.html', {
+#         'nrsde': nrsde,
+#         'tzero': tzero,
+#         'tytul_tabeli': tytul,
+#         'name_log': name_log,
+#         'admini': test_admin(request),
+#         'about': about,
+#     })
 
 
 @login_required(login_url='error')
@@ -174,7 +175,12 @@ def gog_ks(request):
     lata, rok = test_rok(request)
     name_log, inicjaly = test_osoba(request)
     about = settings.INFO_PROGRAM
-    tytul = 'Zamówienia + Zaliczki MPK ⇨ SDE Plan finansowy 2021 ⇨ SDE Koszty stałe'
+
+    if rok == 2021:
+        tytul = settings.GOOGLE_DOCS_2021[1][3]
+    elif rok == 2022:
+        tytul =  settings.GOOGLE_DOCS_2022[2][3]
+
 
     nrmpk = NrMPK.objects.filter(rok=rok).order_by('nazwa')
     tzero = Money('00.00', PLN)
@@ -192,24 +198,24 @@ def gog_ks(request):
     })
 
 
-@login_required(login_url='error')
-def gog_ksp(request):
-    lata, rok = test_rok(request)
-    name_log, inicjaly = test_osoba(request)
-    about = settings.INFO_PROGRAM
-    tytul = 'Zamówienia + Zaliczki MPK ⇨ ? [SDE z 2020 płacone w 2021]'
-
-    nrmpk = NrMPK.objects.filter(rok=rok-1).order_by('nazwa')
-    tzero = Money('00.00', PLN)
-    for mpk in nrmpk:
-        mpk.suma = mpk.sum_zal + mpk.sum_zam
-        mpk.save()
-
-    return render(request, 'GOOGLE/gog_ksp.html', {
-        'nrmpk': nrmpk,
-        'tzero': tzero,
-        'tytul_tabeli': tytul,
-        'name_log': name_log,
-        'admini': test_admin(request),
-        'about': about,
-    })
+# @login_required(login_url='error')
+# def gog_ksp(request):
+#     lata, rok = test_rok(request)
+#     name_log, inicjaly = test_osoba(request)
+#     about = settings.INFO_PROGRAM
+#     tytul = 'Zamówienia + Zaliczki MPK ⇨ ? [SDE z 2020 płacone w 2021]'
+#
+#     nrmpk = NrMPK.objects.filter(rok=rok-1).order_by('nazwa')
+#     tzero = Money('00.00', PLN)
+#     for mpk in nrmpk:
+#         mpk.suma = mpk.sum_zal + mpk.sum_zam
+#         mpk.save()
+#
+#     return render(request, 'GOOGLE/gog_ksp.html', {
+#         'nrmpk': nrmpk,
+#         'tzero': tzero,
+#         'tytul_tabeli': tytul,
+#         'name_log': name_log,
+#         'admini': test_admin(request),
+#         'about': about,
+#     })

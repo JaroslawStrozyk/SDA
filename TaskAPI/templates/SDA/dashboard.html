@@ -154,15 +154,15 @@
             <p>Baza pobranych zaliczek</p>
         </div>
         {% endif %}
-        <!--{% if emp %}
+        {% if emp %}
         <div class="setting text-center box">
             <img src="{% static 'img/kris.png' %}">
-            <a class="config-name" href="{% url 'logs_start' %}">
+            <a class="config-name" href="{% url 'worker_start' %}">
                 Pracownicy
             </a>
             <p>Sprawy pracownicze.</p>
         </div>
-        {% endif %}-->
+        {% endif %}
         {% if gog %}
         <div class="setting text-center box">
             <img src="{% static 'img/gog_docs.png' %}">

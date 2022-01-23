@@ -197,6 +197,15 @@
                     <br><br>
                             <table width="100%" class="table table-bordered table-condensed" id="tab_belka">
                                         <tr>
+                                            <td colspan="7" align="center" style="background-color: #F3F3F3; border-bottom:1pt solid #F3F3F3; vertical-align: middle;">
+                                                <div class="title_r">
+                                                    {{ tytul_tabeli1 }}
+                                                    <strong><font color="#800000">{{ tytul_tabeli2 }} </font></strong>
+                                                    <i data-toggle="tooltip" title="{{ tytul_tabeli4 }}">{{ tytul_tabeli3 }}</i>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <td width="250px" style="background-color: #F3F3F3; border-right:1pt solid #F3F3F3;">
                                                 <form metod="GET" action="{% url 'ord_search' src=src %}">
                                                     {% csrf_token %}
@@ -209,7 +218,6 @@
                                                     </div>
                                                 </form>
                                             </td>
-
                                             <td width="230px" style="background-color: #F3F3F3; padding: 5px; border-right:1pt solid #F3F3F3;">
                                                 <form metod="GET" action="{% url 'ord_search_sde' src=src %}">
                                                     {% csrf_token %}
@@ -240,22 +248,15 @@
                                                    </div>
                                                </form>
                                             </td>
-
                                             <td width="20px" style="background-color: #F3F3F3; border-right:1pt solid #F3F3F3;">
                                                 <a class="btn btn-default" data-toggle="tooltip" data-placement="bottom"
                                                 title="Wyświetl wszystkie pozycje" href="{% url 'order_start_all' %}"><i
                                                 class="fa fa-bars"></i></a>
                                             </td>
+                                            <td align="center" style="background-color: #F3F3F3; border-right:1pt solid #F3F3F3; vertical-align: middle;">
 
-
-                                           <td align="center" style="background-color: #F3F3F3; border-right:1pt solid #F3F3F3; vertical-align: middle;">
-                                                <div class="title_r">
-                                                    {{ tytul_tabeli1 }}
-                                                    <strong><font color="#800000">{{ tytul_tabeli2 }} </font></strong>
-                                                    <i data-toggle="tooltip" title="{{ tytul_tabeli4 }}">{{ tytul_tabeli3 }}</i>
-                                                </div>
                                            </td>
-                                           <td align="right" width="100px" style="background-color: #F3F3F3; border-right:1pt solid #F3F3F3;">
+                                            <td align="right" width="100px" style="background-color: #F3F3F3; border-right:1pt solid #F3F3F3;">
                                                {% if szukanie %}
                                                     <button type="button" class="btn btn-primary">
                                                         Suma:&nbsp;<span class="badge badge-dark"><strong><font size="3">{{ suma }}</font></strong></span> [netto]
@@ -264,12 +265,12 @@
                                                     <a href="{% url 'ord_new' %}" class="primary btn btn-default">&nbsp;<strong>Nowy wpis</strong> </a>
                                                {% endif %}
                                            </td>
-                                           {% if b_fid %}
-                                           <td align="right" width="100px" style="background-color: #F3F3F3;">
+                                            {% if b_fid %}
+                                            <td align="right" width="100px" style="background-color: #F3F3F3;">
                                                <a href="{% url 'ord_pdf' src=src fl=fl %}" class="info btn btn-info">&nbsp;<i class="fa fa-file-pdf-o"></i><strong> Export</strong> </a>
                                            </td>
-                                           {%  endif %}
-                                </tr>
+                                            {%  endif %}
+                                        </tr>
                             </table>
 
                             <table width="100%" class="table table-bordered table-condensed" id="sort">

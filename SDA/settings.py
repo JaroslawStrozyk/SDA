@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-from SDA.pass_file import DB, CEDU, CSDU, IEDU, ISDU, DEDU, DSDU, SEDU, SSDU
+from SDA.pass_file import DB, CEDU, CSDU, IEDU, ISDU, DEDU, DSDU, SEDU, SSDU, SDE_ORD_PM, DEL_INV_OPER
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'ORDERS',
     'LOG',
     'CASH_ADVANCES',
+    'WORKER',
     'django_crontab',
 ]
 
@@ -203,8 +204,8 @@ CRONJOBS = [
 
 INFO_PROGRAM = [
     {
-        'WERSJA'     : '4.88g',
-        'MODYFIKACJA': '08.01.2022r.',
+        'WERSJA'     : '4.89g',
+        'MODYFIKACJA': '23.01.2022r.',
         'FIRMA'      : 'EDATABIT',
         'AUTOR'      : 'Jarosław Stróżyk',
         'EMAIL'      : 'mailto:biuro@edatabit.pl',
@@ -218,16 +219,22 @@ GOOGLE_CRED = BASE_DIR+'/BACKGROUND/sde-sda-credentials.json'
 GOOGLE_DOCS_2021 = [
     ('', '', '', 'Kody SDE ⇨ SDE Plan finansowy 2021 i Nr zleceń SmartDesignExpo 2019, 2020 i 2021.'),
     ('', '', '', 'Zamówienia SDE ⇨ SDE Plan finansowy 2021 ⇨ SDE Koszty produkcji'),
+    ('', '', '', 'Zamówienia + Zaliczki MPK ⇨ SDE Plan finansowy 2021 ⇨ SDE Koszty stałe'),
 ]
 
 
 GOOGLE_DOCS_2022 = [
     ('Realizacja 2022', '11ajMbpwXTSrEXMtAPNTtB7v54GvlHNHP0YPWdC7BACc', 'SDA [Kody SDE]', 'SDA [Kody SDE] ⇨ Realizacja 2022'),
     ('Realizacja 2022', '11ajMbpwXTSrEXMtAPNTtB7v54GvlHNHP0YPWdC7BACc', 'SDA [Koszty produkcji]', 'SDA [Koszty produkcji] ⇨ Realizacja 2022'),
-    ('Realizacja 2022', '11ajMbpwXTSrEXMtAPNTtB7v54GvlHNHP0YPWdC7BACc', 'SDA [Koszty stałe]', ''),
+    ('Realizacja 2022', '11ajMbpwXTSrEXMtAPNTtB7v54GvlHNHP0YPWdC7BACc', 'SDA [Koszty stałe]', 'SDA [Koszty stałe] ⇨ Realizacja 2022'),
     ('Nr zleceń SmartDesignExpo 2019, 2020, 2021 i 2022', '1Ev5MQW6GAg3XXsqads58orF_3WrMA35XCgKCYPFrB70', '2022', '')
 ]
 
 # Pamiętaj! Po zmainie LOG_LOOP trzeba ręcznie wykonać LOG.logs.InitLog()
 LOG_LOOP = 200
 LOG_FILE = BASE_DIR+'/LOG_FILE/'
+
+#
+
+ORD_PM = SDE_ORD_PM
+DEL_INV_OP = DEL_INV_OPER

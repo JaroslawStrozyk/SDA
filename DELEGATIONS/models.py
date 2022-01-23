@@ -3,28 +3,12 @@ from djmoney.models.fields import MoneyField
 from django.db import models
 from django.utils import timezone
 
+from SDA.settings import DEL_INV_OP
 
 
 class Delegacja(models.Model):
-    CHOISES_PM = (
-        ('', ''),
-        ('Agnieszka Skóra', 'Agnieszka Skóra'),
-        ('Julia Królak', 'Julia Królak'),
-        ('Piotr Junik', 'Piotr Junik'),
-        ('Laura Bartkowiak', 'Laura Bartkowiak'),
-        ('Dariusz Kaczmarek', 'Dariusz Kaczmarek'),
-        ('Łukasz Jerzmanowski', 'Łukasz Jerzmanowski'),
-        ('Michał Ogrzewalski', 'Michał Ogrzewalski'),
-        ('Marzena Michalska', 'Marzena Michalska'),
-        ('Łukasz Zaremba', 'Łukasz Zaremba'),
-        ('Joanna Dittmar', 'Joanna Dittmar'),
-        ('Bartosz Ługowski', 'Bartosz Ługowski'),
-        ('Adam Beim', 'Adam Beim'),
-        ('Eryk Przybyłowicz', 'Eryk Przybyłowicz'),
-        ('Małgosia Świadek', 'Małgosia Świadek'),
-        ('Olga Siukova', 'Olga Siukova'),
-        ('Jarosław Stróżyk', 'Jarosław Stróżyk')
-    )
+    CHOISES_PM = DEL_INV_OP
+
     CHOISES_CON = (
         ('SKYPE', 'SKYPE'),
         ('E-MAIL', 'E-MAIL'),

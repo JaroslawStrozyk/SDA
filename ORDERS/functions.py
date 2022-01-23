@@ -74,6 +74,7 @@ def suma_wartosci(zamowienia):
         c = zam.kwota_netto.currency
         d = zam.kwota_netto.amount
         DICT[str(c)] = Money(d, c) + DICT[str(c)]
+    # print(DICT)
 
     suma = ''
     for i in DICT.items():

@@ -1,22 +1,20 @@
 from django.conf import settings
 import requests
-
 from CARS.models import Auto
 from TaskAPI.models import Asp, FlagaZmiany, Rok, Waluta
 from .functions import TestData, TestDataUslugi
 from SDA.settings import GET_NBP, HIS_NBP
 from moneyed import Money, PLN
-from CASH_ADVANCES.models import Pozycja, Rozliczenie  # , NrSDE as PNrSDE, NrMPK as PNrMPK
-from ORDERS.models import Zamowienie, NrSDE as ZNrSDE, NrMPK
+from ORDERS.models import NrSDE as ZNrSDE, NrMPK
 from LOG.logs import LogiCron
 import gspread
 import datetime
 from .rap_temp import email_temp1, email_temp2, ubezpieczenie, ubezpieczenie_p
 from HIP.models import Profil
 from SERVICES.models import Usluga
+import time
 
-
-cred = settings.GOOGLE_CRED #'/opt/SD/SDA/sde-sda-credentials.json'
+cred = settings.GOOGLE_CRED
 
 
 def FixYear():
@@ -61,11 +59,6 @@ def test_rok():
             rok = t.rok
     return rok
 
-
-# def WriteLOG(plik, text):
-#     f = open('/opt/SD/SDA/logi/' + plik + '.log', 'a+')
-#     f.write(str(datetime.datetime.now()) + '  ' + text + '\n')
-#     f.close()
 
 def test_Cars_manual():
     data = datetime.datetime.now().strftime('%Y-%m-%d')
@@ -250,7 +243,6 @@ def test_Cars():
                 asp.save()
 
 
-
 def select_Cars():
 
     shift = settings.CARS_DATE_SHIFT
@@ -287,287 +279,72 @@ def ServiceDataTest():
         u.save()
 
 
-
-# OK LICZY DOBRZE
-def OrderRefresh():
-    zero = Money('00.00', PLN)
-    kas = ZNrSDE.objects.all()
-    for i in kas:
-        i.sum_direct = zero
-        i.d_st = zero
-        i.d_lu = zero
-        i.d_ma = zero
-        i.d_kw = zero
-        i.d_mj = zero
-        i.d_cz = zero
-        i.d_lp = zero
-        i.d_si = zero
-        i.d_wr = zero
-        i.d_pa = zero
-        i.d_li = zero
-        i.d_gr = zero
-        i.save()
-
-    poz = Zamowienie.objects.all()
-    for pz in poz:
-        dt = pz.data_fv
-        if pz.nr_sde != None and dt != None:
-            psde = ZNrSDE.objects.get(pk=pz.nr_sde_id)
-            if pz.kwota_netto_currency == 'PLN':
-                nt = pz.kwota_netto
-            else:
-                nt = pz.kwota_netto_pl
-
-            m = int(dt.month)
-            y = int(dt.year)
-
-            # if rok == y:
-            if m == 1:
-                psde.d_st += nt
-                psde.d_miesiac = 'styczeń'
-            elif m == 2:
-                psde.d_lu += nt
-                psde.d_miesiac = 'luty'
-            elif m == 3:
-                psde.d_ma += nt
-                psde.d_miesiac = 'marzec'
-            elif m == 4:
-                psde.d_kw += nt
-                psde.d_miesiac = 'kwiecień'
-            elif m == 5:
-                psde.d_mj += nt
-                psde.d_miesiac = 'maj'
-            elif m == 6:
-                psde.d_cz += nt
-                psde.d_miesiac = 'czerwiec'
-            elif m == 7:
-                psde.d_lp += nt
-                psde.d_miesiac = 'lipiec'
-            elif m == 8:
-                psde.d_si += nt
-                psde.d_miesiac = 'sierpień'
-            elif m == 9:
-                psde.d_wr += nt
-                psde.d_miesiac = 'wrzesień'
-            elif m == 10:
-                psde.d_pa += nt
-                psde.d_miesiac = 'październik'
-            elif m == 11:
-                psde.d_li += nt
-                psde.d_miesiac = 'listopad'
-            elif m == 12:
-                psde.d_gr += nt
-                psde.d_miesiac = 'grudzień'
-            psde.rok = y
-            psde.sum_direct += nt
-            psde.save()
-
-
-# OK LICZY DOBRZE
-def CashAdvancesRefresh():
-    rok = test_rok()
-    zero = Money('00.00', PLN)
-    kas = ZNrSDE.objects.all()
-    for i in kas:
-        i.sum_cash = zero
-        i.c_st = zero
-        i.c_lu = zero
-        i.c_ma = zero
-        i.c_kw = zero
-        i.c_mj = zero
-        i.c_cz = zero
-        i.c_lp = zero
-        i.c_si = zero
-        i.c_wr = zero
-        i.c_pa = zero
-        i.c_li = zero
-        i.c_gr = zero
-        i.save()
-
-    poz = Pozycja.objects.all()
-    for pz in poz:
-        dt = pz.data_zak
-        if pz.nr_sde != None and dt != None:  # and pz.kwota_netto_currency == 'PLN':
-            psde = ZNrSDE.objects.get(pk=pz.nr_sde_id)
-            if pz.kwota_netto_currency == 'PLN':
-                nt = pz.kwota_netto
-            else:
-                nt = pz.kwota_netto_pl
-
-            m = int(dt.month)
-            y = int(dt.year)
-
-            # if rok == y:
-            if m == 1:
-                psde.c_st += nt
-                psde.c_miesiac = 'styczeń'
-            elif m == 2:
-                psde.c_lu += nt
-                psde.c_miesiac = 'luty'
-            elif m == 3:
-                psde.c_ma += nt
-                psde.c_miesiac = 'marzec'
-            elif m == 4:
-                psde.c_kw += nt
-                psde.c_miesiac = 'kwiecień'
-            elif m == 5:
-                psde.c_mj += nt
-                psde.c_miesiac = 'maj'
-            elif m == 6:
-                psde.c_cz += nt
-                psde.c_miesiac = 'czerwiec'
-            elif m == 7:
-                psde.c_lp += nt
-                psde.c_miesiac = 'lipiec'
-            elif m == 8:
-                psde.c_si += nt
-                psde.c_miesiac = 'sierpień'
-            elif m == 9:
-                psde.c_wr += nt
-                psde.c_miesiac = 'wrzesień'
-            elif m == 10:
-                psde.c_pa += nt
-                psde.c_miesiac = 'październik'
-            elif m == 11:
-                psde.c_li += nt
-                psde.c_miesiac = 'listopad'
-            elif m == 12:
-                psde.c_gr += nt
-                psde.c_miesiac = 'grudzień'
-            psde.sum_cash += nt
-            psde.save()
-
-
-# OK LICZY DOBRZE
-def KosztyRefresh():
-    zero = Money('00.00', PLN)
-    kas = NrMPK.objects.all()
-    for i in kas:
-        i.sum_zam = zero
-        i.sum_zal = zero
-        i.st = zero
-        i.lu = zero
-        i.ma = zero
-        i.kw = zero
-        i.mj = zero
-        i.cz = zero
-        i.lp = zero
-        i.si = zero
-        i.wr = zero
-        i.pa = zero
-        i.li = zero
-        i.gr = zero
-        i.save()
-
-    poz = Pozycja.objects.all()
-    for pz in poz:
-        dt = pz.data_zak
-        if pz.nr_mpk != None and dt != None:  # and pz.kwota_netto_currency == 'PLN':
-            psde = NrMPK.objects.get(pk=pz.nr_mpk_id)
-
-            if pz.kwota_netto_currency == 'PLN':
-                nt = pz.kwota_netto
-            else:
-                nt = pz.kwota_netto_pl
-
-            psde.sum_zal += nt
-            m = int(dt.month)
-            if m == 1:
-                psde.st += nt
-            elif m == 2:
-                psde.lu += nt
-            elif m == 3:
-                psde.ma += nt
-            elif m == 4:
-                psde.kw += nt
-            elif m == 5:
-                psde.mj += nt
-            elif m == 6:
-                psde.cz += nt
-            elif m == 7:
-                psde.lp += nt
-            elif m == 8:
-                psde.si += nt
-            elif m == 9:
-                psde.wr += nt
-            elif m == 10:
-                psde.pa += nt
-            elif m == 11:
-                psde.li += nt
-            elif m == 12:
-                psde.gr += nt
-            psde.save()
-
-    poz = Zamowienie.objects.all()
-    for pz in poz:
-        dt = pz.data_fv
-        if pz.nr_mpk != None and dt != None:
-            psde = NrMPK.objects.get(pk=pz.nr_mpk_id)
-
-            if pz.kwota_netto_currency == 'PLN':
-                nt = pz.kwota_netto
-            else:
-                nt = pz.kwota_netto_pl
-
-            psde.sum_zam += nt
-            m = int(dt.month)
-            if m == 1:
-                psde.st += nt
-            elif m == 2:
-                psde.lu += nt
-            elif m == 3:
-                psde.ma += nt
-            elif m == 4:
-                psde.kw += nt
-            elif m == 5:
-                psde.mj += nt
-            elif m == 6:
-                psde.cz += nt
-            elif m == 7:
-                psde.lp += nt
-            elif m == 8:
-                psde.si += nt
-            elif m == 9:
-                psde.wr += nt
-            elif m == 10:
-                psde.pa += nt
-            elif m == 11:
-                psde.li += nt
-            elif m == 12:
-                psde.gr += nt
-            psde.save()
-
-
 # Co min.update danych
 def AllUpdate():
     fl = FlagaZmiany.objects.all().first()
+
+    # Wywołanie "ręczne"
     if fl.do_google > 0:
         SendData()
-        fl.do_google = 0
+        fl.licznik = 0    # kasuje licznik po każdym "ręcznym" wywołaniu co ogranicza ruch w sieci
+        fl.do_google = 0  # kasuje sygnał startu "ręcznego"
         fl.save()
 
-    licznik = fl.licznik
-    licznik += 1
-
+    # Wywołanie czasowe co 15min.
+    licznik = fl.licznik + 1
     if licznik > 15:
         SendData()
         licznik = 0
-    # print("LICZNIK: "+str(licznik))
     fl.licznik = licznik
     fl.save()
 
 
 
 def SendData():
-    WriteANALIZAtoGS()
-    AllMPKWriteToGoogle()
-    AllSDEWriteToGoogle()
+    try:
+        start_time = time.time()
+        WriteANALIZAtoGS()
+        AllMPKWriteToGoogle()
+        AllSDEWriteToGoogle()
+        t = "Czas transmisji: %s s." % round((time.time() - start_time), 3)
+        s =  "Plik Google - dane za rok 2021, Odczyt, zapis prawidłowy. " + t
+        LogiCron(3, s, 'sda')
+    except:
+        s = "Plik Google - dane za rok 2021, Problem z odczytem lub zapisem."
+        LogiCron(4, s, 'sda')
 
-    SDA_SDEtoGS(2022)
-    SDA_KosztyToGS(2022)
-    SDA_MPKtoGS(2022)
-    SDA_InfoToGS(2022)
+    try:
+        start_time = time.time()
+        SDA_SDEtoGS(2022)
+        SDA_KosztyToGS(2022)
+        SDA_MPKtoGS(2022)
+        SDA_InfoToGS(2022)
+        t = "Czas transmisji: %s s." % round((time.time() - start_time), 3)
+        s =  "Plik Google - dane za rok 2022, Odczyt, zapis prawidłowy. " + t
+        LogiCron(3, s, 'sda')
+    except:
+        s = "Plik Google - dane za rok 2022, Problem z odczytem lub zapisem."
+        LogiCron(4, s, 'sda')
 
+
+
+def GetGStoWR(fname, file_key, arkusz, cred):
+    res = []
+    gc = gspread.service_account(filename=cred)
+    sh = gc.open_by_key(file_key)
+    worksheet = sh.worksheet(arkusz)
+    return worksheet
+
+
+def MtF(d):
+    o = str(d.amount)
+    o = float(o)
+    return o
+
+
+'''
+                          Dokumenty   2021
+'''
 
 def AllSDEWriteToGoogle():
     WriteSDEtoGS()
@@ -578,21 +355,6 @@ def AllSDEWriteToGoogle():
 
 def AllMPKWriteToGoogle():
     WriteMPKtoGS()
-
-
-def GetGStoWR(fname, file_key, arkusz, cred):
-    res = []
-    try:
-        gc = gspread.service_account(filename=cred)
-        sh = gc.open_by_key(file_key)
-        worksheet = sh.worksheet(arkusz)
-
-        s =  "Plik Google - " + fname + " Arkusz: " + arkusz + " Odczyt, zapis prawidłowy."
-        LogiCron(3, s, 'sda')
-    except:
-        s = "Problem z odczytem pliku Google - Arkusz: " + arkusz + "!!!"
-        LogiCron(4, s, 'sda')
-    return worksheet
 
 
 def TestPozStart():
@@ -708,12 +470,6 @@ def SDEtoGS_KosztyProdukcji(j):
     handler.update_cells(cells, value_input_option='USER_ENTERED')
 
 
-def MtF(d):
-    o = str(d.amount)
-    o = float(o)
-    return o
-
-
 def WriteMPKtoGS():
     fname = '2021 _SDE_plan finansowy_realizacja_2021'
     file_key = '1X31CMbPMdSo4whN2w_PcHQwFCcRINdN8E3eeSY6AbcM'
@@ -817,6 +573,9 @@ def WriteANALIZAtoGS():
     handler.update_cells(cells)
 
 
+'''
+    NBP
+'''
 def GetNBP():
     GetCurrencyNBP(GET_NBP, HIS_NBP)
 
@@ -933,7 +692,7 @@ def SDA_KosztyToGS(rokk):
     arkusz = set_docs[1][2]
     handler = GetGStoWR(fname, file_key, arkusz, crd)
 
-    tab = ZNrSDE.objects.filter(rok=2021, rokk=rokk).order_by('nazwa_id')  # SDE z 2022
+    tab = ZNrSDE.objects.filter(rokk=rokk).order_by('nazwa_id')  # SDE z 2022, rok=2021,
 
     dt = datetime.datetime.now().strftime("%Y-%m-%d")
     gd = datetime.datetime.now().strftime("%H:%M:%S")
@@ -949,26 +708,12 @@ def SDA_KosztyToGS(rokk):
     cells.append(gspread.Cell(i, 5, 'Koszty \ngotówkowe'))
     i += 1
     for r in tab:
-    #     macro1 = '=IMPORTRANGE("https://docs.google.com/spreadsheets/d/1R0gvfgwquqEjUQEM7JJSxdC7Uo1R7Tyh_fx2By5uKYs/edit#gid=0";"projekty SDE!f' + str(j) + '")'
-    #     j = j + 2
-    #     macro2 = '=REALIZACJA!$B$26*I' + str(i)
-    #     macro3 = '=REALIZACJA!$B$27*I' + str(i)
-    #     macro4 = '=REALIZACJA!$B$25*L' + str(i)
-    #     macro5 = '=(REALIZACJA!$B$28)'
-    #     macro6 = '=SUMA(F' + str(i) + ': T' + str(i) + ')'
         cells.append(gspread.Cell(i, 1, r.nazwa))
         cells.append(gspread.Cell(i, 2, r.opis))
         cells.append(gspread.Cell(i, 3, r.targi))
         cells.append(gspread.Cell(i, 4, MtF(r.sum_direct)))
         cells.append(gspread.Cell(i, 5, MtF(r.sum_cash)))
-    #     cells.append(gspread.Cell(i, 9, macro1))
-    #     cells.append(gspread.Cell(i, 10, macro2))
-    #     cells.append(gspread.Cell(i, 11, macro3))
-    #     cells.append(gspread.Cell(i, 13, macro4))
-    #     cells.append(gspread.Cell(i, 16, macro5))
-    #     cells.append(gspread.Cell(i, 21, macro6))
         i += 1
-    # handler.update_cells(cells, value_input_option='USER_ENTERED')
     handler.update_cells(cells)
 
 

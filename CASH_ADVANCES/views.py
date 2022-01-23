@@ -204,7 +204,7 @@ def cash_new_p(request):
     about = settings.INFO_PROGRAM
     tytul = "Zaliczki - Nowa pozycja [" + name_log + "]"
     if request.method == "POST":
-        pozf = PozycjaForm(request.POST or None)
+        pozf = PozycjaForm(request.POST or None, rok=brok)
         if pozf.is_valid():
             ps = pozf.save(commit=False)
 
@@ -246,10 +246,10 @@ def cash_new_p(request):
             return redirect('error')
     else:
         if test_admin(request):
-            pozf = PozycjaForm()
+            pozf = PozycjaForm(rok = brok)
         else:
             nr_roz = Rozliczenie.objects.filter(inicjaly=inicjaly).last().id
-            pozf = PozycjaForm(user=inicjaly, initial={'nr_roz': nr_roz})
+            pozf = PozycjaForm(user=inicjaly, initial={'nr_roz': nr_roz}, rok=brok)
     return render(request, 'CASH_ADVANCES/cash_new_p.html', {
         'form': pozf,
         'name_log': name_log,
@@ -262,13 +262,14 @@ def cash_new_p(request):
 
 @login_required(login_url='error')
 def cash_edit_p(request, pk):
+    lata, rok, brok = test_rok(request)
     name_log, inicjaly, rozliczenie = test_osoba(request)
     about = settings.INFO_PROGRAM
 
     tytul = "Zaliczki - Edycja pozycja [" + name_log + "]"
     pozm = get_object_or_404(Pozycja, pk=pk)
     if request.method == "POST":
-        pozf = PozycjaForm(request.POST or None, instance=pozm)
+        pozf = PozycjaForm(request.POST or None, instance=pozm, rok=brok)
         if pozf.is_valid():
             ps = pozf.save(commit=False)
 
@@ -305,7 +306,7 @@ def cash_edit_p(request, pk):
         else:
             return redirect('error')
     else:
-        pozf = PozycjaForm(instance=pozm)
+        pozf = PozycjaForm(instance=pozm, rok=brok)
     return render(request, 'CASH_ADVANCES/cash_new_p.html', {
         'form': pozf,
         'name_log': name_log,
@@ -433,19 +434,19 @@ def CheckCurrency(kwota):  # z wartości zaliczki pobieram symbol waluty
     return ps
 
 
-def CalcCurrents(rok):
-    roz = Rozliczenie.objects.filter(rok=rok, flaga_zmian=True)
-
-    for rz in roz:
-        poz = Pozycja.objects.filter(nr_roz=rz.pk, data_zak__isnull=False)
-        wydatki = 0
-        for pz in poz:
-            if isinstance(wydatki, int):
-                wydatki = CheckCurrency(rz.zal_kwota)
-            wydatki = wydatki + pz.kwota_brutto
-        rz.zal_suma = wydatki
-        rz.saldo = rz.zal_kwota - wydatki
-        rz.save()
+# def CalcCurrents(rok):
+#     roz = Rozliczenie.objects.filter(rok=rok, flaga_zmian=True)
+#
+#     for rz in roz:
+#         poz = Pozycja.objects.filter(nr_roz=rz.pk, data_zak__isnull=False)
+#         wydatki = 0
+#         for pz in poz:
+#             if isinstance(wydatki, int):
+#                 wydatki = CheckCurrency(rz.zal_kwota)
+#             wydatki = wydatki + pz.kwota_brutto
+#         rz.zal_suma = wydatki
+#         rz.saldo = rz.zal_kwota - wydatki
+#         rz.save()
 
 
 def PozycjeUpdate(pk, zal_kwota, przek):
@@ -472,7 +473,7 @@ def cash_start_r(request):
     pp = settings.PAGIN_PAGE
     sv = settings.SIMPLE_VIEW
 
-    CalcCurrents(rok)
+    #CalcCurrents(rok)
 
     if int(rok) == int(brok):
         b_rok = True
@@ -523,7 +524,13 @@ def cash_start_rw(request):
     name_log, inicjaly, rozliczenie = test_osoba(request)
     about = settings.INFO_PROGRAM
 
-    CalcCurrents(rok)
+    #CalcCurrents(rok)
+
+
+    if int(rok) == int(brok):
+        b_rok = True
+    else:
+        b_rok = False
 
     tytul = 'Zaliczki - Rozliczenia'
 
@@ -551,7 +558,8 @@ def cash_start_rw(request):
         'nrsde': nrsde,
         'nrmpk': nrmpk,
         'wpisy': wpisy,
-        'sv': True
+        'sv': True,
+        'b_rok': b_rok
     })
 
 

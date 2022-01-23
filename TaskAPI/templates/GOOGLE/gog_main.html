@@ -4,8 +4,7 @@
 {% block leftbutton %}
 <ul class="nav nav-pills">
     <li class="active"><a href="{% url 'gog_start' %}">Kody SDE</a></li>
-    <li><a href="{% url 'gog_kb' %}">Koszty bezpośrednie</a></li>
-    <li><a href="{% url 'gog_kg' %}">Koszty gotówkowe</a></li>
+    <li><a href="{% url 'gog_kp' %}">Koszty produkcji</a></li>
     <li><a href="{% url 'gog_ks' %}">Koszty stałe</a></li>
 </ul>
 {% endblock %}
@@ -105,22 +104,6 @@
         <div class="panel-heading">
 
             <table width="100%">
-                <!--<tr>
-                    <td width="250px">
-
-                        <form metod="GET" action="{% url 'cash_search_p' %}">
-                            {% csrf_token %}
-                            <div class="input-group custom-search-form">
-                                <input type="text" name="SZUKAJ" class="form-control" placeholder="Szukaj...">
-                                <span class="input-group-btn">
-                                                  <button class="btn btn-default" type="submit"><i
-                                                          class="fa fa-search"></i></button>
-                                               </span>
-                            </div>
-                        </form>
-
-                    </td>-->
-
                     <td align="center">
                         <h4><strong>{{ tytul_tabeli }}</strong></h4>
                     </td>

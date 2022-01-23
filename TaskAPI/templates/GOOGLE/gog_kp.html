@@ -4,8 +4,8 @@
 {% block leftbutton %}
 <ul class="nav nav-pills">
     <li><a href="{% url 'gog_start' %}">Kody SDE</a></li>
-    <li><a href="{% url 'gog_kp' %}">Koszty produkcji</a></li>
-    <li class="active"><a href="{% url 'gog_ks' %}">Koszty stałe</a></li>
+    <li class="active"><a href="{% url 'gog_kp' %}">Koszty produkcji</a></li>
+    <li><a href="{% url 'gog_ks' %}">Koszty stałe</a></li>
 </ul>
 {% endblock %}
 
@@ -109,6 +109,7 @@
                     <td align="center">
                         <h4><strong>{{ tytul_tabeli }}</strong></h4>
                     </td>
+
                 </tr>
             </table>
         </div>
@@ -116,105 +117,43 @@
         <table width="100%" class="table  table-bordered table-condensed">
             <thead>
             <tr height="80px">
-
-                <th style="background-color: #4682B4; color:#ffff00; vertical-align:middle; text-align:center;">Nazwa
+                <th style="background-color: #4682B4; color:#ffff00; vertical-align:middle; text-align:center; width: 100px">Zlecenie</th>
+                <th style="background-color: #5F9EA0; color:#ffff00; vertical-align:middle; text-align:center; ">Opis</th>
+                <th style="background-color: #BA55D3; color:#ffff00; vertical-align:middle; text-align:center; width: 150px">
+                    Koszty<br>bezposrednie
                 </th>
-                <th style="background-color: #5F9EA0; color:#ffff00; vertical-align:middle; text-align:center;">Opis
+                <th style="background-color: #BA55A3; color:#ffff00; vertical-align:middle; text-align:center; width: 150px">
+                    Koszty<br>gotówkowe
                 </th>
-
-                <th style="background-color: #CD853F; color:#ffff00; vertical-align:middle; text-align:center;">
-                    Suma
-                </th>
-                <th style="background-color: #BA55D3; color:#ffff00; vertical-align:middle; text-align:center;">
-                    I
-                </th>
-                <th style="background-color: #BA55A3; color:#ffff00; vertical-align:middle; text-align:center;">
-                    II
-                </th>
-                <th style="background-color: #BA55D3; color:#ffff00; vertical-align:middle; text-align:center;">
-                    III
-                </th>
-                <th style="background-color: #BA55A3; color:#ffff00; vertical-align:middle; text-align:center;">
-                    IV
-                </th>
-                <th style="background-color: #BA55D3; color:#ffff00; vertical-align:middle; text-align:center;">
-                    V
-                </th>
-                <th style="background-color: #BA55A3; color:#ffff00; vertical-align:middle; text-align:center;">
-                    VI
-                </th>
-                <th style="background-color: #BA55D3; color:#ffff00; vertical-align:middle; text-align:center;">
-                    VII
-                </th>
-                <th style="background-color: #BA55A3; color:#ffff00; vertical-align:middle; text-align:center;">
-                    VIII
-                </th>
-                <th style="background-color: #BA55D3; color:#ffff00; vertical-align:middle; text-align:center;">
-                    IX
-                </th>
-                <th style="background-color: #BA55A3; color:#ffff00; vertical-align:middle; text-align:center;">
-                    X
-                </th>
-                <th style="background-color: #BA55D3; color:#ffff00; vertical-align:middle; text-align:center;">
-                    XI
-                </th>
-                <th style="background-color: #BA55A3; color:#ffff00; vertical-align:middle; text-align:center;">
-                    XII
-                </th>
-                <th style="background-color: #BA55D3; color:#ffff00; vertical-align:middle; text-align:center;">
-                    Bez<br>daty
-                </th>
+<!--                <th style="background-color: #2E8B57; color:#ffff00; vertical-align:middle; text-align:center; width: 100px">-->
+<!--                    SUMA-->
+<!--                </th>-->
             </tr>
             </thead>
             <tbody>
-            {% for nr in nrmpk %}
-            <tr>
-                <td align="center"><strong>{{ nr.nazwa }}</strong></td>
-                <td align="center">{{ nr.opis }}</td>
-                <td align="right" {% if tzero != nr.suma %} style="color:brown; font-weight:bold;background-color:#EFEFEF;" {% else %}
-                    style="color:#C0C0C0; font-weight:bold;background-color:#EFEFEF;" {% endif %}>{{ nr.suma }}
-                </td>
-                <td align="right" {% if tzero != nr.st %} style="color:black;" {% else %}
-                    style="color:#C0C0C0;" {% endif %}>{{ nr.st }}
-                </td>
-                <td align="right" {% if tzero != nr.lu %} style="color:black;" {% else %}
-                    style="color:#C0C0C0;" {% endif %}>{{ nr.lu }}
-                </td>
-                <td align="right" {% if tzero != nr.ma %} style="color:black;" {% else %}
-                    style="color:#C0C0C0;" {% endif %}>{{ nr.ma }}
-                </td>
-                <td align="right" {% if tzero != nr.kw %} style="color:black;" {% else %}
-                    style="color:#C0C0C0;" {% endif %}>{{ nr.kw }}
-                </td>
-                <td align="right" {% if tzero != nr.mj %} style="color:black;" {% else %}
-                    style="color:#C0C0C0;" {% endif %}>{{ nr.mj }}
-                </td>
-                <td align="right" {% if tzero != nr.cz %} style="color:black;" {% else %}
-                    style="color:#C0C0C0;" {% endif %}>{{ nr.cz }}
-                </td>
-                <td align="right" {% if tzero != nr.lp %} style="color:black;" {% else %}
-                    style="color:#C0C0C0;" {% endif %}>{{ nr.lp }}
-                </td>
-                <td align="right" {% if tzero != nr.si %} style="color:black;" {% else %}
-                    style="color:#C0C0C0;" {% endif %}>{{ nr.si }}
-                </td>
-                <td align="right" {% if tzero != nr.wr %} style="color:black;" {% else %}
-                    style="color:#C0C0C0;" {% endif %}>{{ nr.wr }}
-                </td>
-                <td align="right" {% if tzero != nr.pa %} style="color:black;" {% else %}
-                    style="color:#C0C0C0;" {% endif %}>{{ nr.pa }}
-                </td>
-                <td align="right" {% if tzero != nr.li %} style="color:black;" {% else %}
-                    style="color:#C0C0C0;" {% endif %}>{{ nr.li }}
-                </td>
-                <td align="right" {% if tzero != nr.gr %} style="color:black;" {% else %}
-                    style="color:#C0C0C0;" {% endif %}>{{ nr.gr }}
-                </td>
-                <td align="right" {% if tzero != nr.b_d %} style="color:black;" {% else %}
-                    style="color:#C0C0C0;" {% endif %}>{{ nr.b_d }}
-                </td>
-            </tr>
-            {% endfor %}
+                    {% for nr in nrsde %}
+
+                    <tr>
+                        <td align="center">
+                            <strong  data-toggle="tooltip" data-placement="top" title="{{ nr.nazwa }} ⇨ {{ nr.klient }} ⇨ {{ nr.targi }} ⇨ {{ nr.opis }}">
+                                {{ nr.nazwa }}
+                            </strong>
+                        </td>
+                        <td align="center">{{ nr.opis }}</td>
+
+                        <td  align="right"  {% if tzero != nr.sum_direct %} style="color:brown; font-weight:bold;"{% else %} style="color:#C0C0C0; font-weight:bold;" {% endif %}>
+                            {{ nr.sum_direct }}
+                        </td>
+                        <td align="right"  {% if tzero != nr.sum_cash %} style="color:brown; font-weight:bold;"{% else %} style="color:#C0C0C0; font-weight:bold;" {% endif %}>
+                            {{ nr.sum_cash }}
+                        </td>
+<!--                        <td align="right"  {% if tzero != nr.w_direct %} style="color:brown; font-weight:bold;"{% else %} style="color:#C0C0C0; font-weight:bold;" {% endif %}>-->
+<!--                             {{ nr.w_direct }}-->
+<!--                        </td>-->
+                    </tr>
+
+                    {% endfor %}
+
             </tbody>
         </table>
     </div>

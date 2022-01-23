@@ -2,7 +2,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import Group
 
-from .cron import test_Cars_manual, ServiceDataTest
+from .cron import SendData
 from .functions import get_user_label
 from .models import Log, URok, Ustawienia
 from django.conf import settings
@@ -22,11 +22,7 @@ def start(request):
 
 
 def refresh(request):
-    LogToFile()
-    #InitLog()
-    #ServiceDataTest()
-    #TestLogs()
-    #test_Cars_manual()
+    SendData()
     return redirect('desktop')
 
 

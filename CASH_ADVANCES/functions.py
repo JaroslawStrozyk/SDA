@@ -1,18 +1,19 @@
-from CASH_ADVANCES.models import NrSDE, NrMPK, Pozycja
-from moneyed import Money, PLN
+from moneyed import Money, PLN, USD, GBP, EUR, CHF
 
 
 
 
-def zmiana_danych_pozycja():
-    print("Dane zostały zmienione - pozycja")
-    aktualizacja_danych()
+def CheckCurrency(kwota):  # z wartości zaliczki pobieram symbol waluty
+    w = str(kwota)
+    ps = Money('00.00', PLN)
+    if w.find('Fr.') > -1:
+        ps = Money('00.00', CHF)
+    elif w.find('€') > -1:
+        ps = Money('00.00', EUR)
+    elif w.find('GB£') > -1:
+        ps = Money('00.00', GBP)
+    elif w.find('US$') > -1:
+        ps = Money('00.00', USD)
+    return ps
 
 
-
-def zmiana_danych_rozliczenie():
-    print("Dane zostały zmienione - rozliczenie")
-
-
-def aktualizacja_danych():
-    pass

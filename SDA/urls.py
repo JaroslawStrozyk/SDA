@@ -25,6 +25,7 @@ urlpatterns = [
                   path('GDOCS/', include('GOOGLE.urls')),
                   path('MONIT/', include('MONIT.urls')),
                   path('LOG/', include('LOG.urls')),
+                  path('PRACOWNIK/', include('WORKER.urls')),
                   path('admin/', admin.site.urls),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 """

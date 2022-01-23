@@ -36,8 +36,9 @@ class ZamowienieForm(forms.ModelForm):
 
 
     def __init__(self, *args, **kwargs):
+        rok = kwargs.pop('rok')
         super().__init__(*args, **kwargs)
-        rok = test_rok()
+
         try:
             self.fields['nr_sde'].queryset = NrSDE.objects.all().order_by('nazwa') # filter(rok=rok)
         except:

@@ -1,7 +1,7 @@
 #!/opt/SD/env/bin/python3
 #
 #
-#  wersja 0.6.0 z 2021.12.16
+#  wersja 0.7.0 z 2022.01.23
 #
 
 from datetime import datetime
@@ -169,6 +169,7 @@ def CalcSDA(w_sda, ord_sda_pln, ord_sda_npl, cash_sda_pln, cash_sda_npl):
 def CalcMPK(w_mpk, ord_mpk_pln, ord_mpk_npl, cash_mpk_pln, cash_mpk_npl):
     tmpk = []
     zero = Money('00.00', PLN).amount
+
     for id_mpk in w_mpk:
         ind = id_mpk[0]
 
@@ -192,6 +193,7 @@ def CalcMPK(w_mpk, ord_mpk_pln, ord_mpk_npl, cash_mpk_pln, cash_mpk_npl):
                 row[2] = row[2] + c_pln[1]
 
         row[3] = row[1] + row[2]
+
         tmpk.append(row)
 
     return tmpk
@@ -325,50 +327,57 @@ def Logi(i, s, kto):
             conn.close()
 
 
+def Przelicz(conn, cur, rok):
+
+    w_sda = Read_Calc_Table(cur, 'sql_sda', rok)
+    ord_sda_pln = Read_Calc_Table(cur, 'ord_sda_pln', rok)
+    ord_sda_npl = Read_Calc_Table(cur, 'ord_sda_npl', rok)
+    cash_sda_pln = Read_Calc_Table(cur, 'cash_sda_pln', rok)
+    cash_sda_npl = Read_Calc_Table(cur, 'cash_sda_npl', rok)
+
+
+    w_mpk = Read_Calc_Table(cur, 'sql_mpk', rok)
+    ord_mpk_pln = Read_Calc_Table(cur, 'ord_mpk_pln', rok)
+    ord_mpk_npl = Read_Calc_Table(cur, 'ord_mpk_npl', rok)
+    cash_mpk_pln = Read_Calc_Table(cur, 'cash_mpk_pln', rok)
+    cash_mpk_npl = Read_Calc_Table(cur, 'cash_mpk_npl', rok)
+
+
+    calc_sda = CalcSDA(w_sda, ord_sda_pln, ord_sda_npl, cash_sda_pln, cash_sda_npl)
+    calc_mpk = CalcMPK(w_mpk, ord_mpk_pln, ord_mpk_npl, cash_mpk_pln, cash_mpk_npl)
+    SDA_MPKtoDB(cur, conn, calc_sda, calc_mpk)
+
+    # ROZKŁAD KOSZTÓW NA MIESIĄCE
+    w_mpk_mc = ReadMpkTable(cur, rok)
+    mpk_ord_pln = GetDataOrdCash(cur, rok, 'mpk_ord_pln')
+    mpk_ord_npl = GetDataOrdCash(cur, rok, 'mpk_ord_npl')
+    mpk_cash_pln = GetDataOrdCash(cur, rok, 'mpk_cash_pln')
+    mpk_cash_npl = GetDataOrdCash(cur, rok, 'mpk_cash_npl')
+
+
+    calc_rok = CalcYear(w_mpk_mc, mpk_ord_pln, mpk_ord_npl, mpk_cash_pln, mpk_cash_npl)
+    DateToDB(cur, conn, calc_rok)
+
+
 # Poprawić do wzorca
-def OrderCashCalc(rok):
+def OrderCashCalc():
     try:
         conn = psycopg2.connect(user = DB_USER, password = DB_PASS, host = DB_HOST, port = DB_PORT, database = DB_DBAS)
         cur = conn.cursor()
 
-        if TestChange(cur) > 0:
+        tst = TestChange(cur)
+        brok = 2022
 
-            w_sda        = Read_Calc_Table(cur, 'sql_sda', rok)
-            ord_sda_pln  = Read_Calc_Table(cur, 'ord_sda_pln', rok)
-            ord_sda_npl  = Read_Calc_Table(cur, 'ord_sda_npl', rok)
-            cash_sda_pln = Read_Calc_Table(cur, 'cash_sda_pln', rok)
-            cash_sda_npl = Read_Calc_Table(cur, 'cash_sda_npl', rok)
+        if tst > 0:
+            Przelicz(conn, cur, (brok - 1))
+            Przelicz(conn, cur, brok)
 
-            w_mpk        = Read_Calc_Table(cur, 'sql_mpk', rok)
-            ord_mpk_pln  = Read_Calc_Table(cur, 'ord_mpk_pln', rok)
-            ord_mpk_npl  = Read_Calc_Table(cur, 'ord_mpk_npl', rok)
-            cash_mpk_pln = Read_Calc_Table(cur, 'cash_mpk_pln', rok)
-            cash_mpk_npl = Read_Calc_Table(cur, 'cash_mpk_npl', rok)
+            #SendToGoogle(conn, cur)
 
-            calc_sda = CalcSDA(w_sda, ord_sda_pln, ord_sda_npl, cash_sda_pln, cash_sda_npl)
-            calc_mpk = CalcMPK(w_mpk, ord_mpk_pln, ord_mpk_npl, cash_mpk_pln, cash_mpk_npl)
-
-            SDA_MPKtoDB(cur, conn, calc_sda, calc_mpk)
-
-            # ROZKŁAD KOSZTÓW NA MIESIĄCE
-            w_mpk_mc = ReadMpkTable(cur, rok)
-            mpk_ord_pln = GetDataOrdCash(cur, rok, 'mpk_ord_pln')
-            mpk_ord_npl = GetDataOrdCash(cur, rok, 'mpk_ord_npl')
-            mpk_cash_pln = GetDataOrdCash(cur, rok, 'mpk_cash_pln')
-            mpk_cash_npl = GetDataOrdCash(cur, rok, 'mpk_cash_npl')
-
-            calc_rok = CalcYear(w_mpk_mc, mpk_ord_pln, mpk_ord_npl, mpk_cash_pln, mpk_cash_npl)
-
-            DateToDB(cur, conn, calc_rok)
-
-
-            SendToGoogle(conn, cur)
-
-
-            Logi( 0, "",'sda')
+            Logi( 0, "Przeliczenie danych za: "+str(brok)+" i "+str(brok - 1),'sda')
 
     except (Exception, psycopg2.Error) as error:
-            Logi( 1, str(error),'sda')
+        Logi( 1, str(error),'sda')
     finally:
         if (conn):
             cur.close()
@@ -379,9 +388,9 @@ def OrderCashCalc(rok):
 ##################################################################################################
 '''
 
-
+#OrderCashCalc()
 
 
 while( 1 ):
-    OrderCashCalc(2021)
+    OrderCashCalc()
     time.sleep( 15 )

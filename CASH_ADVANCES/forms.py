@@ -59,9 +59,9 @@ class PozycjaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.per = kwargs.pop('user', None)
+        rok = kwargs.pop('rok', 0)
         super().__init__(*args, **kwargs)
 
-        rok = test_rok()
 
         try:
             self.fields['nr_sde'].queryset = NrSDE.objects.all().order_by('nazwa')

@@ -1,0 +1,75 @@
+{% extends "main.html" %}
+{% load static %}
+                                                        {% block leftbutton %}
+
+                                                        {% endblock %}
+{% block retbutton %}
+<li>
+    <a class="btn btn-warning" href="{% url 'desktop' %}"><i class="fa fa-dashboard fa-fw"></i> Pulpit</a>
+</li>
+{% endblock %}
+
+
+
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+
+{% block content %}
+        <style>
+                   #wrapper > nav {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+                   .box {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+                   .setting {
+                        cursor: default;
+                        height: 290px;
+                   }
+                   #wrapper > nav > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
+                        background-color: gray;
+                   }
+                   #wrapper > nav > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
+                        background-color: gray;
+                   }
+                   #wrapper > nav > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
+                        background-color: gray;
+                   }
+        </style>
+
+        <div class="setting text-center box">
+            <img src="{% static 'img/kris.png' %}">
+            <p>
+            <a type="button" class="btn btn-primary btn-lg btn-block" href="{% url 'worker_mc' %}">Obecny Miesiąc</a>
+            <a type="button" class="btn btn-info btn-lg btn-block" href="{% url 'worker_start' %}">Archiwum</a>
+            <a type="button" class="btn btn-success btn-lg btn-block" href="{% url 'worker_pr' %}">Pracownicy</a>
+            </p>
+        </div>
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}
+

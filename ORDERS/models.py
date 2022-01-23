@@ -3,26 +3,15 @@ from django.utils import timezone
 from djmoney.models.fields import MoneyField
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
+
+from SDA.settings import ORD_PM
 from TaskAPI.models import FlagaZmiany
 import datetime
 
 
 class NrSDE(models.Model):
-    CHOISES_PM = (
-        ('Agnieszka Skóra', 'Agnieszka Skóra'),
-        ('Julia Królak', 'Julia Królak'),
-        ('Piotr Junik', 'Piotr Junik'),
-        ('Laura Bartkowiak', 'Laura Bartkowiak'),
-        ('Dariusz Kaczmarek', 'Dariusz Kaczmarek'),
-        ('Łukasz Jerzmanowski', 'Łukasz Jerzmanowski'),
-        ('Michał Ogrzewalski', 'Michał Ogrzewalski'),
-        ('Marzena Michalska', 'Marzena Michalska'),
-        ('Łukasz Zaremba', 'Łukasz Zaremba'),
-        ('Joanna Dittmar', 'Joanna Dittmar'),
-        ('Adam Beim', 'Adam Beim'),
-        ('Eryk Przybyłowicz', 'Eryk Przybyłowicz'),
-        ('Małgosia Świadek', 'Małgosia Świadek'),
-    )
+    CHOISES_PM = ORD_PM
+
     CHOISES_MC = (
         ('styczeń', 'styczeń'),
         ('luty', 'luty'),
@@ -164,7 +153,7 @@ def pozycja_po_zapisaniu(sender, instance, **kwargs):
 def pozycja_po_skasowaniu(sender, instance, **kwargs):
     aktualizacja_danych()
 
-
+# przekazanie do sda-calc informacji o potrzebie przeliczenia danych
 def aktualizacja_danych():
     x = FlagaZmiany.objects.all().first()
     x.zamowienie = 1

@@ -502,7 +502,7 @@ def order_new(request):
 
     tytul = "Nowe zamówienie"
     if request.method == "POST":
-        orderf = ZamowienieForm(request.POST or None)
+        orderf = ZamowienieForm(request.POST or None, rok=brok)
         if orderf.is_valid():
             ps = orderf.save(commit=False)
 
@@ -569,7 +569,7 @@ def order_new(request):
     else:
         mpk_id = NrMPK.objects.none()
         sde_id = NrSDE.objects.none()
-        orderf = ZamowienieForm(initial={'nr_sde': sde_id, 'nr_mpk': mpk_id})  # 'sposob_plat': '-', 'rodzaj_plat': '-',
+        orderf = ZamowienieForm(initial={'nr_sde': sde_id, 'nr_mpk': mpk_id}, rok=brok)  # 'sposob_plat': '-', 'rodzaj_plat': '-',
     return render(request, 'ORDERS/ord_new.html', {
         'form': orderf,
         'potwierdzenie': rozliczenie,
@@ -593,7 +593,7 @@ def order_edit(request, pk, src, fl):
     tytul = "Edycja zamówienia"
     orderm = get_object_or_404(Zamowienie, pk=pk)
     if request.method == "POST":
-        orderf = ZamowienieForm(request.POST or None, request.FILES or None, instance=orderm)
+        orderf = ZamowienieForm(request.POST or None, instance=orderm, rok=brok)
         if orderf.is_valid():
             ps = orderf.save(commit=False)
 
@@ -675,7 +675,7 @@ def order_edit(request, pk, src, fl):
             return redirect('error')
 
     else:
-        orderf = ZamowienieForm(instance=orderm)
+        orderf = ZamowienieForm(instance=orderm, rok=brok)
         ma = False
         se = False
         mp = False
@@ -801,6 +801,12 @@ def sde_search(request):
 
     kl = query
 
+    if int(rok) == int(brok):
+        b_rok = True
+    else:
+        b_rok = False
+
+
     return render(request, 'ORDERS/ord_main_sde.html', {
         'sde': sde,
         'name_log': name_log,
@@ -809,7 +815,8 @@ def sde_search(request):
         'about': about,
         'lata': lata,
         'rok': rok,
-        'klucz': CodeSlash(kl)
+        'klucz': CodeSlash(kl),
+        'b_rok': b_rok
     })
 
 
