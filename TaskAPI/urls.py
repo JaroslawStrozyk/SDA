@@ -10,4 +10,5 @@ urlpatterns = [
     path('task/ref/', views.refresh, name='refresh'),
     path('error/', views.error, name='error'),
     path('log/', views.log, name='log'),
+
 ]

@@ -62,19 +62,23 @@ def testQuery(query):
 
 def suma_wartosci(zamowienia):
     DICT = {}
+    zero = Money('00.00', 'PLN')
+    suma_c = zero
+    fsc = False
     tab = settings.CURRENCIES
     for t in tab:
         DICT[t] = Money('00.00', t)
 
     for zam in zamowienia:
-        # if zam.nr_fv != '': #nr_fv
-        #     c = zam.kwota_netto.currency
-        #     d = zam.kwota_netto.amount
-        #     DICT[str(c)] = Money(d, c) + DICT[str(c)]
         c = zam.kwota_netto.currency
         d = zam.kwota_netto.amount
+        suma_c += Money(zam.kwota_netto_pl.amount, zam.kwota_netto_pl.currency)
         DICT[str(c)] = Money(d, c) + DICT[str(c)]
-    # print(DICT)
+    #print(DICT)
+    if suma_c > zero:
+        suma_c += DICT['PLN']
+        fsc = True
+
 
     suma = ''
     for i in DICT.items():
@@ -83,7 +87,9 @@ def suma_wartosci(zamowienia):
             suma += str(i[1].currency) + ': ' + str(i[1].amount) + ' / '
     suma = suma[:-3]
     DICT.clear()
-    return suma
+    if len(suma)==0:
+        suma = str(zero)
+    return suma, suma_c, fsc
 
 
 def CalcCurrency(kwota, dataf):

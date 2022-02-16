@@ -295,7 +295,7 @@ def out_pdf_sde(request, sde, tytul):
     return response
 
 
-def FirstPage(p, height, DATA, ind_start, ind_stop, tytul, adata, suma, opis, nr_strony, koniec):
+def FirstPage(p, height, DATA, ind_start, ind_stop, tytul, adata, suma, suma_c, fsc, opis, nr_strony, koniec):
     # Nagłówek
     im = Image.open(os.path.join(settings.STATIC_ROOT, 'img/sd.jpg'))
     p.drawInlineImage(im, 30, (height - 85), width=80, height=68)
@@ -310,9 +310,14 @@ def FirstPage(p, height, DATA, ind_start, ind_stop, tytul, adata, suma, opis, nr
     ]))
     f.wrapOn(p, 300, 300)
     f.drawOn(p, 20, height - 20)
+    suma_w = ''
+    if fsc:
+        suma_w = suma + " [" + str(suma_c) + "]"
+    else:
+        suma_w = suma
 
-    datan = [['','Zamówienia', adata],['','', suma],['',opis,'']]
-    f = Table(datan, rowHeights=20, colWidths=[100, 390, 310])
+    datan = [['','Zamówienia', adata],['','', suma_w],['',opis,'']]
+    f = Table(datan, rowHeights=20, colWidths=[100, 370, 330])
     f.setStyle(TableStyle([
         ('GRID', (0, 0), (-1, -1), 0.15, colors.black),
         ('FONT', (1, 0), (1, 1), 'Dejavu-Bold', 16),
@@ -443,7 +448,7 @@ def StrConwert(str, linia):
     return s
 
 
-def out_pdf_ord(request, zamowienia, tytul, suma, opis_tab, adata):
+def out_pdf_ord(request, zamowienia, tytul, suma, suma_c, fsc, opis_tab, adata):
 
     # PDF setup
     response = HttpResponse(content_type='application/pdf')
@@ -480,11 +485,9 @@ def out_pdf_ord(request, zamowienia, tytul, suma, opis_tab, adata):
     f = 0
     for k in GeneratePage(DATA_ROW):
         if f==0:
-            print("Pierwsza strona: " + str(k))
-            FirstPage(p, height, DATA_ROW, k[2], k[3], tytul, adata, suma, opis_tab, k[1], k[4])
+            FirstPage(p, height, DATA_ROW, k[2], k[3], tytul, adata, suma, suma_c, fsc, opis_tab, k[1], k[4])
             f = 1
         else:
-            print("Kolejna strona: " + str(k))
             NextPage(p, height, DATA_ROW, k[2], k[3], tytul,  k[1], k[4])
 
     p.save()

@@ -42,6 +42,24 @@ def LogiORD(i, s, kto):
     InsertLog(data, godz, modul, komunikat, s, kto)
 
 
+
+def LogiWORK(i, s, kto):
+
+    modul_id = 4 # Identyfikator modułu
+    shift = 22 # Adres od którego zaczynają się komunikaty dla tego modułu
+    now = datetime.now()
+    data = now.strftime("%Y-%m-%d")
+    godz = now.strftime("%H:%M:%S")
+    komunikat_id = shift + int(i)
+
+    komunikat = ErrorList.objects.get(id=komunikat_id)
+    modul = ModulName.objects.get(id=modul_id)
+
+    InsertLog(data, godz, modul, komunikat, s, kto)
+
+
+
+
 def Logi(i, s, kto):
 
     modul_id = 2 # Identyfikator modułu

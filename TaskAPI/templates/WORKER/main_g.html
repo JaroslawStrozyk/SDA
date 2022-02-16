@@ -27,7 +27,8 @@
                    }
                    .setting {
                         cursor: default;
-                        height: 290px;
+                        height: 340px;
+                        margin-bottom: 40px;
                    }
                    #wrapper > nav > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
                         background-color: gray;
@@ -42,12 +43,58 @@
 
         <div class="setting text-center box">
             <img src="{% static 'img/kris.png' %}">
+            <a class="config-name" href="#">
+                {{ ROK }}
+            </a>
             <p>
             <a type="button" class="btn btn-primary btn-lg btn-block" href="{% url 'worker_mc' %}">Obecny Miesiąc</a>
-            <a type="button" class="btn btn-info btn-lg btn-block" href="{% url 'worker_start' %}">Archiwum</a>
+            <a type="button" class="btn btn-info btn-lg btn-block" href="{% url 'worker_mc_arch' %}">Archiwum</a>
             <a type="button" class="btn btn-success btn-lg btn-block" href="{% url 'worker_pr' %}">Pracownicy</a>
             </p>
         </div>
+
+<div class="form-row">
+        <div class="form-group col-md-2 mb-0">
+        </div>
+        <div class="form-group col-md-8 mb-0">
+                        <div class="alert alert-success" role="alert" id="komunikat">
+                            <h3><strong>Procedura postępowania</strong></h3>
+                            <p align="justify"><strong>Funkcje przycisków:</strong><br>
+                              <table width="100%">
+                                 <tr>
+                                     <td width="150px" align="right"><strong>"Obecny Miesiąc"</strong></td><td width="20px" align="center">-</td><td>To miejsce, w którym generuje się oraz uzupełnia dane do wyliczeń miesięcznych poborów pracowników.</td>
+                                 </tr><tr>
+                                     <td width="150px" align="right"><strong>"Archiwum"</strong></td><td width="20px" align="center">-</td><td>To miejsce, w którym przechowywane są dane o poborach pracowników z poprzednich miesięcy</td>
+                                 </tr><tr>
+                                     <td width="150px" align="right"><strong>"Pracownicy"</strong></td><td width="20px" align="center">-</td><td>To miejsce, w którym zgrupowane są informacje o pracowniku potrzebne do generowania zestawień miesięcznych. </td>
+                                 </tr>
+                              </table>
+                            </p>
+                            <p align="justify"><strong>Generowanie miesiąca:</strong><br>
+                                1. Przed przystąpieniem do pracy z listą płac należy w pierwszej kolejności pewnić się, że dane dotyczące pracowników są kompletne (opcja "Pracownicy").<br>
+                                2. Po wybraniu opcji <i>"Obecny Miesiąc"</i> mogą wystąpić dwie sytuacje:<br>
+                                <table width="100%">
+                                    <tr>
+                                        <td style="width:40px; text-align:center; vertical-align:top;">a)</td><td>Pojawią się nam dane tylko z bieżącego miesiąca.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:40px; text-align:center; vertical-align:top;">b)</td><td>Nie ma danych na obecny miesiąc (pierwsze wejście w danym miesiącu) - pojawi się komunikat i przycisk <i>"Generuj zestawienie dla ..."</i>. Po jego wybraniu wygeneruje się nam zestawienie na podstawie danych z tabeli Pracownicy.</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">3. Od tej chwili możemy modyfikować aktualne dane do pożadanej postaci.</td>
+                                    </tr>
+                                </table>
+
+                            </p>
+                            <p align="justify"><strong>Uwaga !!!</strong><br>
+                            1. O tym jakie dane są archiwalne a jakie bieżące decyduje obecna data i odbywa się to automatycznie.<br>
+                            2. Tabela Pracownicy zawiera tylko ostatnie informacje o pracownikach.
+                            <p><br>
+                    </div>
+        </div>
+        <div class="form-group col-md-2 mb-0">
+        </div>
+</div>
 
 {% endblock %}
 

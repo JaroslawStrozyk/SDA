@@ -1,0 +1,192 @@
+{% extends "worker_dashboard.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block leftbutton %}
+{% endblock %} 
+
+
+{% block retbutton %}
+
+{% endblock %}
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+
+{% block content %}
+                <style>
+                   #tabela {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   #id_data_zat, #id_wymiar, #id_staz {
+                        text-align: center;
+                   }
+
+        #id_przelew_0, #id_ppk_0, #id_dodatek_0, #id_obciazenie_0, #id_premia_0, #id_zaliczka_0, #id_komornik_0
+        {
+                        width: 100%;
+                        height: 34px;
+                        text-align: right;
+                        font-size: 14px;
+                        border-radius: 4px;
+                        border-width: 1px;
+                        border: 1px solid #ccc;
+                        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                        color: #555;
+                        background-color: #fff;
+        }
+
+        #id_przelew_1, #id_ppk_1, #id_dodatek_1, #id_obciazenie_1, #id_premia_1, #id_zaliczka_1, #id_komornik_1
+        {
+                        display: none;
+        }
+
+        #id_zaliczka_0, #id_komornik_0,  #id_obciazenie_0 {
+                        background-color: #FFB6C1;
+        }
+
+        #id_przelew_0, #id_premia_0  {
+                        background-color: #98FB98;
+        }
+
+        #id_km_ilosc, #id_ppk_0 {
+                        background-color: #FFFACD;
+        }
+
+
+
+                </style>
+                <div class="col-lg-1"> &nbsp;</div>
+                <div class="col-lg-10">
+                    <br><br>
+                    <div class="panel panel-green" id="tabela">
+                        <div class="panel-heading" align="center">
+                            <strong><font size="+3">{{ tytul }}</font></strong>
+                        </div>
+
+                        <form method="POST"  class="post-form" enctype="multipart/form-data">{% csrf_token %}
+                            <div class="panel-body">
+                                <div class="form-row">
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.przelew|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-1 mb-0">
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                      {{ form.km_ilosc|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-1 mb-0">
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0" align="right">
+                                                        {{ form.premia|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0" align="right">
+                                                        {{ form.ppk|as_crispy_field }}
+                                                  </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 mb-0">
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                                  <div class="form-group col-md-2 mb-0">
+                                                      {{ form.dodatek|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-4 mb-0">
+                                                      {{ form.dodatek_opis|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0" align="right">
+                                                        {{ form.obciazenie|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-4 mb-0" align="right">
+                                                        {{ form.obciazenie_opis|as_crispy_field }}
+                                                  </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 mb-0">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                                  <div class="form-group col-md-2 mb-0">
+                                                      {{ form.nadgodz_ilosc|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-4 mb-0">
+                                                      {{ form.nadgodz_opis|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0" align="right">
+                                                        {{ form.del_ilosc_100|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0" align="right">
+                                                        {{ form.del_ilosc_50|as_crispy_field }}
+                                                  </div>
+
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 mb-0">
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                                  <div class="form-group col-md-2 mb-0">
+                                                      {{ form.zaliczka|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-8 mb-0">
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0" align="right">
+                                                        {{ form.komornik|as_crispy_field }}
+                                                  </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 mb-0">
+                                        {{ form.uwagi|as_crispy_field }}
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="panel-footer">
+                                <table width="100%" border="0">
+                                        <tr>
+                                            <td align="center">
+                                                <button type="submit" class="save btn btn-success">Zapisz</button>
+                                                <a href="{% url 'worker_mc' %}" class="primary btn btn-danger">Anuluj</a>
+                                            </td>
+                                        </tr>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-1"> &nbsp;</div>
+
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

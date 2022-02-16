@@ -256,11 +256,16 @@
                                             <td align="center" style="background-color: #F3F3F3; border-right:1pt solid #F3F3F3; vertical-align: middle;">
 
                                            </td>
-                                            <td align="right" width="100px" style="background-color: #F3F3F3; border-right:1pt solid #F3F3F3;">
+                                            <td align="right" style="background-color: #F3F3F3; border-right:1pt solid #F3F3F3;">
                                                {% if szukanie %}
                                                     <button type="button" class="btn btn-primary">
                                                         Suma:&nbsp;<span class="badge badge-dark"><strong><font size="3">{{ suma }}</font></strong></span> [netto]
                                                     </button>
+                                                    {% if fsc %}
+                                                    <button type="button" class="btn btn-danger">
+                                                        Całość:&nbsp;<span class="badge badge-dark"><strong><font size="3">{{ suma_c }}</font></strong></span> [netto]
+                                                    </button>
+                                                    {% endif %}
                                                {% else %}
                                                     <a href="{% url 'ord_new' %}" class="primary btn btn-default">&nbsp;<strong>Nowy wpis</strong> </a>
                                                {% endif %}

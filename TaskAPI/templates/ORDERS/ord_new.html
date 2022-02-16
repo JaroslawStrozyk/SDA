@@ -219,11 +219,17 @@
                                                   </div>
                                                   <div class="form-group col-md-2 mb-0">
                                                   </div>
-                                                  <div class="form-group col-md-2 mb-0">
-                                                     {% if potwierdzenie == 1 %}
+
+                                                  {% if potwierdzenie == 1 %}
+                                                     <div class="form-group col-md-2 mb-0">
                                                         {{ form.roz|as_crispy_field }}
-                                                     {% endif %}
-                                                  </div>
+                                                     </div>
+                                                  {% else %}
+                                                     <div class="form-group col-md-2 mb-0" hidden>
+                                                        {{ form.roz|as_crispy_field }}
+                                                     </div>
+                                                  {% endif %}
+
                                 </div>
 
                                 <div class="form-row">

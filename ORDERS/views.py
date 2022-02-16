@@ -1,10 +1,8 @@
 from datetime import datetime
-
 from LOG.logs import LogiORD
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-
 from simple_search import search_filter
 from .models import Zamowienie, NrSDE, NrMPK
 from .forms import ZamowienieForm, NrSDEForm
@@ -297,7 +295,7 @@ def order_search(request, src):
         except:
             fid = 0
 
-        suma = suma_wartosci(zamowienia)
+        suma, suma_c, fsc = suma_wartosci(zamowienia)
 
         return render(request, 'ORDERS/ord_main.html', {
             'zamowienia': zamowienia,  # pzamowienia,
@@ -316,6 +314,8 @@ def order_search(request, src):
             'nrmpk': nrmpk,
             'fid': fid,
             'suma': suma,
+            'suma_c': suma_c,
+            'fsc': fsc,
             'szukanie': True,
             'src': CodeSlash(query),
             'fl': 'search',
@@ -374,7 +374,7 @@ def order_search_sde(request, src):
 
         b_fid = True
 
-        suma = suma_wartosci(zamowienia)
+        suma, suma_c, fsc = suma_wartosci(zamowienia)
 
         return render(request, 'ORDERS/ord_main.html', {
             'zamowienia': zamowienia,  # pzamowienia,
@@ -394,6 +394,8 @@ def order_search_sde(request, src):
             'fid': fid,
             'b_fid': b_fid,
             'suma': suma,
+            'suma_c': suma_c,
+            'fsc': fsc,
             'szukanie': True,
             'src' : query,
             'fl': 'sde',
@@ -452,7 +454,7 @@ def order_search_mpk(request, src):
         else:
             b_fid = True
 
-        suma = suma_wartosci(zamowienia)
+        suma, suma_c, fsc = suma_wartosci(zamowienia)
 
         return render(request, 'ORDERS/ord_main.html', {
             'zamowienia': zamowienia,
@@ -471,6 +473,8 @@ def order_search_mpk(request, src):
             'fid': fid,
             'b_fid': b_fid,
             'suma': suma,
+            'suma_c': suma_c,
+            'fsc': fsc,
             'szukanie': True,
             'src': CodeSlash(query),
             'fl': 'mpk',
@@ -656,6 +660,8 @@ def order_edit(request, pk, src, fl):
             s = o_ik + ", Kontrahent: "+str(ps.kontrahent)+", Kwota Netto: "+str(ps.kwota_netto)+", Data zamówienia: "+str(ps.data_zam)
             LogiORD(1, s, inicjaly)
 
+            print("AKCEPTACJA: ",ps.roz)
+
             ps.save()
 
             if src=='^' or src=="":
@@ -676,6 +682,8 @@ def order_edit(request, pk, src, fl):
 
     else:
         orderf = ZamowienieForm(instance=orderm, rok=brok)
+
+        print("START: \n", orderf)
         ma = False
         se = False
         mp = False
@@ -843,7 +851,7 @@ def ord_pdf(request, src, fl):
     opis = ""
     if src == '^' and fl == 'main':
         zamowienia = Zamowienie.objects.filter(rokk=rok).order_by('-pk') # rok=rok
-        suma = str(suma_wartosci(zamowienia))
+        suma, suma_c, fsc = suma_wartosci(zamowienia)
         t = '_wszystkie pozycje'
         opis = 'Wszystkie pozycje.'
     elif fl == 'search':
@@ -854,7 +862,7 @@ def ord_pdf(request, src, fl):
         ]
         f = search_filter(search_fields, DecodeSlash(testQuery(src)))
         zamowienia = Zamowienie.objects.filter(f).filter(rok=rok).order_by('-pk')
-        suma = str(suma_wartosci(zamowienia))
+        suma, suma_c, fsc = suma_wartosci(zamowienia)
         t = DecodeSlash(src)
 
         try:
@@ -874,7 +882,7 @@ def ord_pdf(request, src, fl):
     elif fl == 'sde':
 
         zamowienia = Zamowienie.objects.filter(nr_sde__nazwa=DecodeSlash(testQuery(src))).filter(rok=rok).order_by('-pk')
-        suma = str(suma_wartosci(zamowienia))
+        suma, suma_c, fsc  = suma_wartosci(zamowienia)
         t = DecodeSlash(src)
 
         try:
@@ -894,7 +902,7 @@ def ord_pdf(request, src, fl):
     elif fl == 'mpk':
 
         zamowienia = Zamowienie.objects.filter(nr_mpk__nazwa=DecodeSlash(testQuery(src))).filter(rok=rok).order_by('-pk')
-        suma = str(suma_wartosci(zamowienia))
+        suma, suma_c, fsc = suma_wartosci(zamowienia)
         t = DecodeSlash(src)
 
         try:
@@ -915,7 +923,7 @@ def ord_pdf(request, src, fl):
     adata = datetime.now().strftime('%Y-%m-%d')
     tytul = "zamówienia_"+str(adata)+t
 
-    return out_pdf_ord(request, zamowienia, tytul, suma, opis, adata)
+    return out_pdf_ord(request, zamowienia, tytul, suma, suma_c, fsc, opis, adata)
 
 
 def SetNazwaId(nazwa):

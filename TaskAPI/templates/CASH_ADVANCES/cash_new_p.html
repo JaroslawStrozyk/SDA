@@ -57,10 +57,19 @@
                         display:none;
                    }
 
+                   #div_id_nr_sde > div > span {
+                        width:100%;
+                   }
+
+                   .select2-container {
+                        width: 100% !important;
+                   }
+
+
 
                 </style>
-                <div class="col-lg-2"> &nbsp;</div>
-                <div class="col-lg-8">
+                <div class="col-lg-1"> &nbsp;</div>
+                <div class="col-lg-10">
                     <br><br>
                     <div class="panel panel-green" id="tabela">
                         <div class="panel-heading">
@@ -69,8 +78,6 @@
                         <div class="panel-body">
                             <form method="POST"  class="post-form" enctype="multipart/form-data">{% csrf_token %}
 
-                                <!--             'nr_roz', 'kontrahent', 'nr_fv', 'kwota_netto', 'kwota_brutto', 'data_zak', 'opis',
-            'nr_sde', 'nr_mpk'-->
                                 <div class="form-row">
                                                   <div class="form-group col-md-3 mb-0">
                                                         {{ form.nr_roz|as_crispy_field }}
@@ -119,16 +126,20 @@
                                                   </div>
                                 </div>
                                 <div class="form-row">
-                                                  <div class="form-group col-md-2 mb-0">
-                                                  </div>
-                                                  <div class="form-group col-md-4 mb-0">
+
+                                                  <div class="form-group col-md-12 mb-0">
                                                         {{ form.nr_sde|as_crispy_field }}
                                                   </div>
-                                                  <div class="form-group col-md-4 mb-0">
+
+                                </div>
+
+                                <div class="form-row">
+
+                                                  <div class="form-group col-md-12 mb-0">
                                                         {{ form.nr_mpk|as_crispy_field }}
                                                   </div>
-                                                  <div class="form-group col-md-2 mb-0">
-                                                  </div>
+
+
                                 </div>
 
 
@@ -148,7 +159,7 @@
 
                     </div>
                 </div>
-                <div class="col-lg-2"> &nbsp;</div>
+                <div class="col-lg-1"> &nbsp;</div>
 
 
     <div class="modal fade" id="info1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">

@@ -48,20 +48,11 @@ class PozycjaForm(forms.ModelForm):
             'nr_sde', 'nr_mpk', 'uwagi'
         )
 
-    # data_zak = forms.DateField(widget=forms.SelectDateWidget(
-    #                            attrs={'style': 'display: inline-block;'},
-    #                            years=YEARS
-    #                      ),
-    #                            label="Data zakupu",
-    #                            initial=datetime.date.today
-    #                      )
-
 
     def __init__(self, *args, **kwargs):
         self.per = kwargs.pop('user', None)
         rok = kwargs.pop('rok', 0)
         super().__init__(*args, **kwargs)
-
 
         try:
             self.fields['nr_sde'].queryset = NrSDE.objects.all().order_by('nazwa')
@@ -75,9 +66,12 @@ class PozycjaForm(forms.ModelForm):
 
         try:
             if self.per == None:
+
                 self.fields['nr_roz'].queryset = Rozliczenie.objects.filter(rok=rok, roz=False, przek=False).order_by('-id')
             else:
+
                 self.fields['nr_roz'].queryset = Rozliczenie.objects.filter(rok=rok, inicjaly=self.per, roz=False, przek=False).order_by('-id')
         except:
+
             self.fields['nr_roz'].queryset = Rozliczenie.objects.none()
 

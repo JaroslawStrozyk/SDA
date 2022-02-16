@@ -39,7 +39,7 @@ class Pozycja(models.Model):
     nr_fv = models.CharField(max_length=100, verbose_name="Nr faktury", blank=True)
     kwota_netto = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Kwota netto")
     kwota_brutto = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Kwota brutto")
-    data_zam = models.DateField(verbose_name="Data zamówienia", null=True, blank=True, default=timezone.now)
+    data_zam = models.DateField(verbose_name="Data zamówienia", null=True, blank=True)
     data_zak = models.DateField(verbose_name="Data zakupu/Data FV", null=True, blank=True)
     opis = models.CharField(max_length=300, verbose_name="Opis zamówienia", blank=True)
     nr_sde = models.ForeignKey(NrSDE, verbose_name="Nr SDE", max_length=100, on_delete=models.SET_NULL, null=True, blank=True)

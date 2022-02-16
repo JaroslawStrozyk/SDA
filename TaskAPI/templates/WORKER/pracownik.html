@@ -98,6 +98,13 @@
                         width: 1300px;
                    }
 
+                   .panel-default>.panel-heading .badge {
+                        color: #00ff00;
+                        background-color: #aaaaaa;
+                   }
+                   #tab_row:hover {
+                        background-color: #dedede;
+                   }
 
 </style>
 <div class="col-lg-12">
@@ -105,8 +112,13 @@
     <div class="panel panel-default" id="tabela">
         <div class="panel-heading">
 
-            <table width="100%">
+            <table width="100%" border="0">
                 <tr>
+                    <td width="40px">
+                            <span class="badge badge-primary">
+                                {{ p_ilosc }}
+                            </span>
+                    </td>
                     <td align="center">
                         <h4><strong>{{ tytul_tabeli }}</strong></h4>
                     </td>
@@ -114,7 +126,7 @@
                         <a href="{% url 'worker_gen_staz' %}" class="primary btn btn-primary">&nbsp;<strong>Gen. staż</strong> </a>
                     </td>
                     <td align="right" width="110px">
-                        <a href="#" class="primary btn btn-success">&nbsp;<strong>Nowy wpis</strong> </a>
+                        <a href="{% url 'worker_pr_add' %}" class="primary btn btn-success">&nbsp;<strong>Nowy wpis</strong> </a>
                     </td>
                 </tr>
             </table>
@@ -124,21 +136,39 @@
 
               <table width="100%" class="table table-bordered table-condensed" id="sort">
                   <tr>
-                      <th  style="background-color: #4682A4; vertical-align:middle; text-align:center;"><font color="#ffff00">Imię</font></th>
-                      <th  style="background-color: #4682A4; vertical-align:middle; text-align:center;"><font color="#ffff00">Nazwisko</font></th>
+<!--                      <th  style="height:70px; background-color: #4682A4; vertical-align:middle; text-align:center;"><font color="#ffff00">Imię</font></th>-->
+                      <th  style="background-color: #4682A4; vertical-align:middle; text-align:center;"><font color="#ffff00">Nazwisko i Imię</font></th>
                       <th  style="background-color: #CD853F; vertical-align:middle; text-align:center;"><font color="#ffff00">Grupa</font></th>
                       <th  style="background-color: #CD853F; vertical-align:middle; text-align:center;"><font color="#ffff00">Dział</font></th>
                       <th  style="background-color: #BA55D3; vertical-align:middle; text-align:center;"><font color="#ffff00">Zatrudnienie</font></th>
                       <th  style="background-color: #BA55D3; vertical-align:middle; text-align:center;"><font color="#ffff00">Wymiar</font></th>
-                      <th  style="background-color: #BA55D3; vertical-align:middle; text-align:center;"><font color="#ffff00">Data zatrudnienia</font></th>
+                      <th  style="background-color: #BA55D3; vertical-align:middle; text-align:center;"><font color="#ffff00">Data<br>zatrudnienia</font></th>
                       <th  style="background-color: #BA55D3; vertical-align:middle; text-align:center;"><font color="#ffff00">Staż<br>pracy</font></th>
-                      <th  style="background-color: #5F9EA0;; vertical-align:middle; text-align:center;"><font color="#ffff00">Pensja<br>ustalona</font></th>
-                      <th  style="background-color: #5F9EA0;; vertical-align:middle; text-align:center;"><font color="#ffff00">Stawka<br>wyjazdowa</font></th>
+                      <th  style="background-color: #5F9EA0; vertical-align:middle; text-align:center;"><font color="#ffff00">Pensja<br>ustalona</font></th>
+                      <th  style="background-color: #5F9EA0; vertical-align:middle; text-align:center;">
+                          <font color="#ffff00">Stawka<br>wyjazdowa</font>
+                      </th>
+                      <th  style="background-color: #5F9EA0; vertical-align:middle; text-align:center;">
+                          <font color="#ffff00">Nadgodziny<br>stawka</font>
+                      </th>
+                      <th  style="background-color: #5F9EA0; vertical-align:middle; text-align:center;">
+                          <font color="#ffff00">PPK</font>
+                      </th>
+                      <th  style="background-color: #A09E5F; vertical-align:middle; text-align:center;">
+                          <font color="#ffff00">Dystans<br>kilome.<br>[km]</font>
+                      </th>
+                      <th style="background-color: #C0C0C0; vertical-align:middle; text-align:center; width:20px;">
+                          <div class="verticalText">Uwagi</div>
+                      </th>
+                      <th style="background-color: #A0A0A0; vertical-align:middle; text-align:center; width:20px;">
+                          <div class="verticalText">Edycja</div>
+                      </th>
+
                   </tr>
                   {% for p in pracownik %}
-                  <tr align="center">
-                      <td>{{ p.imie }}</td>
-                      <td>{{ p.nazwisko }}</td>
+                  <tr align="center"  id="tab_row">
+<!--                      <td>{{ p.imie }}</td>-->
+                      <td>{{ p.nazwisko }} {{ p.imie }}</td>
                       <td>{{ p.grupa }}</td>
                       <td>{{ p.dzial }}</td>
                       <td>{{ p.zatrudnienie }}</td>
@@ -147,6 +177,35 @@
                       <td>{{ p.staz }}</td>
                       <td align="right">{{ p.pensja_ust }}</td>
                       <td align="right">{{ p.stawka_wyj }}</td>
+                      <td align="right">{{ p.stawka_nadgodz }}</td>
+                      <td align="right">{{ p.ppk }}</td>
+                      <td align="center">{{ p.dystans }}</td>
+                      <td>
+                                             {% if p.uwagi != "" %}
+                                                  <a href="#" data-toggle="modal" data-target="#EMC{{ p.id }}"><i class="fa fa-comment-o fa-fw"></i></a>
+                                             {% endif %}
+                                                 <div class="modal fade" id="EMC{{ p.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                 <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                         <div class="modal-header">
+                                                             <span class="modal-title" id="exampleModalLongTitle10">Komentarz do pracownika</span>
+                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                             </button>
+                                                         </div>
+                                                         <div class="modal-body">
+                                                             {{ p.uwagi|linebreaks }}
+                                                         </div>
+                                                         <div class="modal-footer" >
+                                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                         </div>
+                                                    </div>
+                                                 </div>
+                                             </div>
+                      </td>
+                      <td>
+                          <a href="{% url 'worker_pr_edit' pk=p.id %}"><i class="fa fa-pencil-square-o fa-fw"></i></a>
+                      </td>
                   </tr>
                   {% endfor %}
               </table>

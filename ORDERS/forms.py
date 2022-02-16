@@ -14,6 +14,7 @@ def test_rok():
             rok = t.rok
     return rok
 
+
 class NrSDEForm(forms.ModelForm):
     class Meta:
         model = NrSDE

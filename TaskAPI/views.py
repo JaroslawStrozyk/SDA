@@ -2,6 +2,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import Group
 
+from WORKER.views import CompareData
 from .cron import SendData
 from .functions import get_user_label
 from .models import Log, URok, Ustawienia
@@ -22,7 +23,7 @@ def start(request):
 
 
 def refresh(request):
-    SendData()
+
     return redirect('desktop')
 
 
@@ -92,7 +93,6 @@ def task(request):
         zam = True
         zal = True
         kod = True
-        gog = True
     elif gr == 'spedycja':
         sam = True
     elif gr == 'biuro':

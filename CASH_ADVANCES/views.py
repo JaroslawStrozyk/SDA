@@ -13,6 +13,7 @@ import datetime
 from .pdf import cash_out_pdf_roz
 from django.core.paginator import Paginator
 from LOG.logs import Logi, Logi_r
+from .functions import suma_wartosci
 
 
 def test_admin(request):
@@ -317,28 +318,6 @@ def cash_edit_p(request, pk):
     })
 
 
-def suma_wartosci(pozycje):
-    DICT = {}
-    tab = settings.CURRENCIES
-    for t in tab:
-        DICT[t] = Money('00.00', t)
-
-    for poz in pozycje:
-        if poz.data_zak != '':
-            c = poz.kwota_netto.currency
-            d = poz.kwota_netto.amount
-            DICT[str(c)] = Money(d, c) + DICT[str(c)]
-
-    suma = ''
-    for i in DICT.items():
-        tst = Money('00.00', i[1].currency)
-        if i[1] != tst:
-            suma += str(i[1].currency) + ': ' + str(i[1].amount) + ' / '
-    suma = suma[:-3]
-    DICT.clear()
-    return suma
-
-
 @login_required(login_url='error')
 def cash_search_p(request):
     if request.method == "GET":
@@ -371,7 +350,7 @@ def cash_search_p(request):
         nrsde = NrSDE.objects.filter(rok=rok)
         nrmpk = NrMPK.objects.filter(rok=rok)
 
-        suma = suma_wartosci(pozycje)
+        suma, suma_c, fsc = suma_wartosci(pozycje)
 
         return render(request, 'CASH_ADVANCES/cash_main_p.html', {
             'pozycje': pozycje,
@@ -385,6 +364,8 @@ def cash_search_p(request):
             'nrsde': nrsde,
             'nrmpk': nrmpk,
             'suma': suma,
+            'suma_c': suma_c,
+            'fsc': fsc,
             'szukanie': True,
             'b_rok': b_rok
         })
@@ -432,21 +413,6 @@ def CheckCurrency(kwota):  # z wartości zaliczki pobieram symbol waluty
     elif w.find('US$') > -1:
         ps = Money('00.00', USD)
     return ps
-
-
-# def CalcCurrents(rok):
-#     roz = Rozliczenie.objects.filter(rok=rok, flaga_zmian=True)
-#
-#     for rz in roz:
-#         poz = Pozycja.objects.filter(nr_roz=rz.pk, data_zak__isnull=False)
-#         wydatki = 0
-#         for pz in poz:
-#             if isinstance(wydatki, int):
-#                 wydatki = CheckCurrency(rz.zal_kwota)
-#             wydatki = wydatki + pz.kwota_brutto
-#         rz.zal_suma = wydatki
-#         rz.saldo = rz.zal_kwota - wydatki
-#         rz.save()
 
 
 def PozycjeUpdate(pk, zal_kwota, przek):

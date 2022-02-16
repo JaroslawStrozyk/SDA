@@ -204,8 +204,8 @@ CRONJOBS = [
 
 INFO_PROGRAM = [
     {
-        'WERSJA'     : '4.89g',
-        'MODYFIKACJA': '23.01.2022r.',
+        'WERSJA'     : '4.92g',
+        'MODYFIKACJA': '16.02.2022r.',
         'FIRMA'      : 'EDATABIT',
         'AUTOR'      : 'Jarosław Stróżyk',
         'EMAIL'      : 'mailto:biuro@edatabit.pl',
@@ -230,7 +230,7 @@ GOOGLE_DOCS_2022 = [
     ('Nr zleceń SmartDesignExpo 2019, 2020, 2021 i 2022', '1Ev5MQW6GAg3XXsqads58orF_3WrMA35XCgKCYPFrB70', '2022', '')
 ]
 
-# Pamiętaj! Po zmainie LOG_LOOP trzeba ręcznie wykonać LOG.logs.InitLog()
+# Pamiętaj! Po zmianie LOG_LOOP trzeba ręcznie wykonać LOG.logs.InitLog()
 LOG_LOOP = 200
 LOG_FILE = BASE_DIR+'/LOG_FILE/'
 
@@ -238,3 +238,7 @@ LOG_FILE = BASE_DIR+'/LOG_FILE/'
 
 ORD_PM = SDE_ORD_PM
 DEL_INV_OP = DEL_INV_OPER
+
+#
+
+WORKER_KM = '4.50'

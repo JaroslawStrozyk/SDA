@@ -2,8 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from TaskAPI.models import Rok, URok, Waluta
-from django.contrib.auth.models import Group
-
+from django.contrib.auth.models import Group, User, User, Permission, PermissionsMixin
 
 
 def test_admin(request):
@@ -76,6 +75,7 @@ def logs_start(request):
                       'wal4': wal4,
                       'gt': gt
                   })
+
 
 @login_required(login_url='error')
 def logs_startp(request):
@@ -212,4 +212,51 @@ def logs_startp(request):
                       'sds' : sds,
                       'ssdu': ssdu,
                       'sedu': sedu
+                  })
+
+
+@login_required(login_url='error')
+def logs_startu(request):
+    name_log, inicjaly = test_osoba(request)
+    about = settings.INFO_PROGRAM
+    x = '✅'
+    tab_usl = [
+        #                     admin, biuro, biuro_1, ksieg, zksieg, spedy, stola
+        ['Hasła i profile'  ,     x,    '',      '',    '',     '',    '',    ''],
+        ['Usługi'           ,     x,    '',      '',    '',     '',    '',    ''],
+        ['Magazyn'          ,     x,     x,      '',    '',     '',    '',    ''],
+        ['Telefony'         ,     x,    '',      '',    '',     '',    '',    ''],
+        ['Faktury'          ,     x,    '',      '',     x,      x,    '',    ''],
+        ['Ubezpieczenia'    ,     x,    '',      '',     x,      x,    '',    ''],
+        ['Delegacje'        ,     x,    '',      '',     x,      x,    '',    ''],
+        ['Dowody osobiste'  ,     x,     x,       x,     x,      x,    '',    ''],
+        ['Samochody & Wóżki',     x,    '',      '',    '',     '',     x,    ''],
+        ['Kody SDE'         ,     x,     x,      '',     x,      x,    '',    ''],
+        ['Zamówienia'       ,     x,     x,       x,     x,      x,    '',     x],
+        ['Zaliczki'         ,     x,     x,      '',     x,      x,    '',     x],
+        ['Pracownicy'       ,     x,    '',      '',     x,     '',    '',    ''],
+        ['Dokumenty Google' ,     x,    '',      '',     x,     '',    '',    ''],
+        ['Logi'             ,     x,    '',      '',    '',     '',    '',    '']
+    ]
+
+    us = []
+
+    for gr in Group.objects.all():
+        g = gr.name
+        users = User.objects.filter(groups__name=g).values()
+
+        lu = ''
+        for u in users:
+            lu += u['first_name'] + " " + u['last_name']+ ", "
+
+        r = [g, lu[:-2]]
+        us.append(r)
+
+
+    return render(request, 'MONIT/mainu.html',
+                  {
+                      'name_log': name_log,
+                      'about': about,
+                      'tab_usl': tab_usl,
+                      'us': us,
                   })
