@@ -1,7 +1,7 @@
 """
     SDA URL Główny program
 """
-
+#
 # Test integracji PyCharm z GitHub - wersja 5.60.0
 
 from django.contrib.staticfiles.storage import staticfiles_storage
