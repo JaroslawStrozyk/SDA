@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 import xlwt
 from django.http import HttpResponse
 from django.conf import settings
+from datetime import datetime
+
 
 
 @login_required(login_url='error')
@@ -18,7 +20,8 @@ def phone(request):
         'telefony': telefon,
         'name_log': name_log,
         'naglowek': 'Lista telefonów.',
-        'about': about
+        'about': about,
+        'mag' : False
     })
 
 
@@ -31,7 +34,8 @@ def phone_arch(request):
         'telefony': telefon,
         'name_log': name_log,
         'naglowek': 'Lista telefonów.',
-        'about': about
+        'about': about,
+        'mag' : True
     })
 
 
@@ -43,8 +47,9 @@ def phone_mag(request):
     return render(request, 'PHONES/phone.html', {
         'telefony': telefon,
         'name_log': name_log,
-        'naglowek': 'Lista telefonów.',
-        'about': about
+        'naglowek': 'Lista telefonów w magazynie.',
+        'about': about,
+        'mag': True
     })
 
 
@@ -149,8 +154,10 @@ def phone_pz(request, pk):
     return phonepz(request, pk)
 
 def phone_export(request):
+
+    dt = datetime.now().strftime("%d%m%Y_%H%M%S") # '17062022_161200'
     response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="Telefony.xls"'
+    response['Content-Disposition'] = 'attachment; filename="SDA - Telefony '+ dt +'.xls"'
 
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('Telefony')
@@ -214,35 +221,35 @@ def phone_export(request):
 
 
 
-    ws = wb.add_sheet('Archiwum')
-
-    # Sheet header, first row
-    row_num = 0
-
-    font_style = xlwt.XFStyle()
-    font_style.font.bold = True
-
-    columns = ['Użytkownik', 'Model telefonu', 'IMEI', 'SIM', 'MSISDN', 'Kod blokady', 'Konto', 'Hasło',
-               'Data przekazania', 'Uwagi', ]
-    col_width = [30, 20, 30, 10, 30, 20, 50, 50, 20, 100]
-    for col_num in range(len(columns)):
-        ws.col(col_num).width = col_width[col_num] * 256
-        ws.write(row_num, col_num, columns[col_num], font_style)
-
-    # Sheet body, remaining rows
-    font_style = xlwt.XFStyle()
-
-    rows = Telefon.objects.filter(mag=False, arch=True).values_list('usr', 'model', 'imei', 'sim', 'msisdn', 'kod',
-                                                                    'konto', 'haslo', 'data', 'uwagi')
-    for row in rows:
-        row_num += 1
-        for col_num in range(len(row)):
-            if col_num == 8:
-                font_style = xlwt.XFStyle()
-                font_style.num_format_str = 'dd.mm.yyyy'
-            else:
-                font_style = xlwt.XFStyle()
-            ws.write(row_num, col_num, row[col_num], font_style)
+    # ws = wb.add_sheet('Archiwum')
+    #
+    # # Sheet header, first row
+    # row_num = 0
+    #
+    # font_style = xlwt.XFStyle()
+    # font_style.font.bold = True
+    #
+    # columns = ['Użytkownik', 'Model telefonu', 'IMEI', 'SIM', 'MSISDN', 'Kod blokady', 'Konto', 'Hasło',
+    #            'Data przekazania', 'Uwagi', ]
+    # col_width = [30, 20, 30, 10, 30, 20, 50, 50, 20, 100]
+    # for col_num in range(len(columns)):
+    #     ws.col(col_num).width = col_width[col_num] * 256
+    #     ws.write(row_num, col_num, columns[col_num], font_style)
+    #
+    # # Sheet body, remaining rows
+    # font_style = xlwt.XFStyle()
+    #
+    # rows = Telefon.objects.filter(mag=False, arch=True).values_list('usr', 'model', 'imei', 'sim', 'msisdn', 'kod',
+    #                                                                 'konto', 'haslo', 'data', 'uwagi')
+    # for row in rows:
+    #     row_num += 1
+    #     for col_num in range(len(row)):
+    #         if col_num == 8:
+    #             font_style = xlwt.XFStyle()
+    #             font_style.num_format_str = 'dd.mm.yyyy'
+    #         else:
+    #             font_style = xlwt.XFStyle()
+    #         ws.write(row_num, col_num, row[col_num], font_style)
 
 
 

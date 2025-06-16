@@ -1,0 +1,495 @@
+{% extends "timber_dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+{% endblock %}
+
+
+{% block retbutton %}
+<li>
+    <a class="btn btn-primary" href="{% url 'timber_list' mag=mag fl=fl %}"><font color="white"><i class="fa fa-dashboard fa-fw"></i> Lista płyt</font></a>
+</li>
+{% endblock %}
+
+{% block userlog %}
+                {{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+<br><br>
+{% endblock %}
+
+{% block logo %}
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+{% block style %}
+              a:link.dt, a:visited.dt {
+                         text-decoration: none;
+              }
+              a:hover.dt, a:active.dt {
+                         text-decoration: none;
+                         display: inline-block;
+              }
+
+              #wpz {
+                    color: brown;
+                    font-weight: bold;
+              }
+              #wrz {
+                    color: #a9a9a9;
+              }
+
+              .verticalText{
+                    text-align: center;
+                    vertical-align: middle;
+                    -webkit-transform: rotate(90deg);
+                    -moz-transform: rotate(90deg);
+              }
+              #panel_glowny {
+<!--                    border-color: #5cb85c;-->
+<!--                    color: white;-->
+<!--                    background-color: #8cf88c;-->
+              }
+              #panel_naglowek {
+                    background-color: #6cd86c;
+              }
+
+              #naglowek > tbody > tr > td{
+                    border: 1px solid #00dd00;
+              }
+                   #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
+                        color: #fff;
+                        background-color: #595959;
+              }
+              .table > tbody > tr:hover {
+                        background-color: #f5f5f5;
+              }
+
+              #nav1, #nav2, #nav3, #nav4 {
+                    color: white;
+                    font-weight: bold;
+                    background-color: #909000;
+              }
+              #nav1:hover, #nav2:hover, #nav3:hover, #nav4:hover {
+                    color: yellow;
+                    font-weight: bold;
+                    background-color: #808000;
+              }
+              #nav5 {
+                    color: white;
+                    font-weight: bold;
+                    background-color: #4169E1;
+              }
+              #nav5:hover {
+                    color: yellow;
+                    font-weight: bold;
+                    background-color: #3159D1;
+              }
+            .panel-green > .panel-heading {
+                border-color: #5cb85c;
+                color: white;
+                background-color: #999999;
+            }
+            .panel-green {
+                border-color: #999999;
+            }
+
+
+{% endblock %}
+
+
+{% block content %}
+
+
+                <div class="col-lg-12">
+                    <div class="panel panel-green" id="panel_glowny1">
+                        <div class="panel-heading">
+                            <table width="100%">
+                                <tr>
+                                    <td style="text-align:center;">
+                                        <font style="font-size:18px;"><strong>{{ title1 }}</strong></font>
+                                    </td>
+                                    <td style="text-align:right; width:7%;">
+                                       <button type="button" class="btn btn-danger">
+                                         Całość:&nbsp;<span class="badge badge-dark"><strong><font size="3">{{ mag1_suma }}</font></strong></span><!-- [netto] -->
+                                       </button>
+                                    </td>
+                                    <td width="10px"></td>
+                                    <td width="7%">
+                                        <a class="btn btn-primary" href="{% url 'dok_inw_pdf' rk=rk mag='mag1' fl=fl %}" title="Eksport do PDF" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
+                                            <font color="white"><i class="fa fa-file-pdf-o fa-fw"></i></font>
+                                        </a>
+                                        <a class="btn btn-success" href="{% url 'dok_inw_xls' rk=rk mag='mag1' fl=fl %}" title="Eksport do XLS" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
+                                            <font color="white"><i class="fa fa-file-excel-o fa-fw"></i></font>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body">
+
+                            <table width="100%" class="table  table-bordered table-condensed">
+                                <thead>
+                                    <tr height="60px">
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px;">ID</th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px; width:10%">MAGAZYN</th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px; width:35%">NAZWA</th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px; width:35% ">OPIS</th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px; width:5%;">STAN</th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px; width:10%;">WARTOŚĆ<br>TOWARU                                         </th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px; width:5%;"
+                                            title="Jesli wartość > 0  tzn. że w przychodach nie zostało wypełnione pole o 'cena jednostkowa'.">BRAK<br>CENY<br>JEDN.</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                  {% for r in out1 %}
+                                     <tr>
+                                         <td style="vertical-align:middle; text-align:center; color:gray;font-weight:bold;">{{ r.id }}</td>
+                                         <td style="vertical-align:middle; text-align:center; color:green;">
+                                             {% if r.rodzaj == 'dre' %}
+                                                <strong>DREWNA</strong>
+                                             {% elif r.rodzaj == 'wew' %}
+                                                <strong>WEWNĘTRZNY</strong>
+                                             {% endif %}
+                                         </td>
+                                         <td style="vertical-align:middle; text-align:center;"><strong>{{ r.nazwa }}</strong></td>
+                                         <td style="vertical-align:middle; text-align:center;">{{ r.opis }}</td>
+                                         <td {% if r.stan > 0 %}
+                                                 style="vertical-align:middle; text-align:center;color:blue;font-weight:bold;"
+                                             {% else %}
+                                                 style="vertical-align:middle; text-align:center;color:#C0C0C0;"
+                                             {% endif %}>
+                                             {{ r.stan }}
+                                         </td>
+                                         <td title="{{ r.test }}"
+                                             {% if r.suma_wart > zero %}
+                                                 style="vertical-align:middle; text-align:right;color:brown;font-weight:bold;"
+                                             {% else %}
+                                                 style="vertical-align:middle; text-align:right;color:#C0C0C0;"
+                                             {% endif %}>
+                                             {{ r.suma_wart }}
+                                         </td>
+                                         <td {% if r.brak_ceny == 0 %}
+                                                 style="vertical-align:middle; text-align:center;background-color: #45FF00;"
+                                             {% else %}
+                                                 style="vertical-align:middle; text-align:center;background-color: #FF4500;"
+                                             {% endif %}
+                                         >
+                                             {{ r.brak_ceny }}
+                                         </td>
+                                     </tr>
+                                  {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                    <br><br>
+
+
+                    <div class="panel panel-green" id="panel_glowny2">
+                        <div class="panel-heading">
+                            <table width="100%">
+                                <tr>
+                                    <td style="text-align:center;">
+                                        <font style="font-size:18px;"><strong>{{ title2 }}</strong></font>
+                                    </td>
+                                    <td style="text-align:right; width:7%;">
+                                       <button type="button" class="btn btn-danger">
+                                         Całość:&nbsp;<span class="badge badge-dark"><strong><font size="3">{{ mag2_suma }}</font></strong></span><!-- [netto] -->
+                                       </button>
+                                    </td>
+                                    <td width="10px"></td>
+                                    <td width="7%">
+                                        <a class="btn btn-primary" href="{% url 'dok_inw_pdf' rk=rk mag='mag2' fl=fl %}" title="Eksport do PDF" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
+                                            <font color="white"><i class="fa fa-file-pdf-o fa-fw"></i></font>
+                                        </a>
+                                        <a class="btn btn-success" href="{% url 'dok_inw_xls' rk=rk mag='mag2' fl=fl %}" title="Eksport do XLS" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
+                                            <font color="white"><i class="fa fa-file-pdf-o fa-fw"></i></font>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body">
+
+                            <table width="100%" class="table  table-bordered table-condensed">
+                                <thead>
+                                    <tr height="60px">
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px;">ID</th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px; width:10%">MAGAZYN</th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px; width:35%">NAZWA</th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px; width:35% ">OPIS</th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px; width:5%;">STAN</th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px; width:10%;">WARTOŚĆ<br>TOWARU</th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px; width:5%;"
+                                            title="Jesli wartość > 0  tzn. że w przychodach nie zostało wypełnione pole o 'cena jednostkowa'.">BRAK<br>CENY<br>JEDN.</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                  {% for r in out2 %}
+                                     <tr>
+                                         <td style="vertical-align:middle; text-align:center; color:gray;font-weight:bold;">{{ r.id }}</td>
+                                         <td style="vertical-align:middle; text-align:center; color:green;">
+                                             {% if r.rodzaj == 'dre' %}
+                                                <strong>DREWNA</strong>
+                                             {% elif r.rodzaj == 'wew' %}
+                                                <strong>WEWNĘTRZNY</strong>
+                                             {% endif %}
+                                         </td>
+                                         <td style="vertical-align:middle; text-align:center;"><strong>{{ r.nazwa }}</strong></td>
+                                         <td style="vertical-align:middle; text-align:center;">{{ r.opis }}</td>
+                                         <td {% if r.stan > 0 %}
+                                                 style="vertical-align:middle; text-align:center;color:blue;font-weight:bold;"
+                                             {% else %}
+                                                 style="vertical-align:middle; text-align:center;color:#C0C0C0;"
+                                             {% endif %}>
+                                             {{ r.stan }}
+                                         </td>
+                                         <td title="{{ r.test }}"
+                                             {% if r.suma_wart > zero %}
+                                                 style="vertical-align:middle; text-align:right;color:brown;font-weight:bold;"
+                                             {% else %}
+                                                 style="vertical-align:middle; text-align:right;color:#C0C0C0;"
+                                             {% endif %}>
+                                             {{ r.suma_wart }}
+                                         </td>
+                                         <td {% if r.brak_ceny == 0 %}
+                                                 style="vertical-align:middle; text-align:center;background-color: #45FF00;"
+                                             {% else %}
+                                                 style="vertical-align:middle; text-align:center;background-color: #FF4500;"
+                                             {% endif %}
+                                         >
+                                             {{ r.brak_ceny }}
+                                         </td>
+                                     </tr>
+                                  {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+<br><br>
+
+                   <div class="panel panel-green" id="panel_glowny2">
+                        <div class="panel-heading">
+                            <table width="100%">
+                                <tr>
+                                    <td style="text-align:center;">
+                                        <font style="font-size:18px;"><strong>{{ title3 }}</strong></font>
+                                    </td>
+                                    <td style="text-align:right; width:7%;">
+                                       <button type="button" class="btn btn-danger">
+                                         Całość:&nbsp;<span class="badge badge-dark"><strong><font size="3">{{ mag3_suma }}</font></strong></span><!-- [netto] -->
+                                       </button>
+                                    </td>
+                                    <td width="10px"></td>
+                                    <td width="7%">
+                                        <a class="btn btn-primary" href="{% url 'dok_inw_pdf' rk=rk mag='mag3' fl=fl %}" title="Eksport do PDF" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
+                                            <font color="white"><i class="fa fa-file-pdf-o fa-fw"></i></font>
+                                        </a>
+                                        <a class="btn btn-success" href="{% url 'dok_inw_xls' rk=rk mag='mag3' fl=fl %}" title="Eksport do XLS" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
+                                            <font color="white"><i class="fa fa-file-pdf-o fa-fw"></i></font>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body">
+
+                            <table width="100%" class="table  table-bordered table-condensed">
+                                <thead>
+                                    <tr height="60px">
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px;">ID</th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px; width:10%">MAGAZYN</th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px; width:35%">NAZWA</th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px; width:35% ">OPIS</th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px; width:5%;">STAN</th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px; width:10%;">WARTOŚĆ<br>TOWARU</th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px; width:5%;"
+                                            title="Jesli wartość > 0  tzn. że w przychodach nie zostało wypełnione pole o 'cena jednostkowa'.">BRAK<br>CENY<br>JEDN.</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                  {% for r in out3 %}
+                                     <tr>
+                                         <td style="vertical-align:middle; text-align:center; color:gray;font-weight:bold;">{{ r.id }}</td>
+                                         <td style="vertical-align:middle; text-align:center; color:green;">
+                                             {% if r.rodzaj == 'dre' %}
+                                                <strong>DREWNA</strong>
+                                             {% elif r.rodzaj == 'wew' %}
+                                                <strong>WEWNĘTRZNY</strong>
+                                             {% endif %}
+                                         </td>
+                                         <td style="vertical-align:middle; text-align:center;"><strong>{{ r.nazwa }}</strong></td>
+                                         <td style="vertical-align:middle; text-align:center;">{{ r.opis }}</td>
+                                         <td {% if r.stan > 0 %}
+                                                 style="vertical-align:middle; text-align:center;color:blue;font-weight:bold;"
+                                             {% else %}
+                                                 style="vertical-align:middle; text-align:center;color:#C0C0C0;"
+                                             {% endif %}>
+                                             {{ r.stan }}
+                                         </td>
+                                         <td title="{{ r.test }}"
+                                             {% if r.suma_wart > zero %}
+                                                 style="vertical-align:middle; text-align:right;color:brown;font-weight:bold;"
+                                             {% else %}
+                                                 style="vertical-align:middle; text-align:right;color:#C0C0C0;"
+                                             {% endif %}>
+                                             {{ r.suma_wart }}
+                                         </td>
+                                         <td {% if r.brak_ceny == 0 %}
+                                                 style="vertical-align:middle; text-align:center;background-color: #45FF00;"
+                                             {% else %}
+                                                 style="vertical-align:middle; text-align:center;background-color: #FF4500;"
+                                             {% endif %}
+                                         >
+                                             {{ r.brak_ceny }}
+                                         </td>
+                                     </tr>
+                                  {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+
+
+
+                    </div>
+
+                    <br><br>
+
+
+<!--                    <div class="panel panel-green" id="panel_glowny">-->
+<!--                        <div class="panel-heading">-->
+<!--                            <table width="100%">-->
+<!--                                <tr>-->
+<!--                                    <td style="text-align:center;">-->
+<!--                                        <font style="font-size:18px;"><strong>{{ title3 }}</strong></font>-->
+<!--                                    </td>-->
+<!--                                    <td width="7%">-->
+<!--                                        <a class="btn btn-primary" href="{% url 'dok_inw_pdf' rk=rk mag='mag3' fl=fl %}">-->
+<!--                                            <font color="white"><i class="fa fa-file-pdf-o fa-fw"></i> Export danych</font>-->
+<!--                                        </a>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                            </table>-->
+<!--                        </div>-->
+<!--                        <div class="panel-body">-->
+
+<!--                            <table width="100%" class="table  table-bordered table-condensed">-->
+<!--                                <thead>-->
+<!--                                    <tr height="60px">-->
+<!--                                        <th style="background-color: #BA4A00; vertical-align:middle; text-align:center; width:10%"><font color="#ffff00">MAGAZYN</font></th>-->
+<!--                                        <th style="background-color: #1E8449; vertical-align:middle; text-align:center; width:35%"><font color="#ffff00">NAZWA</font></th>-->
+<!--                                        <th style="background-color: #138D75; vertical-align:middle; text-align:center; width:35% "><font color="#ffff00">OPIS</font></th>-->
+<!--                                        <th style="background-color: #2471A3; vertical-align:middle; text-align:center; width:5%;"><font color="#ffff00">STAN</font></th>-->
+<!--                                        <th style="background-color: #7D3C98; vertical-align:middle; text-align:center; width:10%;"><font color="#ffff00">WARTOŚĆ<br>TOWARU</font>                                         </th>-->
+<!--                                        <th style="background-color: #7B241C; vertical-align:middle; text-align:center; width:5%;"-->
+<!--                                            title="Jesli wartość > 0  tzn. że w przychodach nie zostało wypełnione pole o 'cena jednostkowa'."><font color="#ffff00">BRAK<br>CENY<br>JEDN.</font></th>-->
+<!--                                    </tr>-->
+
+<!--                                </thead>-->
+<!--                                <tbody>-->
+<!--                                  {% for r in out3 %}-->
+<!--                                     <tr>-->
+<!--                                         <td style="vertical-align:middle; text-align:center; color:green;">-->
+<!--                                             {% if r.rodzaj == 'dre' %}-->
+<!--                                                <strong>DREWNA</strong>-->
+<!--                                             {% elif r.rodzaj == 'wew' %}-->
+<!--                                                <strong>CHEMII</strong>-->
+<!--                                             {% endif %}-->
+<!--                                         </td>-->
+<!--                                         <td style="vertical-align:middle; text-align:center;"><strong>{{ r.nazwa }}</strong></td>-->
+<!--                                         <td style="vertical-align:middle; text-align:center;">{{ r.opis }}</td>-->
+<!--                                         <td {% if r.stan > 0 %}-->
+<!--                                                 style="vertical-align:middle; text-align:center;color:blue;font-weight:bold;"-->
+<!--                                             {% elif r.stan < 0 %}-->
+<!--                                                 style="vertical-align:middle; text-align:center;color:#FF0000;font-weight:bold;"-->
+<!--                                             {% else %}-->
+<!--                                                 style="vertical-align:middle; text-align:center;color:#C0C0C0;"-->
+<!--                                             {% endif %}>-->
+<!--                                             {{ r.stan }}-->
+<!--                                         </td>-->
+<!--                                         <td title="{{ r.test }}"-->
+<!--                                             {% if r.suma_wart > zero %}-->
+<!--                                                 style="vertical-align:middle; text-align:right;color:brown;font-weight:bold;"-->
+<!--                                             {% else %}-->
+<!--                                                 style="vertical-align:middle; text-align:right;color:#C0C0C0;"-->
+<!--                                             {% endif %}>-->
+<!--                                             {{ r.suma_wart }}-->
+<!--                                         </td>-->
+<!--                                         <td {% if r.brak_ceny == 0 %}-->
+<!--                                                 style="vertical-align:middle; text-align:center;background-color: #45FF00;"-->
+<!--                                             {% else %}-->
+<!--                                                 style="vertical-align:middle; text-align:center;background-color: #FF4500;"-->
+<!--                                             {% endif %}-->
+<!--                                         >-->
+<!--                                             {{ r.brak_ceny }}-->
+<!--                                         </td>-->
+<!--                                     </tr>-->
+<!--                                  {% endfor %}-->
+<!--                                </tbody>-->
+<!--                            </table>-->
+
+<!--                        </div>-->
+<!--                        <div class="panel-footer">-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+
+                </div>
+
+{% endblock %}
+
+
+{% block script %}
+
+        $(document).ready(function() {
+              $('#ONRSDE').select2();
+              $('#ONRSDE').val(null).trigger('change');
+              $('#ONRMPK').select2();
+              $('#ONRMPK').val(null).trigger('change');
+              $('#id_nr_sde').select2();
+              $('#id_nr_mpk').select2();
+        });
+
+
+{% endblock %}
+
+
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

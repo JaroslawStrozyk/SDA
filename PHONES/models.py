@@ -8,6 +8,7 @@ class Telefon(models.Model):
     sim = models.CharField(blank=True, max_length=200, verbose_name="Nr karty SIM")
     msisdn = models.CharField(blank=True, max_length=200, verbose_name="Nr MSISDN")
     kod = models.CharField(blank=True, max_length=200, verbose_name="Kod Blokady")
+    bkod = models.BooleanField(default=False, verbose_name="Brak kodu blokady")
     konto = models.CharField(blank=True, max_length=200, verbose_name="Konto")
     haslo = models.CharField(blank=True, max_length=200, verbose_name="Hasło")
     data = models.DateField(default=timezone.now, verbose_name="Data przekazania")

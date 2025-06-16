@@ -12,12 +12,18 @@ def faktura_start(request):
         lista_faktury = Faktura.objects.all().order_by('zrobione','-data')
         name_log = request.user.first_name + " " + request.user.last_name
         about = settings.INFO_PROGRAM
+        tytul="Lista Faktur"
 
         paginator = Paginator(lista_faktury, 30)
         strona = request.GET.get('page')
         faktury = paginator.get_page(strona)
 
-        return render(request, 'INVOICES/faktura.html', {'faktury': faktury, 'name_log': name_log, 'about': about})
+        return render(request, 'INVOICES/faktura.html', {
+            'tytul': tytul,
+            'faktury': faktury,
+            'name_log': name_log,
+            'about': about
+        })
     else:
         return redirect('error')
 
@@ -41,7 +47,7 @@ def faktura_add(request):
             post = delf.save(commit=False)
             post.zrobione = False
             post.sig_source = False
-            post.imie, post.nazwisko = ConwertInit(request.POST.get("naz_imie", ""))
+            #post.imie, post.nazwisko = ConwertInit(request.POST.get("naz_imie", ""))
             post.save()
             return redirect('login')
     else:
@@ -75,15 +81,22 @@ def faktura_search(request):
             query = request.GET['SZUKAJ']
             name_log = request.user.first_name + " " + request.user.last_name
             about = settings.INFO_PROGRAM
+            tytul = "Lista Faktur"
 
             if query == '' or query == ' ':
                 return redirect('faktura_start')
-            search_fields = ['imie', 'nazwisko', 'targi']
+            search_fields = ['imie', 'nazwisko', 'targi', 'stoisko']
             f = search_filter(search_fields, query)
-            delegacje = Faktura.objects.filter(f)
+            faktury = Faktura.objects.filter(f)
+            tytul += " [Szukane: "+query+"]"
 
-
-            return render(request, 'INVOICES/faktura_filtr.html',{'delegacje': delegacje,'wybrany': query,'name_log': name_log, 'about': about})
+            return render(request, 'INVOICES/faktura.html',{
+                'tytul': tytul,
+                'faktury': faktury,
+                'wybrany': query,
+                'name_log': name_log,
+                'about': about
+            })
         else:
             return redirect('faktura_start')
     else:

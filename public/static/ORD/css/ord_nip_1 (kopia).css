@@ -1,0 +1,101 @@
+                   .alarm{
+                          background-color: #FFE4E1;
+                   }
+                   .alarm1{
+                          background-color: #E1E4FF;
+                   }
+                   .valarm{
+                          background-color: #FFFFE0;
+                   }
+                   .ok{
+                          background-color: #90EE90;
+                   }
+                   .verticalText{
+                          text-align: center;
+                          vertical-align: middle;
+                          -webkit-transform: rotate(90deg);
+                          -moz-transform: rotate(90deg);
+                   }
+
+                   #TH1 {
+                          background-color: #5F9EA0; color:#ffff00; vertical-align:middle; text-align:center;
+                   }
+
+                   #TH2 {
+                          background-color: #2E8B57; color:#ffff00; vertical-align:middle; text-align:center;
+                   }
+
+                   #TR1 {
+                          height:50px;
+                   }
+
+
+                   #wrapper > nav {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   #tabela {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   #tabela > table > tbody > tr:hover {
+                        background-color: #f5f5f5;
+                   }
+
+                   #belka > ul.nav.navbar-top-links.navbar-left > li > a:hover {
+                        background-color: gray;
+                   }
+                   #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
+                        background-color: gray;
+                   }
+                   #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(2) > a:hover {
+                        background-color: gray;
+                   }
+                   .custome-size {
+                        width: 1300px;
+                   }
+
+
+
+                   .nav-pills>li.active>a, .nav-pills>li.active>a:focus {
+                        color: #fff;
+                        background-color: #d43f3a;
+                   }
+                   .nav-pills>li.active>a:hover {
+                        color: #fff;
+                        background-color: #595959;
+                   }
+
+                   .nav-pills>li>a {
+                        color: #fff;
+                        background-color: #a5a5a5;
+                   }
+                   .nav-pills>li>a:hover {
+                        color: #fff;
+                        background-color: #595959;
+                   }
+
+
+
+#panel_tabela {
+    box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+}
+
+
+#nipsTable {
+    width: 100%;
+}
+
+#NIP_TH {
+    background-color: #BA55D3; color:#ffff00; vertical-align:middle; text-align:center;
+    height: 40px;
+}
+
+#KON_TH {
+    background-color: #5F9EA0; color:#ffff00; vertical-align:middle; text-align:center;
+}
+
+#AKC_TH {
+    background-color: #2E8B57; color:#ffff00; vertical-align:middle; text-align:center;
+    width: 95px;
+}

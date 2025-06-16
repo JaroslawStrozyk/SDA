@@ -1,0 +1,976 @@
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+from django.conf import settings
+from moneyed import Money, EUR
+from datetime import date, timedelta, datetime
+import re
+from ORDERS.models import NrSDE
+from .forms import SkladForm, SkladFormD, EKForm, OKForm
+from .functions import CalCost, test_osoba, testQuery, ChangeStatus, SendInformation, CalCostGen, CalSelSde, \
+    UpdateDokUwagi, CalcAdd, CalcDay, format_european_currency
+# from .log_oper import CompRepoLog
+from .models import Sklad, Firma, ElementKatalogowy, OkresPrzechowywania
+from simple_search import search_filter
+# from .pdf import sklad_pdf_out, sklad_pdf_bc_out, sklad_pdf_sim_out, ewu_pdf_bc_out
+from django.db.models import Max, OuterRef, Subquery, Count
+from django.http import HttpResponse
+from django.utils.timezone import now
+
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+from .models import Firma
+import json
+from django.db.models import F
+from django.db import transaction
+#import datetime
+from django.urls import reverse
+from django.db.models import Case, When, Value, CharField
+
+from django.db.models import IntegerField, Case, When, Value
+from django.db.models.functions import Cast, Coalesce
+from django.db.models.expressions import RawSQL
+
+# LOG = CompRepoLog()
+from django.db.models import Min, Sum
+from decimal import Decimal
+
+
+
+
+@login_required(login_url='error')
+def ncomp_list(request, mag):
+    name_log, inicjaly, grupa = test_osoba(request)
+    about = settings.INFO_PROGRAM
+    rw = True
+    admin = False
+    st_pr = '^'
+    fl = True
+
+    f = ''
+    query = ''
+    sklad = ''
+    sw = False
+    t = 'Lista elementów stoisk przechowywanych dla innych firm.'
+
+    # Ustawienie czy API jest tylko do odczytu czy nie
+    if grupa == 'produkcja' or grupa == 'kierownik' or grupa == 'magazyn1':
+        rw = False
+
+    try:
+        query = request.GET['SZUKAJ']
+        opis = "Szukane: " + str(query)
+    except:
+        opis = ''
+
+    if query != '':
+        sw = True
+        search_fields = [
+            'nr_sde__nazwa', 'nr_sde__targi', 'nr_sde__klient', 'nr_sde__stoisko',
+            'przech_nazwa', 'przech_nrpalet', 'czas_od', 'czas_do']
+        se = search_filter(search_fields, testQuery(query))
+        sklad = Sklad.objects.filter(se).distinct('nr_sde')
+    else:
+        sklad = Sklad.objects.all().order_by('nr_sde', 'id').distinct('nr_sde')
+            #= Sklad.objects.all().distinct('nr_sde')
+
+
+
+        # Znajdź minimalne ID dla każdego nr_sde
+        min_ids = Sklad.objects.values('nr_sde').annotate(min_id=Min('id')).values_list('min_id', flat=True)
+
+        # Pobierz rekordy z tymi ID
+        sklad = Sklad.objects.filter(id__in=min_ids)
+
+        # Funkcja pomocnicza do ekstrakcji klucza sortowania
+        def extract_sort_key(sklad_item):
+            nr_sde_str = str(sklad_item.nr_sde.nazwa)  # Konwertujemy na string na wszelki wypadek
+            nr, rok = nr_sde_str.split('_')  # Rozdzielamy na numer i rok
+            return int(rok), int(nr)  # Zwracamy jako tuple do sortowania (rok, numer)
+
+        # Sortowanie zmiennej sklad
+        sklad = sorted(sklad, key=extract_sort_key, reverse=True)
+
+        # update_magazyn_opis()
+
+    try:
+        st = request.GET['STAWKA']
+        st = str(st)
+        st = st.replace(',', '.')
+        wst = Money(st, EUR)
+        sde_id = request.GET['SDE_ID']
+        sde_id = int(sde_id)
+        CalSelSde(sde_id, wst)
+
+        info = "STAWKA - zapis;    sde: " + str(NrSDE.objects.get(pk=sde_id).nazwa) + ", wartość: " + str(wst) + "."
+        # LOG.zapis_stawka(request, info)
+        fl = False
+    except:
+        st = ''
+        sde_id = 0
+        #print("COMP_REPO Error: ", "Błąd konwersji !!!")
+
+    if inicjaly == 'J.S.' or inicjaly == 'D.K.':
+        admin = True
+
+    if fl:
+        pass
+        # LOG.start(request, query)
+
+    return render(request, 'COMP_REPO_NEW/comp_main.html', {
+        'mag': mag,
+        'sklad': sklad,
+        'name_log': name_log,
+        'about': about,
+        'title': t,
+        'rw': rw,
+        'sw': sw,
+        'admin': admin,
+        'opis': opis,
+        'st_pr': st_pr
+    })
+
+
+@login_required(login_url='error')
+def ncomp_detail(request, mag, pk, st):
+    name_log, inicjaly, grupa = test_osoba(request)
+    about = settings.INFO_PROGRAM
+    rw = True
+    sw = False
+    admin = False
+    nstatus = False
+    sum = ""
+    nmg = ""
+    ndok_pdf1 = ""
+    ndok_pdf2 = ""
+    ndok_pdf3 = ""
+    ndok_pdf4 = ""
+    nfv_pdf1 = ""
+    nuwagi = ""
+    blok_z = ""
+
+    try:
+        nsde = NrSDE.objects.get(pk=pk)
+        nnazwa = nsde.nazwa
+        ntargi = nsde.targi
+        nklient = nsde.klient
+        nstoisko = nsde.stoisko
+        npm = nsde.pm
+    except:
+        nnazwa = "..."
+        ntargi = ""
+        nklient = ""
+        nstoisko = ""
+        npm = ""
+
+    t = 'Lista elementów stoisk przechowywanych dla SDA ' + str(nnazwa)
+
+    if grupa == 'produkcja' or grupa == 'kierownik':
+        rw = False
+
+    # Zamknięcia edycji danych
+    if st == 'cs':
+        sk = Sklad.objects.filter(nr_sde=pk)
+        test = False
+        for s in sk:
+            test = s.status_pracy
+            nmg = s.magazyn
+            sum = s.suma
+            sum_zw = s.suma_zw
+            sum_np = s.suma_np
+            s.status_pracy = False
+            s.blokada_zapisu = True
+            s.save()
+        st = '^'
+
+        if test == True:
+
+            komunikat = 'Edycja zakończona.'
+            log_info = (komunikat + "   MAGAZYN: " + nmg + "   SDE: " + nnazwa + "   TARGI: " + ntargi + "   KLIENT: "
+                        + nklient + "   STOISKO: " + nstoisko + "   KOSZTY: " + str(sum) + "   SUMA_ZW: " + str(sum_zw) + "   SUMA_NP: " + str(sum_np))
+            # LOG.zakonczenie(request, log_info)
+
+            SendInformation(nmg, nnazwa, ntargi, nklient, nstoisko, sum, sum_zw, sum_np, komunikat, npm)
+            test = False
+            fl = False
+
+    if st == 'b1':
+        sk = Sklad.objects.filter(nr_sde=pk)
+        for s in sk:
+            s.blokada_zapisu = True
+            s.save()
+        # LOG.zapis_blokada(request, True)
+        fl = False
+
+    if st == 'b0':
+        sk = Sklad.objects.filter(nr_sde=pk)
+        for s in sk:
+            s.blokada_zapisu = False
+            s.save()
+        # LOG.zapis_blokada(request, False)
+        fl = False
+
+
+    # Główne wywołanie danych
+    sklad = Sklad.objects.filter(nr_sde=pk).order_by('przech_nrpalet')
+
+    # Obliczamy sumy obu pól
+    sumy = sklad.aggregate(
+        suma_kosztow=Sum('koszt_przech'),
+        suma_powierzchni=Sum('przech_pow')
+    )
+
+    # Pobieramy wartości (z obsługą wartości null)
+    suma_kosztow = sumy['suma_kosztow'] or Decimal('0.00')
+    suma_powierzchni = sumy['suma_powierzchni'] or Decimal('0.00')
+
+    # Aktualizujemy wszystkie rekordy jednym zapytaniem
+    sklad.update(
+        suma=suma_kosztow,
+        suma_pow=suma_powierzchni
+    )
+
+    print("SUMA KOSZTÓW / POWIERZCHNI: ", suma_kosztow, " / ", suma_powierzchni)
+
+    try:
+        sklads = sklad.first()
+        nsuma = sklads.suma
+        nsuma_pow = str(sklads.suma_pow) + ' m²'
+        nuwagi = sklads.uwagi
+        ndok_pdf1 = sklads.dok_pdf1.url if sklads.dok_pdf1 else None
+        ndok_pdf2 = sklads.dok_pdf2.url if sklads.dok_pdf2 else None
+        ndok_pdf3 = sklads.dok_pdf3.url if sklads.dok_pdf3 else None
+        ndok_pdf4 = sklads.dok_pdf4.url if sklads.dok_pdf4 else None
+        nfv_pdf1 = sklads.fv_pdf1.url if sklads.fv_pdf1 else None
+    except:
+        # print("*** Błąd odczytu danych do nagłówka")
+        nsuma = '0,00'
+        nsuma_pow = '0,0 m²'
+
+
+    if inicjaly == 'J.S.' or inicjaly == 'D.K.':
+        admin = True
+
+    return render(request, 'COMP_REPO_NEW/comp_detail.html', {
+        'det': pk,
+        'nnazwa': nnazwa,
+        'ntargi': ntargi,
+        'nklient': nklient,
+        'nstoisko': nstoisko,
+        'npm': npm,
+        'nsuma_pow': nsuma_pow,
+        'nsuma': nsuma,
+        'nuwagi': nuwagi,
+        'ndok_pdf1': ndok_pdf1,
+        'ndok_pdf2': ndok_pdf2,
+        'ndok_pdf3': ndok_pdf3,
+        'ndok_pdf4': ndok_pdf4,
+        'nfv_pdf1': nfv_pdf1,
+        'nstatus': nstatus,
+        'mag': mag,
+        'sklad': sklad,
+        'name_log': name_log,
+        'about': about,
+        'title': t,
+        'rw': rw,
+        'sw': sw,
+        'admin': admin,
+        'blokz': blok_z
+    })
+
+
+@login_required(login_url='error')
+def ncomp_add(request, mag):
+    name_log, inicjaly, grupa = test_osoba(request)
+    name_log = request.user.first_name + " " + request.user.last_name
+    about = settings.INFO_PROGRAM
+
+    admin = False
+
+    title = 'Dodawanie nowego towaru.'
+
+    # Pobieramy ID firmy z parametru GET lub sesji, jeśli istnieje
+    firma_id = request.GET.get('firma_id', None)
+    if not firma_id and 'firma_id' in request.session:
+        firma_id = request.session.get('firma_id')
+
+    if request.method == "POST":
+        skladf = SkladForm(request.POST, request.FILES or None)
+        if skladf.is_valid():
+            ps = skladf.save(commit=False)
+
+            ps.blokada_zapisu = False
+
+            ps.save()
+            pk = ps.pk
+
+            return redirect('ncomp_list', mag=mag)
+        else:
+            return render(request, 'COMP_REPO_NEW/comp_add.html', {
+                'mag': mag,
+                'form': skladf,
+                'pk': 0,
+                'edycja': False,
+                'name_log': name_log,
+                'about': about,
+                'admin': admin,
+                'title': title
+            })
+    else:
+        # Przekazujemy ID firmy do formularza przy jego tworzeniu
+        skladf = SkladForm(firma_id=firma_id)
+
+    if inicjaly == 'J.S.' or inicjaly == 'D.K.':
+        admin = True
+
+    return render(request, 'COMP_REPO_NEW/comp_add.html', {
+        'mag': mag,
+        'form': skladf,
+        'pk': 0,
+        'edycja': False,
+        'name_log': name_log,
+        'about': about,
+        'admin': admin,
+        'title': title
+    })
+
+
+@login_required(login_url='error')
+def get_filtered_data(request):
+    """
+    Widok zwracający przefiltrowane dane dla okresu i elementu katalogowego
+    na podstawie wybranej firmy.
+    """
+    firma_id = request.GET.get('firma_id')
+
+    if not firma_id or int(firma_id) <= 1:
+        # Wszystkie rekordy dla indeksu 0 lub 1
+        okresy = []
+        for okres in OkresPrzechowywania.objects.all():
+            okresy.append({
+                'id': okres.id,
+                'display_text': f"{okres.nazwa} ({okres.data_od.strftime('%d.%m.%Y')} - {okres.data_do.strftime('%d.%m.%Y')})"
+            })
+
+        elementy = []
+        for element in ElementKatalogowy.objects.all():
+            elementy.append({
+                'id': element.id,
+                'display_text': f"{element.nazwa} - {element.opis}"
+            })
+    else:
+        # Filtrowanie rekordów dla konkretnej firmy
+        okresy = []
+        for okres in OkresPrzechowywania.objects.filter(firma_id=firma_id):
+            okresy.append({
+                'id': okres.id,
+                'display_text': f"{okres.nazwa} ({okres.data_od.strftime('%d.%m.%Y')} - {okres.data_do.strftime('%d.%m.%Y')})"
+            })
+
+        elementy = []
+        for element in ElementKatalogowy.objects.filter(firma_id=firma_id):
+            elementy.append({
+                'id': element.id,
+                'display_text': f"{element.nazwa} - {element.opis}"
+            })
+
+    return JsonResponse({
+        'okresy': okresy,
+        'elementy': elementy
+    })
+
+
+@login_required(login_url='error')
+def ncomp_edit(request, pk, mag, det):
+    name_log, inicjaly, grupa = test_osoba(request)
+    name_log = request.user.first_name + " " + request.user.last_name
+    about = settings.INFO_PROGRAM
+
+    admin = False
+
+    if inicjaly == 'J.S.' or inicjaly == 'D.K.':
+        admin = True
+
+    sk = Sklad.objects.get(pk=pk)
+
+    bz = sk.blokada_zapisu
+    tst = bz
+
+    skladm = get_object_or_404(Sklad, pk=pk)
+    if request.method == "POST":
+        skladf = SkladForm(request.POST or None, request.FILES or None, instance=skladm)
+        if skladf.is_valid():
+            ps = skladf.save(commit=False)
+            ps.save()
+            return redirect('ncomp_detail', mag=mag, pk=det, st='^')
+        else:
+            # return redirect('error')
+            return render(request, 'COMP_REPO_NEW/comp_add.html', {
+                'mag': mag,
+                'form': skladf,
+                'pk': 0,
+                'edycja': True,
+                'name_log': name_log,
+                'about': about,
+                'admin': admin,
+                'tst': tst,
+                'title': 'Edytowanie towaru.'
+            })
+    else:
+        skladf = SkladForm(instance=skladm)
+
+    return render(request, 'COMP_REPO_NEW/comp_add.html', {
+        'mag': mag,
+        'det': det,
+        'form': skladf,
+        'tst': tst,
+        'pk': pk,
+        'edycja': True,
+        'name_log': name_log,
+        'about': about,
+        'admin': admin,
+        'title': 'Edytowanie towaru.'
+    })
+
+
+@login_required(login_url='error')
+def ncomp_doc_edit(request, mag, det):
+    title = 'Edycja dokumentów.'
+    name_log, inicjaly, grupa = test_osoba(request)
+    name_log = request.user.first_name + " " + request.user.last_name
+    about = settings.INFO_PROGRAM
+    stawka = Money(settings.COMP_REPO_ST, EUR)
+    admin = False
+    if inicjaly == 'J.S.' or inicjaly == 'D.K.':
+        admin = True
+    sk = Sklad.objects.filter(nr_sde=det).first()
+    bz = sk.blokada_zapisu
+    tst = bz
+    skladm = get_object_or_404(Sklad, pk=sk.id)
+    if request.method == "POST":
+        skladf = SkladFormD(request.POST or None, request.FILES or None, instance=skladm)
+        if skladf.is_valid():
+            ps = skladf.save(commit=False)
+
+            # Pobierz uwagi z POST
+            d_uwagi = request.POST.get("uwagi", "")
+
+            # Sprawdź, czy mamy zazanaczone pola "clear" dla plików
+            clear_dok_pdf1 = request.POST.get("dok_pdf1-clear") == "on"
+            clear_dok_pdf2 = request.POST.get("dok_pdf2-clear") == "on"
+            clear_dok_pdf3 = request.POST.get("dok_pdf3-clear") == "on"
+            clear_dok_pdf4 = request.POST.get("dok_pdf4-clear") == "on"
+            clear_fv_pdf1 = request.POST.get("fv_pdf1-clear") == "on"
+
+            # Pobierz pliki z FILES jeśli istnieją
+            d_dok_pdf1 = request.FILES.get("dok_pdf1", None)
+            d_dok_pdf2 = request.FILES.get("dok_pdf2", None)
+            d_dok_pdf3 = request.FILES.get("dok_pdf3", None)
+            d_dok_pdf4 = request.FILES.get("dok_pdf4", None)
+            d_fv_pdf1 = request.FILES.get("fv_pdf1", None)
+
+            # Zapisz zaktualizowany rekord
+            ps.uwagi = d_uwagi
+
+            # Zastosuj pliki lub wyczyść pola
+            if d_dok_pdf1:
+                ps.dok_pdf1 = d_dok_pdf1
+            elif clear_dok_pdf1:
+                ps.dok_pdf1 = None
+
+            if d_dok_pdf2:
+                ps.dok_pdf2 = d_dok_pdf2
+            elif clear_dok_pdf2:
+                ps.dok_pdf2 = None
+
+            if d_dok_pdf3:
+                ps.dok_pdf3 = d_dok_pdf3
+            elif clear_dok_pdf3:
+                ps.dok_pdf3 = None
+
+            if d_dok_pdf4:
+                ps.dok_pdf4 = d_dok_pdf4
+            elif clear_dok_pdf4:
+                ps.dok_pdf4 = None
+
+            if d_fv_pdf1:
+                ps.fv_pdf1 = d_fv_pdf1
+            elif clear_fv_pdf1:
+                ps.fv_pdf1 = None
+
+            ps.save()
+
+            # Zaktualizuj pozostałe rekordy o tym samym nr_sde
+            for skl in Sklad.objects.filter(nr_sde=det).exclude(pk=ps.pk):
+                skl.uwagi = d_uwagi
+
+                # Zastosuj takie same zmiany dla pozostałych rekordów
+                if d_dok_pdf1:
+                    skl.dok_pdf1 = d_dok_pdf1
+                elif clear_dok_pdf1:
+                    skl.dok_pdf1 = None
+
+                if d_dok_pdf2:
+                    skl.dok_pdf2 = d_dok_pdf2
+                elif clear_dok_pdf2:
+                    skl.dok_pdf2 = None
+
+                if d_dok_pdf3:
+                    skl.dok_pdf3 = d_dok_pdf3
+                elif clear_dok_pdf3:
+                    skl.dok_pdf3 = None
+
+                if d_dok_pdf4:
+                    skl.dok_pdf4 = d_dok_pdf4
+                elif clear_dok_pdf4:
+                    skl.dok_pdf4 = None
+
+                if d_fv_pdf1:
+                    skl.fv_pdf1 = d_fv_pdf1
+                elif clear_fv_pdf1:
+                    skl.fv_pdf1 = None
+
+                skl.save()
+
+            return redirect('ncomp_detail', mag=mag, pk=det, st='^')
+        else:
+            return render(request, 'COMP_REPO_NEW/comp_doc_edit.html', {
+                'mag': mag,
+                'form': skladf,
+                'edycja': True,
+                'name_log': name_log,
+                'about': about,
+                'admin': admin,
+                'tst': tst,
+                'title': title
+            })
+    else:
+        skladf = SkladFormD(instance=skladm)
+    return render(request, 'COMP_REPO_NEW/comp_doc_edit.html', {
+        'mag': mag,
+        'det': det,
+        'form': skladf,
+        'tst': tst,
+        'pk': 0,
+        'edycja': True,
+        'name_log': name_log,
+        'about': about,
+        'admin': admin,
+        'title': title
+    })
+
+
+@login_required(login_url='error')
+def ncomp_delete(request, pk, mag, det):
+    Sklad.objects.get(pk=pk).delete()
+    return redirect('ncomp_detail', mag=mag, pk=det, st='^')
+
+# PRZYCISKI Z GÓRNEJ BELKI
+
+def nfirma_list(request, mag, fl):
+    name_log, inicjaly, grupa = test_osoba(request)
+    about = settings.INFO_PROGRAM
+    return render(request, 'COMP_REPO_NEW/comp_firma.html', {
+        'name_log': name_log,
+        'about': about,
+        'mag': mag,
+        'fl': fl
+    })
+
+
+@require_http_methods(["GET", "POST"])
+def nfirma_list_create(request, mag, fl):
+    if request.method == 'GET':
+        firmy = list(Firma.objects.values())
+        return JsonResponse(firmy, safe=False)
+    elif request.method == 'POST':
+        data = json.loads(request.body)
+        try:
+            firma = Firma.objects.create(nazwa=data['nazwa'])
+            #print(f"Received data for POST...")
+            firma.save()
+            return JsonResponse({"id": firma.id, "nazwa": firma.nazwa}, status=201)
+        except Exception as e:
+            return HttpResponse(status=400)
+
+
+@require_http_methods(["GET", "POST"])
+def nfirma_detail(request, pk, mag, fl):
+
+    try:
+        firma = Firma.objects.get(pk=pk)
+    except Firma.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        return JsonResponse({"id": firma.id, "nazwa": firma.nazwa})
+
+    data = json.loads(request.body)
+    action = data.get('action')
+
+    if action == 'update':
+        firma.nazwa = data.get('nazwa', firma.nazwa)
+        firma.save()
+        return JsonResponse({"id": firma.id, "nazwa": firma.nazwa})
+
+    elif action == 'delete':
+        firma.delete()
+        return HttpResponse(status=204)
+
+
+@login_required(login_url='error')
+def nkat_lista(request, mag, st):
+    name_log, inicjaly, grupa = test_osoba(request)
+    about = settings.INFO_PROGRAM
+    t = "Katalog przechowywanych elementów"
+
+    firma = Firma.objects.all().order_by('id')
+
+    try:
+        query = request.GET['SZUKAJ']
+    except:
+        query = ''
+
+    if query != '':
+        search_fields = ['nazwa', 'opis']
+        se = search_filter(search_fields, testQuery(query))
+
+        if st == '0' or st == '1':
+            katalog = ElementKatalogowy.objects.all().filter(se)
+            sw = False
+            opis = ''
+        else:
+            katalog = ElementKatalogowy.objects.filter(firma=st).filter(se)
+            sw = True
+            opis = ' - ' + Firma.objects.get(pk=st).nazwa + ' - ' + query
+    else:
+        if st == '0' or st == '1':
+            katalog = ElementKatalogowy.objects.all()
+            sw = False
+            opis = ''
+        else:
+            katalog = ElementKatalogowy.objects.filter(firma=st)
+            sw = True
+            opis = ' - ' + Firma.objects.get(pk=st).nazwa
+
+    return render(request, 'COMP_REPO_NEW/comp_kat_lista.html', {
+        'st': st,
+        'mag': mag,
+        'katalog': katalog,
+        'name_log': name_log,
+        'about': about,
+        'title': t,
+        'firma': firma,
+        'sw': sw,
+        'opis': opis
+    })
+
+
+@login_required(login_url='error')
+def nkat_add(request, mag, st):
+    name_log, inicjaly, grupa = test_osoba(request)
+    name_log = request.user.first_name + " " + request.user.last_name
+    about = settings.INFO_PROGRAM
+    admin = False
+
+    title = 'Dodawanie nowego elementu.'
+
+    if request.method == "POST":
+        ekf = EKForm(request.POST, request.FILES or None)
+        if ekf.is_valid():
+            ps = ekf.save(commit=False)
+
+            ps.blokada_zapisu = False
+            ps.save()
+            pk = ps.pk
+
+            return redirect('nkat_el', mag=mag, st=st)
+        else:
+            return render(request, 'COMP_REPO_NEW/comp_kat_add.html', {
+                'mag': mag,
+                'st':st,
+                'form': ekf,
+                'pk': 0,
+                'edycja': False,
+                'name_log': name_log,
+                'about': about,
+                'admin': admin,
+                'title': title
+            })
+    else:
+        ekf = EKForm(st=st)
+
+    return render(request, 'COMP_REPO_NEW/comp_kat_add.html', {
+        'mag': mag,
+        'st': st,
+        'form': ekf,
+        'pk': 0,
+        'edycja': False,
+        'name_log': name_log,
+        'about': about,
+        'admin': admin,
+        'title': title
+    })
+
+
+@login_required(login_url='error')
+def nkat_edit(request, pk, mag, st):
+    title = 'Edycja elementu.'
+    name_log, inicjaly, grupa = test_osoba(request)
+    name_log = request.user.first_name + " " + request.user.last_name
+    about = settings.INFO_PROGRAM
+    admin = False
+
+    ekm = get_object_or_404(ElementKatalogowy, pk=pk)
+    if request.method == "POST":
+        ekf = EKForm(request.POST or None, request.FILES or None, instance=ekm)
+        if ekf.is_valid():
+            ps = ekf.save(commit=False)
+            ps.save()
+
+            return redirect('nkat_el', mag=mag, st=st)
+        else:
+            return render(request, 'COMP_REPO_NEW/comp_kat_add.html', {
+                'mag': mag,
+                'st': st,
+                'form': ekf,
+                'pk': pk,
+                'edycja': True,
+                'name_log': name_log,
+                'about': about,
+                'admin': admin,
+                'title': title
+            })
+    else:
+        ekf = EKForm(instance=ekm)
+    return render(request, 'COMP_REPO_NEW/comp_kat_add.html', {
+        'mag': mag,
+        'st': st,
+        'form': ekf,
+        'pk': pk,
+        'edycja': True,
+        'name_log': name_log,
+        'about': about,
+        'admin': admin,
+        'title': title
+    })
+
+
+@login_required(login_url='error')
+def nkat_delete(request, pk, mag, st):
+    ElementKatalogowy.objects.get(pk=pk).delete()
+    return redirect('nkat_el', mag=mag, st=st)
+
+
+@login_required(login_url='error')
+def nokr_lista(request, mag, fl):
+    name_log, inicjaly, grupa = test_osoba(request)
+    about = settings.INFO_PROGRAM
+    title = 'Okresy przechowywania'
+    firma = Firma.objects.all().order_by('id')
+    sw = False
+
+    if fl == '0' or fl == '1':
+        op = OkresPrzechowywania.objects.all()
+        sw = False
+        opis = '.'
+    else:
+        op = OkresPrzechowywania.objects.filter(firma=fl)
+        sw = True
+        opis = ' - ' + Firma.objects.get(pk=fl).nazwa
+
+
+    return render(request, 'COMP_REPO_NEW/comp_okres_list.html', {
+        'name_log': name_log,
+        'about': about,
+        'fl': fl,
+        'title': title,
+        'op': op,
+        'mag': mag,
+        'firma': firma,
+        'opis': opis,
+        'sw': sw
+    })
+
+
+def get_sklad_by_okres(request):
+    """
+    Widok API do pobierania elementów Składu powiązanych z danym Okresem Przechowywania.
+    Zwraca dane w formacie JSON, zgrupowane wg nr_sde z sumowaniem pola suma i powierzchnia.
+    """
+    # Pobierz ID okresu z parametrów GET
+    okres_id = request.GET.get('okres_id')
+
+    if not okres_id:
+        return JsonResponse([], safe=False)
+
+    # Pobierz elementy Składu dla danego okresu
+    wszystkie_sklady = Sklad.objects.filter(okres_id=okres_id)
+
+    # Grupowanie po nr_sde (jeśli nr_sde jest None, traktuj jako oddzielną grupę)
+    sklady_by_sde = {}
+
+    for sklad in wszystkie_sklady:
+        # Użyj ID nr_sde jako klucza, lub 'none' jeśli nr_sde jest None
+        key = sklad.nr_sde.id if sklad.nr_sde else 'none'
+
+        if key not in sklady_by_sde:
+            # Inicjalizacja dla nowego nr_sde
+            nr_sde_nazwa = str(sklad.nr_sde) if sklad.nr_sde else '-'
+            sklady_by_sde[key] = {
+                'nr_sde_id': key,
+                'nr_sde_nazwa': nr_sde_nazwa,
+                'magazyny': set([sklad.magazyn]),  # Używamy set dla unikalnych magazynów
+                'elementy': [],
+                'suma_total': 0,
+                'powierzchnia_total': float(sklad.przech_pow) if sklad.przech_pow else 0
+            }
+        else:
+            # Dodaj magazyn do zbioru unikalnych magazynów
+            sklady_by_sde[key]['magazyny'].add(sklad.magazyn)
+            # Dodaj powierzchnię
+            if sklad.przech_pow:
+                sklady_by_sde[key]['powierzchnia_total'] += float(sklad.przech_pow)
+
+        # Dodaj pojedynczy element
+        sklady_by_sde[key]['elementy'].append({
+            'id': sklad.id,
+            'przech_nazwa': sklad.przech_nazwa,
+            'suma': str(sklad.suma)
+        })
+
+        # Dodajemy wartości do sumy
+        # Konwertujemy Money do float dla obliczeń
+        try:
+            sklady_by_sde[key]['suma_total'] += float(sklad.koszt_przech.amount)
+        except (ValueError, AttributeError):
+            # Ignoruj błędy konwersji - mogą wystąpić jeśli suma to None
+            pass
+
+    # Przygotuj dane do zwrócenia w odpowiedzi JSON
+    data = []
+    for sde_key, sde_data in sklady_by_sde.items():
+        # Formatuj sumy do wyświetlania (z symbolem waluty)
+        waluta = 'EUR'  # Domyślna waluta z modelu
+        if wszystkie_sklady.exists():
+            pierwszy_sklad = wszystkie_sklady.first()
+            waluta = pierwszy_sklad.suma.currency if hasattr(pierwszy_sklad.suma, 'currency') else 'EUR'
+
+        # Dodaj informacje o zgrupowanych Składach do listy
+        data.append({
+            'nr_sde_nazwa': sde_data['nr_sde_nazwa'],
+            'magazyn': ', '.join(sorted(sde_data['magazyny'])),  # Lista magazynów rozdzielonych przecinkami
+            'liczba_elementow': len(sde_data['elementy']),
+            'powierzchnia': f"{sde_data['powierzchnia_total']:.1f} m²",  # Formatowanie z jednym miejscem po przecinku
+            'suma': f"{sde_data['suma_total']:.2f} {waluta}"
+        })
+
+    return JsonResponse(data, safe=False)
+
+
+@login_required(login_url='error')
+def nokr_add(request, mag, fl):
+    name_log, inicjaly, grupa = test_osoba(request)
+    name_log = request.user.first_name + " " + request.user.last_name
+    about = settings.INFO_PROGRAM
+    admin = False
+
+    title = 'Dodawanie nowego okresu.'
+
+    if request.method == "POST":
+        okf = OKForm(request.POST, request.FILES or None)
+        if okf.is_valid():
+            ps = okf.save(commit=False)
+
+            ps.blokada_zapisu = False
+            ps.save()
+            pk = ps.pk
+
+            return redirect('nokr_lista', mag=mag, fl=fl)
+        else:
+            return render(request, 'COMP_REPO_NEW/comp_okr_add.html', {
+                'mag': mag,
+                'fl':fl,
+                'form': okf,
+                'pk': 0,
+                'edycja': False,
+                'name_log': name_log,
+                'about': about,
+                'admin': admin,
+                'title': title
+            })
+    else:
+        okf = OKForm()
+
+    return render(request, 'COMP_REPO_NEW/comp_okr_add.html', {
+        'mag': mag,
+        'fl': fl,
+        'form': okf,
+        'pk': 0,
+        'edycja': False,
+        'name_log': name_log,
+        'about': about,
+        'admin': admin,
+        'title': title
+    })
+
+
+def UpgradeDependence(id):
+    print(">>> ID: ", id)
+    dep = Sklad.objects.filter(okres_id=id)
+    #print(">>> DEP: ", dep)
+
+
+
+
+
+
+@login_required(login_url='error')
+def nokr_edit(request, pk, mag, fl):
+    title = 'Edycja okresu.'
+    name_log, inicjaly, grupa = test_osoba(request)
+    name_log = request.user.first_name + " " + request.user.last_name
+    about = settings.INFO_PROGRAM
+    admin = False
+
+    okm = get_object_or_404(OkresPrzechowywania, pk=pk)
+    if request.method == "POST":
+        okf = OKForm(request.POST or None, request.FILES or None, instance=okm)
+        if okf.is_valid():
+            ps = okf.save(commit=False)
+            ps.save()
+
+            UpgradeDependence(ps.id)
+
+            return redirect('nokr_lista', mag=mag, fl=fl)
+        else:
+            return render(request, 'COMP_REPO_NEW/comp_okr_add.html', {
+                'mag': mag,
+                'fl': fl,
+                'form': okf,
+                'pk': pk,
+                'edycja': True,
+                'name_log': name_log,
+                'about': about,
+                'admin': admin,
+                'title': title
+            })
+    else:
+        okf = OKForm(instance=okm)
+    return render(request, 'COMP_REPO_NEW/comp_okr_add.html', {
+        'mag': mag,
+        'fl': fl,
+        'form': okf,
+        'pk': pk,
+        'edycja': True,
+        'name_log': name_log,
+        'about': about,
+        'admin': admin,
+        'title': title
+    })
+
+
+@login_required(login_url='error')
+def nokr_delete(request, mag, fl, pk):
+    OkresPrzechowywania.objects.get(pk=pk).delete()
+    return redirect('nokr_lista', mag=mag, fl=fl)

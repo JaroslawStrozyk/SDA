@@ -1,0 +1,205 @@
+{% extends "timber_dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+{% endblock %}
+
+
+{% block retbutton %}
+<li>
+    <a class="btn btn-primary" href="{% url 'timber_list' mag=mag fl=fl %}"><font color="white"><i class="fa fa-dashboard fa-fw"></i> Lista towaru</font></a>
+</li>
+{% endblock %}
+
+{% block userlog %}
+                {{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+<br><br>
+{% endblock %}
+
+{% block logo %}
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+{% block style %}
+              a:link.dt, a:visited.dt {
+                         text-decoration: none;
+              }
+              a:hover.dt, a:active.dt {
+                         text-decoration: none;
+                         display: inline-block;
+              }
+
+              #wpz {
+                    color: brown;
+                    font-weight: bold;
+              }
+              #wrz {
+                    color: #a9a9a9;
+              }
+
+              .verticalText{
+                    text-align: center;
+                    vertical-align: middle;
+                    -webkit-transform: rotate(90deg);
+                    -moz-transform: rotate(90deg);
+              }
+              #panel_glowny {
+<!--                    border-color: #5cb85c;-->
+<!--                    color: white;-->
+<!--                    background-color: #8cf88c;-->
+              }
+              #panel_naglowek {
+                    background-color: #6cd86c;
+              }
+              #naglowek > tbody > tr > td{
+                    border: 1px solid #00dd00;
+              }
+
+              #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
+                    color: #fff;
+                    background-color: #595959;
+              }
+
+
+{% endblock %}
+
+
+{% block content %}
+
+
+                <div class="col-lg-12">
+                    <div class="panel panel-green" id="panel_glowny">
+                        <div class="panel-heading">
+                            <table width="100%">
+                                <tr>
+                                    <td style="text-align:center;">
+                                        <font style="font-size:18px;"><strong>{{ title }}</strong></font>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br>
+                            <table width="100%" class="table  table-bordered table-condensed" id="naglowek">
+                                <tr>
+                                    <td style="text-align:center; width:10%;background-color:#229954;"><strong>Nazwa</strong></td>
+                                    <td style="text-align:center; background-color:#1E8449;color:yellow;"><strong>{{ nazwa }}</strong></td>
+                                    <td style="text-align:center; width:10%; background-color:#229954;"><strong>Stan</strong></td>
+                                    <td style="text-align:center; width:10%; background-color:#1E8449;color:yellow;"><strong>{{ stan }}</strong></td>
+                                    <td style="text-align:center; width:10%; background-color:#229954;"><strong>Cena</strong></td>
+                                    <td style="text-align:center; width:10%; background-color:#1E8449;color:yellow;"><strong>{{ cena }}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center; width:16%;background-color:#229954;"><strong>Opis</strong></td>
+                                    <td style="text-align:center;background-color:#1E8449;" colspan="5">{{ opis }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body">
+
+                            <table width="100%">
+                                <tr>
+                                    <td style="text-align:right;">
+                                        {% if fmag %}
+                                          {% if rw %}
+                                            <a href="{% url 'zwrot_add' pk=pk mag=mag fl=fl %}" class="primary btn btn-default">&nbsp;<strong>Nowy wpis</strong> </a>
+                                          {% endif %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </table>
+                            <br>
+
+                            <table width="100%" class="table  table-bordered table-condensed">
+                                <thead>
+                                <tr height="60px">
+                                    <th style="background-color: #8246B4; vertical-align:middle; text-align:center;width:40px;"><font color="#ffff00">ID</font></th>
+                                    <th style="background-color: #8246B4; vertical-align:middle; text-align:center;"><font color="#ffff00">Opis zwrotu</font></th>
+                                    <th style="background-color: #4682B4; vertical-align:middle; text-align:center;width:10%"><font color="#ffff00">Data</font></th>
+                                    <th style="background-color: #B47777; vertical-align:middle; text-align:center;width:30%;"><font color="#ffff00">SDE</font></th>
+                                    <th style="background-color: #5F9EA0; vertical-align:middle; text-align:center;" colspan="2"><font color="#ffff00">Ilość</font></th>
+                                    <th style="background-color: #BA55D3; vertical-align:middle; text-align:center;width:10%;"><font color="#ffff00">Cena</font></th>
+                                    <th style="background-color: #C0C0C0; vertical-align:middle; text-align:center;width:20px;padding:1px;">
+                                        <div class="verticalText">Edycja</div>
+                                    </th>
+                                    <th style="background-color: #C0C0C0; vertical-align:middle; text-align:center;width:20px;padding:1px;">
+                                        <div class="verticalText">Doku.</div>
+                                    </th>
+                                </tr>
+
+                                </thead>
+
+                                  <tbody>
+                                     {% for r in zwrot %}
+                                     <tr>
+                                         <td style="vertical-align:middle; text-align:center; font-weight: bold;color:grey;">{{ r.doc_id }}</td>
+                                         <td style="vertical-align:middle; text-align:center; font-weight: bold;">{{ r.cel }}</td>
+                                         <td style="vertical-align:middle; text-align:center; font-weight: bold;">{{ r.data | date:'d-m-Y' }}</td>
+                                         <td style="vertical-align:middle; text-align:center; font-weight: bold;">
+                                             {% if SDE_None != r.nr_sde %}
+                                                {{ r.nr_sde }}
+                                             {% endif %}
+                                         </td>
+                                         <td style="vertical-align:middle; text-align:center;">{{ r.ilosc }}</td>
+                                         <td style="vertical-align:middle; text-align:center;width:40px;">{{ r.jm }}</td>
+                                         <td style="vertical-align:middle; text-align:right;">{{ r.kwota }}</td>
+                                         <td style="vertical-align:middle; text-align:center;">
+                                             {% if fmag %}
+                                               {% if rw %}
+                                                 <a href="{% url 'zwrot_edit' pk=pk po=r.id mag=mag fl=fl %}">
+                                                     <i class="fa fa-pencil-square-o fa-fw"></i>
+                                                 </a>
+                                               {% endif %}
+                                             {% endif %}
+                                         </td>
+                                         <td style="vertical-align:middle; text-align:center;">
+                                             {% if fmag %}
+                                               <a href="{% url 'dok_pzw_pdf' pk=pk po=r.id %}"><i class="fa fa-file-pdf-o fa-fw"></i></a>
+                                             {% endif %}
+                                         </td>
+                                     </tr>
+                                     {% endfor %}
+                                  </tbody>
+
+
+                            </table>
+
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                </div>
+
+{% endblock %}
+
+
+{% block script %}
+{% endblock %}
+
+
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

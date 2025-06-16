@@ -1,0 +1,283 @@
+{% extends "timber_dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+{% endblock %}
+
+
+{% block retbutton %}
+<li>
+    <a class="btn btn-primary" href="{% url 'timber_list' mag=mag fl=fl %}"><font color="white"><i class="fa fa-dashboard fa-fw"></i> Lista płyt</font></a>
+</li>
+{% endblock %}
+
+{% block userlog %}
+                {{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+<br><br>
+{% endblock %}
+
+{% block logo %}
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+{% block style %}
+              a:link.dt, a:visited.dt {
+                         text-decoration: none;
+              }
+              a:hover.dt, a:active.dt {
+                         text-decoration: none;
+                         display: inline-block;
+              }
+
+              #wpz {
+                    color: brown;
+                    font-weight: bold;
+              }
+              #wrz {
+                    color: #a9a9a9;
+              }
+
+              .verticalText{
+                    text-align: center;
+                    vertical-align: middle;
+                    -webkit-transform: rotate(90deg);
+                    -moz-transform: rotate(90deg);
+              }
+              #panel_glowny {
+<!--                    border-color: #5cb85c;-->
+<!--                    color: white;-->
+<!--                    background-color: #8cf88c;-->
+              }
+              #panel_naglowek {
+                    background-color: #6cd86c;
+              }
+
+              #naglowek > tbody > tr > td{
+                    border: 1px solid #00dd00;
+              }
+                   #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
+                        color: #fff;
+                        background-color: #595959;
+              }
+              .table > tbody > tr:hover {
+                        background-color: #f5f5f5;
+              }
+
+              #nav1, #nav2, #nav3, #nav4 {
+                    color: white;
+                    font-weight: bold;
+                    background-color: #909000;
+              }
+              #nav1:hover, #nav2:hover, #nav3:hover, #nav4:hover {
+                    color: yellow;
+                    font-weight: bold;
+                    background-color: #808000;
+              }
+              #nav5 {
+                    color: white;
+                    font-weight: bold;
+                    background-color: #4169E1;
+              }
+              #nav5:hover {
+                    color: yellow;
+                    font-weight: bold;
+                    background-color: #3159D1;
+              }
+{% endblock %}
+
+
+{% block content %}
+
+
+                <div class="col-lg-12">
+                    <div class="panel panel-green" id="panel_glowny">
+                        <div class="panel-heading">
+                            <table width="100%">
+                                <tr>
+                                    <td style="text-align:center;">
+                                        <font style="font-size:18px;"><strong>{{ title }}</strong></font>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body">
+
+                            <table width="100%" class="table  table-bordered table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th style="border: 1px solid #FFFFFF !important;"></th>
+                                        <th style="vertical-align:middle; text-align:right;color:#DDDDDD;background-color:gray;">{{ m1 }}</th>
+                                        <th style="vertical-align:middle; text-align:right;color:#DDDDDD;background-color:gray;">{{ m2 }}</th>
+                                        <th style="vertical-align:middle; text-align:right;color:#DDDDDD;background-color:gray;">{{ m3 }}</th>
+                                        <th style="vertical-align:middle; text-align:right;color:#DDDDDD;background-color:gray;">{{ m4 }}</th>
+                                        <th style="vertical-align:middle; text-align:right;color:#DDDDDD;background-color:gray;">{{ m5 }}</th>
+                                        <th style="vertical-align:middle; text-align:right;color:#DDDDDD;background-color:gray;">{{ m6 }}</th>
+                                        <th style="vertical-align:middle; text-align:right;color:#DDDDDD;background-color:gray;">{{ m7 }}</th>
+                                        <th style="vertical-align:middle; text-align:right;color:#DDDDDD;background-color:gray;">{{ m8 }}</th>
+                                        <th style="vertical-align:middle; text-align:right;color:#DDDDDD;background-color:gray;">{{ m9 }}</th>
+                                        <th style="vertical-align:middle; text-align:right;color:#DDDDDD;background-color:gray;">{{ m10 }}</th>
+                                        <th style="vertical-align:middle; text-align:right;color:#DDDDDD;background-color:gray;">{{ m11 }}</th>
+                                        <th style="vertical-align:middle; text-align:right;color:#DDDDDD;background-color:gray;">{{ m12 }}</th>
+                                        <th style="border: 1px solid #FFFFFF !important;"></th>
+                                    </tr>
+                                    <tr height="60px">
+                                        <th style="background-color:#229954; vertical-align:middle; text-align:center;"><font color="#ffff00">SDE</font></th>
+                                        <th style="background-color: #BA55D3; vertical-align:middle; text-align:center; width:7%;"><font color="#ffff00">I</font></th>
+                                        <th style="background-color: #BA55D3; vertical-align:middle; text-align:center; width:7%;"><font color="#ffff00">II</font></th>
+                                        <th style="background-color: #BA55D3; vertical-align:middle; text-align:center; width:7%;"><font color="#ffff00">III</font></th>
+                                        <th style="background-color: #BA55D3; vertical-align:middle; text-align:center; width:7%;"><font color="#ffff00">IV</font></th>
+                                        <th style="background-color: #BA55D3; vertical-align:middle; text-align:center; width:7%;"><font color="#ffff00">V</font></th>
+                                        <th style="background-color: #BA55D3; vertical-align:middle; text-align:center; width:7%;"><font color="#ffff00">VI</font></th>
+                                        <th style="background-color: #BA55D3; vertical-align:middle; text-align:center; width:7%;"><font color="#ffff00">VII</font></th>
+                                        <th style="background-color: #BA55D3; vertical-align:middle; text-align:center; width:7%;"><font color="#ffff00">VIII</font></th>
+                                        <th style="background-color: #BA55D3; vertical-align:middle; text-align:center; width:7%;"><font color="#ffff00">IX</font></th>
+                                        <th style="background-color: #BA55D3; vertical-align:middle; text-align:center; width:7%;"><font color="#ffff00">X</font></th>
+                                        <th style="background-color: #BA55D3; vertical-align:middle; text-align:center; width:7%;"><font color="#ffff00">XI</font></th>
+                                        <th style="background-color: #BA55D3; vertical-align:middle; text-align:center; width:7%;"><font color="#ffff00">XII</font></th>
+                                        <th style="background-color: #55BAD3; vertical-align:middle; text-align:center; width:7%;"><font color="#ffff00">SUMA</font></th>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                  {% for r in out %}
+                                     <tr>
+                                         <td style="vertical-align:middle; text-align:center; color:blue"><strong>{{ r.nr_sde.nazwa }}</strong></td>
+                                         <td {% if r.mc1 == zero %}
+                                                style="vertical-align:middle; text-align:right;color:#e0e0e0;"
+                                             {% else %}
+                                                style="vertical-align:middle; text-align:right;color:black;"
+                                             {% endif %}>
+                                             {{ r.mc1 }}</td>
+                                         <td {% if r.mc2 == zero %}
+                                                style="vertical-align:middle; text-align:right;color:#e0e0e0;"
+                                             {% else %}
+                                                style="vertical-align:middle; text-align:right;color:black;"
+                                             {% endif %}>
+                                             {{ r.mc2 }}</td>
+                                         <td {% if r.mc3 == zero %}
+                                                style="vertical-align:middle; text-align:right;color:#e0e0e0;"
+                                             {% else %}
+                                                style="vertical-align:middle; text-align:right;color:black;"
+                                             {% endif %}>
+                                             {{ r.mc3 }}</td>
+                                         <td {% if r.mc4 == zero %}
+                                                style="vertical-align:middle; text-align:right;color:#e0e0e0;"
+                                             {% else %}
+                                                style="vertical-align:middle; text-align:right;color:black;"
+                                             {% endif %}>
+                                             {{ r.mc4 }}</td>
+                                         <td {% if r.mc5 == zero %}
+                                                style="vertical-align:middle; text-align:right;color:#e0e0e0;"
+                                             {% else %}
+                                                style="vertical-align:middle; text-align:right;color:black;"
+                                             {% endif %}>
+                                             {{ r.mc5 }}</td>
+                                         <td {% if r.mc6 == zero %}
+                                                style="vertical-align:middle; text-align:right;color:#e0e0e0;"
+                                             {% else %}
+                                                style="vertical-align:middle; text-align:right;color:black;"
+                                             {% endif %}>
+                                             {{ r.mc6 }}</td>
+                                         <td {% if r.mc7 == zero %}
+                                                style="vertical-align:middle; text-align:right;color:#e0e0e0;"
+                                             {% else %}
+                                                style="vertical-align:middle; text-align:right;color:black;"
+                                             {% endif %}>
+                                             {{ r.mc7 }}</td>
+                                         <td {% if r.mc8 == zero %}
+                                                style="vertical-align:middle; text-align:right;color:#e0e0e0;"
+                                             {% else %}
+                                                style="vertical-align:middle; text-align:right;color:black;"
+                                             {% endif %}>
+                                             {{ r.mc8 }}</td>
+                                         <td {% if r.mc9 == zero %}
+                                                style="vertical-align:middle; text-align:right;color:#e0e0e0;"
+                                             {% else %}
+                                                style="vertical-align:middle; text-align:right;color:black;"
+                                             {% endif %}>
+                                             {{ r.mc9 }}</td>
+                                         <td {% if r.mc10 == zero %}
+                                                style="vertical-align:middle; text-align:right;color:#e0e0e0;"
+                                             {% else %}
+                                                style="vertical-align:middle; text-align:right;color:black;"
+                                             {% endif %}>
+                                             {{ r.mc10 }}</td>
+                                         <td {% if r.mc11 == zero %}
+                                                style="vertical-align:middle; text-align:right;color:#e0e0e0;"
+                                             {% else %}
+                                                style="vertical-align:middle; text-align:right;color:black;"
+                                             {% endif %}>
+                                             {{ r.mc11 }}</td>
+                                         <td {% if r.mc12 == zero %}
+                                                style="vertical-align:middle; text-align:right;color:#e0e0e0;"
+                                             {% else %}
+                                                style="vertical-align:middle; text-align:right;color:black;"
+                                             {% endif %}>
+                                             {{ r.mc12 }}</td>
+                                         <td {% if r.suma == zero %}
+                                                style="vertical-align:middle; text-align:right;color:#e0e0e0;"
+                                             {% else %}
+                                                style="vertical-align:middle; text-align:right;color:brown; font-weight:bold;"
+                                             {% endif %}>
+                                             {{ r.suma }}</td>
+
+                                     </tr>
+                                  {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="panel-footer">
+                            {% if SDE_None != out_np %}
+                            <p align="center">Kwota nie przypisana do SDE: <font color="brown"><strong>{{ out_np }}</strong></font></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+{% endblock %}
+
+
+{% block script %}
+
+        $(document).ready(function() {
+              $('#ONRSDE').select2();
+              $('#ONRSDE').val(null).trigger('change');
+              $('#ONRMPK').select2();
+              $('#ONRMPK').val(null).trigger('change');
+              $('#id_nr_sde').select2();
+              $('#id_nr_mpk').select2();
+        });
+
+
+{% endblock %}
+
+
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

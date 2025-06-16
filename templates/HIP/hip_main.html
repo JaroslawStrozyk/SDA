@@ -1,0 +1,503 @@
+{% extends "dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false" id="sel_uzytkownik">
+                            <i class="fa fa-users fa-fw"></i> &nbsp;Użytkownicy <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                        <li>
+                            <a href="{% url 'hip_start' %}" style="color:gray;">
+                                <i class="fa fa-certificate fa-fw"></i>
+                                Wszystkie Działy
+                            </a>
+                        </li>
+                            <li class="divider"></li>
+                    {% for system in systemy %}
+                        <li><a href="{% url 'hip_filtr' pk=system.pk %}"  style="color:gray;">
+                                <i class="fa fa-certificate fa-fw"></i>
+                                    {{ system.nazwa }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false" id="sel_sprzet">
+                            <i class="fa fa-cogs"></i> &nbsp;Sprzęt <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <a href="{% url 'hip_start' %}" style="color:gray;">
+                                    <i class="fa fa-certificate fa-fw"></i>Całość</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="{% url 'hip_filtr_s' pk='Komputer' %}" style="color:gray;">
+                                    <i class="fa fa-certificate fa-fw"></i>Komputer</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'hip_filtr_s' pk='Monitor' %}" style="color:gray;">
+                                    <i class="fa fa-certificate fa-fw"></i>Monitor</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'hip_filtr_s' pk='Drukarka' %}" style="color:gray;">
+                                    <i class="fa fa-certificate fa-fw"></i>Drukarka</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'hip_filtr_s' pk='Serwer' %}" style="color:gray;">
+                                    <i class="fa fa-certificate fa-fw"></i>Serwer</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'hip_filtr_s' pk='Access Point' %}" style="color:gray;">
+                                    <i class="fa fa-certificate fa-fw"></i>Access Point</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'hip_filtr_s' pk='Router' %}" style="color:gray;">
+                                    <i class="fa fa-certificate fa-fw"></i>Router</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'hip_filtr_s' pk='Switch' %}" style="color:gray;">
+                                    <i class="fa fa-certificate fa-fw"></i>Switch</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'hip_filtr_s' pk='Tablet' %}" style="color:gray;">
+                                    <i class="fa fa-certificate fa-fw"></i>Tablet</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'hip_filtr_s' pk='Czytnik' %}" style="color:gray;">
+                                    <i class="fa fa-certificate fa-fw"></i>Czytnik</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'hip_filtr_s' pk='VOIP' %}" style="color:gray;">
+                                    <i class="fa fa-certificate fa-fw"></i>VOIP</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'hip_filtr_s' pk='RCP' %}" style="color:gray;">
+                                    <i class="fa fa-certificate fa-fw"></i>RCP</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'hip_filtr_s' pk='Inne' %}" style="color:gray;">
+                                    <i class="fa fa-certificate fa-fw"></i>Inne</a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+
+<!--                    {% if admini %}-->
+<!--                    <li class="dropdown">-->
+
+<!--                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">-->
+<!--                            <i class="fa fa-clone fa-fw"></i> &nbsp;Lista programów <i class="fa fa-caret-down"></i>-->
+<!--                        </a>-->
+
+<!--                        <ul class="dropdown-menu dropdown-user">-->
+<!--                            <li><a href="{% url 'hip_lista' pk=1 %}"><i class="fa fa-certificate fa-fw"></i> Microsoft Windows</a></li>-->
+<!--                            <li><a href="{% url 'hip_lista' pk=2 %}"><i class="fa fa-certificate fa-fw"></i> Microsoft Office</a></li>-->
+<!--                            <li class="divider"></li>-->
+<!--                            <li><a href="{% url 'hip_lista' pk=3 %}"><i class="fa fa-certificate fa-fw"></i> Zwcad</a></li>-->
+<!--                            <li><a href="{% url 'hip_lista' pk=4 %}"><i class="fa fa-certificate fa-fw"></i> Corel Draw</a></li>-->
+<!--                            <li><a href="{% url 'hip_lista' pk=5 %}"><i class="fa fa-certificate fa-fw"></i> Adobe Illustrator</a></li>-->
+<!--                            <li><a href="{% url 'hip_lista' pk=6 %}"><i class="fa fa-certificate fa-fw"></i> Adobe Photoshop</a></li>-->
+<!--                            <li><a href="{% url 'hip_lista' pk=7 %}"><i class="fa fa-certificate fa-fw"></i> Autodesk 3dsmax</a></li>-->
+<!--                        </ul>-->
+
+<!--                    </li>-->
+
+<!--                    <li class="dropdown">-->
+<!--                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">-->
+<!--                            <i class="fa fa-clone fa-fw"></i> &nbsp;Lista kont sieciowych <i class="fa fa-caret-down"></i>-->
+<!--                        </a>-->
+<!--                        <ul class="dropdown-menu dropdown-user">-->
+<!--                            <li><a href="{% url 'hip_konta' pk=10 %}"><i class="fa fa-certificate fa-fw"></i> VPN L2TP</a></li>			-->
+<!--                            <li><a href="{% url 'hip_konta' pk=1 %}"><i class="fa fa-certificate fa-fw"></i> VPN PPTP</a></li>-->
+<!--                            <li><a href="{% url 'hip_konta' pk=2 %}"><i class="fa fa-certificate fa-fw"></i> VPN OpenVPN</a></li>-->
+<!--                            <li><a href="{% url 'hip_konta' pk=3 %}"><i class="fa fa-certificate fa-fw"></i> AnyDesk</a></li>-->
+<!--                            <li><a href="{% url 'hip_konta' pk=4 %}"><i class="fa fa-certificate fa-fw"></i> Teamviewer</a></li>-->
+<!--                            <li><a href="{% url 'hip_konta' pk=5 %}"><i class="fa fa-certificate fa-fw"></i> RDC</a></li>-->
+<!--                            <li class="divider"></li>-->
+<!--                            <li><a href="{% url 'hip_konta' pk=6 %}"><i class="fa fa-certificate fa-fw"></i> Samba</a></li>-->
+<!--                            <li><a href="{% url 'hip_konta' pk=7 %}"><i class="fa fa-certificate fa-fw"></i> AFP</a></li>-->
+<!--                            <li><a href="{% url 'hip_konta' pk=11 %}"><i class="fa fa-certificate fa-fw"></i> CRM</a></li>-->
+
+<!--              		    <li class="divider"></li>-->
+<!--			                <li><a href="{% url 'hip_konta' pk=8 %}"><i class="fa fa-certificate fa-fw"></i> iCloud</a></li>-->
+<!--                            <li><a href="{% url 'hip_konta' pk=9 %}"><i class="fa fa-certificate fa-fw"></i> Google Docs</a></li>-->
+<!--                            <li><a href="{% url 'hip_konta' pk=12 %}"><i class="fa fa-certificate fa-fw"></i> Poczta</a></li>-->
+<!--                        </ul>-->
+<!--                    </li>-->
+<!--                {% endif %}-->
+
+{% endblock %} 
+
+
+{% block retbutton %}
+                        <li>
+                            <a href="{% url 'desktop' %}" id="pulpit"><i class="fa fa-dashboard fa-fw"></i> Pulpit</a>
+                        </li>
+{% endblock %}
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+
+{% block logo %}
+                    <!--<table width="100%" height="200" border="0">
+                        <tr>
+                            <td align="center" valign="middle">
+                                <img src="{% static 'img/iconfinder_Keys_58675.png' %}" width="128">
+                            </td>
+                        </tr>
+                    </table>-->
+{% endblock %}
+
+
+
+{% block title %}
+<table width="100%" height="80px"><tr><td style="width:120px;"><img src="{% static 'img/iconfinder_Keys_58675.png' %}" width="80px"></td><td>Hasła i profile</td></tr></table>
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+{% block content %}
+                <style>
+                    .custom-modal {
+                        width: 60%; /* lub inna wartość */
+                    }
+                    #opis_nag1, #opis_nag2, #opis_nag3, #opis_nag4, #opis_nag5, #opis_nag6, #opis_nag7 {
+                        width:140px;
+                        text-align: right;
+                        color: gray;
+                        vertical-align: middle;
+                        font-weight: bold;
+                    }
+
+                    #opis1, #opis2, #opis3, #opis4 {
+                        text-align: center;
+                        color: gray;
+                        vertical-align: middle;
+                    }
+                    #opis5 {
+                        text-align: center;
+                        font-weight: bold;
+                        color: gray;
+                        vertical-align: middle;
+                    }
+
+                    #opis6, #opis7 {
+                        text-align: left;
+                        color: gray;
+                        vertical-align: middle;
+                    }
+
+                     #sel_sprzet {color: #FFFACD;background-color: #6b9bb6;}
+                     #sel_sprzet:hover {color: #FFFACD;background-color: #4b7b96;}
+                     #sel_sprzet:visited {color: #FFFACD;background-color: #6b9bb6;}
+
+                     #sel_uzytkownik {color: #FFFACD;background-color: #57a278;}
+                     #sel_uzytkownik:hover {color: #FFFACD;background-color: #378258;}
+                     #sel_uzytkownik:visited {color: #FFFACD;background-color: #57a278;}
+
+                     #pulpit {color: #FFFACD;background-color:#70665c;}
+                     #pulpit:hover {color: #FFFACD;background-color:#50443a;}
+                     #pulpit:visited {color: #FFFACD;background-color:#70665c;}
+
+                     #stan4 {color: black;background-color:#00ff69;}
+                     #stan4:hover {color: white;background-color:#00cc49;}
+                     #stan4:visited {color: white;background-color:#00ff69;}
+
+                     #stan3 {color: black;background-color:#00dd00;}
+                     #stan3:hover {color: white;background-color:#00bb00;}
+                     #stan3:visited {color: white;background-color:#00dd00;}
+
+                     #stan2 {color: black;background-color:#ffff7d;}
+                     #stan2:hover {color: white;background-color:#cccc7d;}
+                     #stan2:visited {color: white;background-color:#ffff7d;}
+
+                     #stan1 {color: black;background-color:#5ec1f7;}
+                     #stan1:hover {color: white;background-color:#5ea1d7;}
+                     #stan1:visited {color: white;background-color:#5ec1f7;}
+
+                     #stan0 {color: black;background-color:#ff3600;}
+                     #stan0:hover {color: white;background-color:#dd1600;}
+                     #stan0:visited {color: white;background-color:#ff3600;}
+
+                     #serwis {color: yellow;background-color:#ad845b;}
+                     #serwis:hover {color: yellow;background-color:#70665c;}
+                     #serwis:visited {color: yellow;background-color:#ad845b;}
+
+                     #info {color: white;background-color: #f0ad4e;border-color: #eea236;}
+                     #info:hover {color: yellow;background-color: #eea236;border-color: #f0ad4e;}
+                     #info:visited {color: white;background-color: #f0ad4e;border-color: #eea236;}
+
+                     #pp1, #pz1 {color: white;background-color: #aaaaaa;border-color: #999999;}
+                     #pp1:hover, #pz1:hover {color: white;background-color: #999999;border-color: #888888;}
+                     #pp1:visited, #pz1:visited {color: white;background-color: #aaaaaa;border-color: #999999;}
+
+                     #pp2, #pz2 {color: white;background-color: #00aa00;border-color: #009900;}
+                     #pp2:hover, #pz2:hover {color: white;background-color: #009900;border-color: #008800;}
+                     #pp2:visited, #pz2:visited {color: white;background-color: #00aa00;border-color: #009900;}
+
+                     #ed1 {color: white;background-color: #1E90FF;border-color: #4169E1;}
+                     #ed1:hover {color: white;background-color: #6495ED;border-color: #4169E1;}
+                     #ed1:visited {color: white;background-color: #1E90FF;border-color: #4169E1;}
+
+                </style>
+
+                <div class="col-lg-12">
+                    <div class="panel panel-green" id="panel_glowny">
+                        <div class="panel-heading">
+                                            <table width="100%">
+                                                <tr>
+                                                    <td style="width:250px;">
+                                                            <form metod="GET" action="{% url 'hip_search' %}">
+                                                                {% csrf_token %}
+                                                                <div class="input-group custom-search-form">
+                                                                    <input type="text" name="SZUKAJ" class="form-control" placeholder="Szukaj...">
+                                                                    <span class="input-group-btn">
+                                                                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                                                                    </span>
+                                                                </div>
+                                                            </form>
+                                                    </td>
+                                                    <td align="center">
+                                                        <font size="+1"><strong>{{ tytul_tabeli }}</strong></font>
+                                                    </td>
+                                                    <td align="right" width="150px;">
+                                                        <a href="{% url 'hip_new_sprzet' %}" class="primary btn btn-danger">&nbsp;<font color="#FFFACD"><strong>Nowy wpis</strong></font> </a>&nbsp;&nbsp;<a href="#" data-toggle="modal" data-target="#pomoc" class="primary btn btn-info"><font color="#ffffff"><strong>?</strong></font> </a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                             <div class="modal fade" id="pomoc" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                 <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                         <div class="modal-header">
+                                                             <span class="modal-title" id="exampleModalLongTitlex" style="color:#000000;"><strong>POMOC</strong></span>
+                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                             </button>
+                                                         </div>
+                                                         <div class="modal-body">
+                                                             <table width="100%" style="color:#000000;">
+                                                                 <tr><td colspan="4" height="40" style="text-align:center; background:#eeeeee;"><strong>Stan sprzętu:</strong></td></tr>
+                                                                 <tr><td colspan="4">&nbsp;</td></tr>
+                                                                 <tr><td width="50"></td><td style="vertical-align:middle;text-align: center;background-color:#00ff69;" width="40" height="40"><i class="fa fa-thumbs-o-up fa-fw"></i></td><td width="10"></td><td>Nowy z gwarancją.</td></tr>
+                                                                 <tr><td></td><td style="vertical-align:middle;text-align: center;background-color:#00dd00;" width="40" height="40"><i class="fa fa-thumbs-o-up fa-fw"></i></td><td width="10"></td><td>Bardzo dobry.</td></tr>
+                                                                 <tr><td></td><td style="vertical-align:middle;text-align: center;background-color:#ffff7d;" width="40" height="40"><i class="fa fa-thumbs-o-up fa-fw"></i></td><td width="10"></td><td>Dobry.</td></tr>
+                                                                 <tr><td></td><td style="vertical-align:middle;text-align: center;background-color:#5ec1f7;" width="40" height="40"><i class="fa fa-thumbs-o-up fa-fw"></i></td><td width="10"></td><td>Dostateczny</td></tr>
+                                                                 <tr><td></td><td style="vertical-align:middle;text-align: center;background-color:#ff3600;" width="40" height="40"><i class="fa fa-thumbs-o-up fa-fw"></i></td><td width="10"></td><td>Do kasacji lub uszkodzony.</td></tr>
+                                                                 <tr><td></td><td style="vertical-align:middle;text-align: center;background-color:#ffffff;" width="40" height="40">n/d</td><td width="10"></td><td>Nie dotyczy.</td></tr>
+                                                             </table>
+                                                         </div>
+                                                         <div class="modal-footer">
+                                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                         </div>
+                                                    </div>
+                                                 </div>
+                                             </div>
+
+                        </div>
+                        <div class="panel-body">
+                                     <table width="100%" class="table table-striped table-condensed table-bordered">
+                                        <thead>
+                                        <tr height="60px">
+                                            <th style="background-color: #6b9bb6; vertical-align:middle; text-align:center; color:#FFFACD;">Użytkownik</th>
+                                            <th style="background-color: #57a278; vertical-align:middle; text-align:center; color:#FFFACD;">Host</th>
+                                            <th style="background-color: #ad845b; vertical-align:middle; text-align:center; color:#FFFACD;">Typ sprzętu</th>
+                                            <th style="background-color: #ad845b; vertical-align:middle; text-align:center; color:#FFFACD;">Nr ser. sprzętu</th>
+                                            <th style="background-color: #8c847c; vertical-align:middle; text-align:center; color:#FFFACD;">Nazwa sieć</th>
+                                            <th style="background-color: #6a6a6a; vertical-align:middle; text-align:center; color:#FFFACD;width:200px;">Obsługa sprzętu</th>
+                                            <th style="background-color: #ae5dc2; vertical-align:middle; text-align:center; color:#FFFACD;width:300px;">Operacje</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                     {% for sprzet in sprzety %}
+                                     <tr>
+                                         <td style="vertical-align:middle; font-weight:bold;">
+                                             {% if admini %}
+                                                <a {% if admini %} href="{% url 'hip_detail' pk=sprzet.pk %}" {% else %} href="#" {% endif %}>
+                                                    <font style="color:#ad845b;">{{ sprzet.usr }}</font>
+                                                </a>
+                                             {% else %}
+                                                <font style="color:#ad845b;">{{ sprzet.usr }}</font>
+                                             {% endif %}
+                                         </td>
+                                         <td style="vertical-align:middle; text-align:center;color:gray;">{{ sprzet.host }}</td>
+                                         <td style="vertical-align:middle; text-align:center;color:gray;">{{ sprzet.typ }}</td>
+                                         <td style="vertical-align:middle; text-align:center;color:gray;">{{ sprzet.snk }}</td>
+                                         <td style="vertical-align:middle; text-align:center;color:gray;">{{ sprzet.nazwa_siec }}</td>
+                                         <td style="vertical-align:middle; text-align:center;">
+
+                                             {% if sprzet.stan >= 0 %}
+
+<!--                                                 <a id="info" type="button" class="btn btn-xs" href="#" data-toggle="modal" data-target="#ST{{ sprzet.id }}"><i class="fa fa-info fa-fw"></i>Info</a>-->
+
+                                                 {% if   sprzet.stan == 4 %}
+                                                 <a id="stan4" type="button" class="btn btn-xs" href="#" data-toggle="modal" data-target="#ST{{ sprzet.id }}">&nbsp;&nbsp;<i class="fa fa-thumbs-o-up fa-fw"></i>Stan&nbsp;&nbsp;</a>
+                                                 {% elif sprzet.stan == 3 %}
+                                                 <a id="stan3" type="button" class="btn btn-xs" href="#" data-toggle="modal" data-target="#ST{{ sprzet.id }}">&nbsp;&nbsp;<i class="fa fa-thumbs-o-up fa-fw"></i>Stan&nbsp;&nbsp;</a>
+                                                 {% elif sprzet.stan == 2 %}
+                                                 <a id="stan2" type="button" class="btn btn-xs" href="#" data-toggle="modal" data-target="#ST{{ sprzet.id }}">&nbsp;&nbsp;<i class="fa fa-thumbs-o-up fa-fw"></i>Stan&nbsp;&nbsp;</a>
+                                                 {% elif sprzet.stan == 1 %}
+                                                 <a id="stan1" type="button" class="btn btn-xs" href="#" data-toggle="modal" data-target="#ST{{ sprzet.id }}">&nbsp;&nbsp;<i class="fa fa-thumbs-o-up fa-fw"></i>Stan&nbsp;&nbsp;</a>
+                                                 {% elif sprzet.stan == 0 %}
+                                                 <a id="stan0" type="button" class="btn btn-xs" href="#" data-toggle="modal" data-target="#ST{{ sprzet.id }}">&nbsp;&nbsp;<i class="fa fa-thumbs-o-up fa-fw"></i>Stan&nbsp;&nbsp;</a>
+                                                 {% endif %}
+
+                                                 <a id="serwis" type="button" class="btn btn-xs" href="{% url 'hip_serwis' pk=sprzet.id %}">&nbsp;&nbsp;<i class="fa fa-wrench fa-fw"></i>Serwis&nbsp;&nbsp;</a>
+
+                                             {% endif %}
+                                             <!-- -->
+                                             <!-- -->
+                                             <div class="modal fade" id="ST{{ sprzet.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                 <div class="modal-dialog modal-dialog-centered custom-modal" role="document"> <!--   modal-dialog-centered modal-lg-->
+                                                    <div class="modal-content">
+                                                         <div class="modal-header"
+                                                                   {% if   sprzet.stan == 4 %} style="vertical-align:middle;text-align: center;background-color:#00ff69;"
+                                                                   {% elif sprzet.stan == 3 %} style="vertical-align:middle;text-align: center;background-color:#00dd00;"
+                                                                   {% elif sprzet.stan == 2 %} style="vertical-align:middle;text-align: center;background-color:#ffff7d;"
+                                                                   {% elif sprzet.stan == 1 %} style="vertical-align:middle;text-align: center;background-color:#5ec1f7;"
+                                                                   {% elif sprzet.stan == 0 %} style="vertical-align:middle;text-align: center;background-color:#ff3600;"
+                                                                   {% endif %}
+                                                         >
+                                                             <span class="modal-title" id="exampleModalLongTitle1"><strong>Opis stanu sprzętu</strong></span>
+                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                             </button>
+                                                         </div>
+                                                         <div class="modal-body">
+                                                             <table width="100%" class="table table-striped table-bordered">
+                                                                 <tr>
+                                                                     <td id="opis_nag1">UŻYTKOWNIK</td><td id="opis1">{{ sprzet.usr }}</td>
+                                                                     <td rowspan="5" align="right" bgcolor="#ffffff" width="400">
+                                                                        {% if sprzet.zdj == "" %}
+                                                                        <img src="{% static 'img/brak.png' %}" height="200"/>
+                                                                        {% else %}
+                                                                        <img src="{{ sprzet.zdj.url }}" height="200"/>
+                                                                        {% endif %}
+                                                                     </td>
+                                                                 </tr>
+                                                                 <tr><td id="opis_nag2">SPRZĘT</td><td id="opis2">{{ sprzet.typ }}</td></tr>
+                                                                 <tr><td id="opis_nag3">HISTORIA</td><td id="opis3">{{ sprzet.historia }}</td></tr>
+                                                                 <tr><td id="opis_nag4">GWARANCJA DO</td><td id="opis4">{{ sprzet.gw|date:'Y-m-d' }}</td></tr>
+                                                                 <tr><td id="opis_nag5">STAN SPRZĘTU</td><td id="opis5">
+                                                                     {% if sprzet.stan == 4 %} Nowy z gwarancją.
+                                                                     {% elif sprzet.stan == 3 %}Bardzo dobry.
+                                                                     {% elif sprzet.stan == 2 %}Dobry.
+                                                                     {% elif sprzet.stan == 1 %}Dostateczny.
+                                                                     {% elif sprzet.stan == 0 %}Do kasacji lub uszkodzony.
+                                                                     {% endif %}
+                                                                 </td></tr>
+                                                                 <tr><td id="opis_nag6">OPIS</td><td colspan="2" id="opis6">{{ sprzet.opis|linebreaks }}</td></tr>
+                                                                 <tr><td id="opis_nag7">UWAGI</td><td colspan="2" id="opis7">{{ sprzet.uwagi|linebreaks }}</td></tr>
+                                                             </table>
+                                                         </div>
+                                                         <div class="modal-footer">
+                                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                         </div>
+                                                    </div>
+                                                 </div>
+                                             </div>
+                                             <!-- -->
+                                             <!-- -->
+
+                                         </td>
+
+                                         <td style="vertical-align:middle; text-align:center;">
+
+                                             {% if sprzet.doc == "" %}
+                                                        <a id="pp1" type="button" class="btn btn-xs" href="{% url 'hip_sprzet_pp' pk=sprzet.id %}">&nbsp;&nbsp;<i class="fa fa-asterisk fa-fw"></i>P.P.&nbsp;&nbsp;</a>
+                                             {% else %}
+                                                        <a id="pp2" type="button" class="btn btn-xs" href="{{ sprzet.doc.url }}">&nbsp;&nbsp;<i class="fa fa-file-pdf-o  fa-fw"></i>P.P.&nbsp;&nbsp;</a>
+                                             {% endif %}
+
+                                             {% if sprzet.docz == "" %}
+                                                         <a id="pz1" type="button" class="btn btn-xs" href="{% url 'hip_sprzet_pz' pk=sprzet.id %}">&nbsp;&nbsp;<i class="fa fa-asterisk fa-fw"></i>P.Z.&nbsp;&nbsp;</a>
+                                             {% else %}
+                                                         <a id="pz2" type="button" class="btn btn-xs" href="{{ sprzet.docz.url }}">&nbsp;&nbsp;<i class="fa fa-file-pdf-o  fa-fw"></i>P.Z.&nbsp;&nbsp;</a>
+                                             {% endif %}
+                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                             <a  id="ed1" type="button" class="btn btn-xs" href="{% url 'hip_edit_sprzet' pk=sprzet.id %}">&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-fw"></i>Edycja&nbsp;&nbsp;</a>
+
+                                         </td>
+                                     </tr>
+                                     {% endfor %}
+                                        </tbody>
+                                    </table>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                </div>
+
+<script>
+
+var sortDirection = 1; // 1 dla A do Z, -1 dla Z do A
+
+function sortTable(column) {
+    var table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("myTable");
+    switching = true;
+    while (switching) {
+        switching = false;
+        rows = table.rows;
+        for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[column];
+            y = rows[i + 1].getElementsByTagName("TD")[column];
+            if (sortDirection == 1) {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            } else if (sortDirection == -1) {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+        }
+        if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
+    // Zmiana kierunku sortowania dla następnego kliknięcia
+    sortDirection *= -1;
+}
+
+
+
+</script>
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

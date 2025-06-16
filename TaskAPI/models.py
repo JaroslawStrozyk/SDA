@@ -3,11 +3,39 @@ from django.utils import timezone
 from djmoney.models.fields import MoneyField
 
 
+
+class Katalog(models.Model):
+    nazwa = models.CharField(max_length=200, verbose_name="Nazwa")
+    opis  = models.CharField(max_length=200, verbose_name="Opis", blank=True)
+
+    def __str__(self):
+        return self.nazwa
+
+    class Meta:
+        verbose_name = "Katalog"
+        verbose_name_plural = "Katalogi"
+
+
+class Plik(models.Model):
+    nazwa = models.CharField(max_length=200, verbose_name="Nazwa")
+    katalog = models.ForeignKey(Katalog, verbose_name="Katalog", max_length=100, on_delete=models.SET_NULL, null=True, blank=True)
+    dokument = models.FileField(upload_to='wdokumenty', verbose_name="Dokument", blank=True)
+    form = models.BooleanField(default=False, verbose_name="Formularz")
+
+    def __str__(self):
+        return self.nazwa
+
+    class Meta:
+        verbose_name = "Plik"
+        verbose_name_plural = "Pliki"
+
+
+
 class Asp(models.Model):
     cel    = models.IntegerField(default=0, verbose_name="CEL")
     adres  = models.CharField(max_length=200, verbose_name="ADRES")
     tytul  = models.CharField(max_length=200, verbose_name="TYTUŁ", blank=True)
-    info   = models.CharField(max_length=5000, verbose_name="INFO")
+    info   = models.CharField(max_length=12000, verbose_name="INFO")
     data   = models.DateTimeField(default=timezone.now, verbose_name="DATA WPROWADZENIA")
 
     def __str__(self):
@@ -38,7 +66,6 @@ class Waluta(models.Model):
 class Log(models.Model):
     data = models.CharField(max_length=200, verbose_name="Data i Czas")
     modul = models.CharField(max_length=200, verbose_name="Moduł")
-    usr = models.CharField(max_length=200, verbose_name="Użytkownik")
     uwagi = models.CharField(max_length=200, verbose_name="Uwagi")
 
 

@@ -1,0 +1,478 @@
+{% extends "timber_dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+<ul class="nav nav-pills">
+    <li style="font-weight:bold;"><a href="{% url 'sklad_multi' mag=mag fl='1' %}" id="EWU">ELEMENTY WIELOKROTNEGO UŻYTKU</a></li>
+</ul>
+{% endblock %}
+
+
+{% block retbutton %}
+<li>
+    <a class="btn btn-primary" href="{% url 'desktop' %}"><font color="white"><i class="fa fa-dashboard fa-fw"></i> Pulpit</font></a>
+</li>
+{% endblock %}
+
+{% block userlog %}
+                {{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+<br><br>
+{% endblock %}
+
+{% block logo %}
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+{% block style %}
+            a:link.dt, a:visited.dt {
+                     text-decoration: none;
+            }
+            a:hover.dt, a:active.dt {
+                     text-decoration: none;
+                     display: inline-block;
+            }
+
+            #EWU:link, #EWU:visited {
+                color: #FFFACD;
+                background-color: #70665c;
+                border-color: #70665c;
+            }
+
+            #EWU:hover {
+                color: #FFFACD;
+                background-color: #60564c;
+                border-color: #60564c;
+            }
+
+            #wpz {
+                color: brown;
+                font-weight: bold;
+            }
+            #wrz {
+                color: #a9a9a9;
+            }
+
+            .verticalText{
+                text-align: center;
+                vertical-align: middle;
+                -webkit-transform: rotate(90deg);
+                -moz-transform: rotate(90deg);
+            }
+            #panel_glowny {
+<!--                    border-color: #5cb85c;-->
+<!--                    color: white;-->
+<!--                    background-color: #8cf88c;-->
+            }
+            #panel_naglowek {
+                background-color: #6cd86c;
+            }
+
+            .nav-pills>li.active>a, .nav-pills>li.active>a:focus {
+                color: #fff;
+                background-color: #d43f3a;
+            }
+            .nav-pills>li.active>a:hover {
+                color: #fff;
+                background-color: #595959;
+            }
+
+            .nav-pills>li>a {
+                color: #fff;
+                background-color: #a5a5a5;
+            }
+            .nav-pills>li>a:hover {
+                color: #fff;
+                background-color: #595959;
+            }
+            #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
+                color: #fff;
+                background-color: #595959;
+            }
+
+            #l_zest:link, #l_zest:visited {
+                 color: brown;
+            }
+            #l_zest:hover {
+                 color: red;
+            }
+
+            #l_ed:link, #l_ed:visited {
+                 color: #6C3483;
+            }
+            #l_ed:hover {
+                 color: #4A235A;
+            }
+            .table > tbody > tr:hover {
+                        background-color: #f5f5f5;
+            }
+            #in_stawka {
+                 text-align: center;
+            }
+{% endblock %}
+
+
+{% block content %}
+
+                <div class="col-lg-12">
+                    <div class="panel panel-green" id="panel_glowny">
+                        <div class="panel-heading">
+                            <table width="100%">
+                                <tr>
+                                    <td width="250px" style="background-color: #5cb85c;">
+                                        <form metod="GET" action="{% url 'sklad_list' mag=mag %}">
+                                            {% csrf_token %}
+                                            <div class="input-group custom-search-form">
+                                                <input type="text" name="SZUKAJ" class="form-control" placeholder="Szukaj...">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                                                </span>
+                                            </div>
+                                        </form>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        {% if sw %}
+                                            <font style="font-size:18px;"><strong>{{ title }}</strong></font>
+                                             [ <font style="font-size:12px;"><strong>{{ opis }}</strong></font> ]
+                                        {% else %}
+                                            <font style="font-size:18px;"><strong>{{ title }}</strong></font>
+                                        {% endif %}
+                                    </td>
+                                    <td width="50px" align="right">
+                                        <a href="#" data-toggle="modal" data-target="#HELP_HELP" class="btn btn-default">
+                                            <font color="blue">Info</font>
+                                        </a>
+                                    </td>
+                                    <td width="10px">
+
+                                    </td>
+                                    <td width="100px">
+                                        {% if rw %}
+                                        <a href="{% url 'sklad_add' mag=mag %}" class="primary btn btn-danger">
+                                            &nbsp;<strong><font color="yellow">Nowy element</font></strong>
+                                        </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body">
+
+                            <table width="100%" class="table  table-bordered"> <!--  table-condensed -->
+                                <thead>
+                                <tr style="height:40px;">
+                                    <th rowspan="2" style="background-color: #4682B4; vertical-align:middle; text-align:center;color:#ffff00;width:40px;padding: 1px;">
+                                        <div class="verticalText">DETAL.</div>
+                                    </th>
+                                    <th colspan="5" style="background-color: #4682B4; vertical-align:middle; text-align:center;color:#ffff00;">PRZECHOWUJEMY DLA</th>
+                                    <th colspan="2" style="background-color: #4682B4; vertical-align:middle; text-align:center;color:#ffff00;">DATA</th>
+
+                                    <th rowspan="2" style="background-color: #4682B4; vertical-align:middle; text-align:center;color:#ffff00;padding: 1px;">
+                                        PM
+                                    </th>
+                                    <th rowspan="2" style="background-color: #4682B4; vertical-align:middle; text-align:center;color:#ffff00;width:40px;padding: 1px;">
+                                        <div class="verticalText">KOSZTY<br>I POWIE</div>
+                                    </th>
+                                    <th rowspan="2" style="background-color: #4682B4; vertical-align:middle; text-align:center;color:#ffff00;width:40px;padding: 1px;">
+                                        <div class="verticalText">STATUS</div>
+                                    </th>
+                                    <th rowspan="2" style="background-color: #4682B4; vertical-align:middle; text-align:center;color:#ffff00;width:40px;padding: 1px;">
+                                        <div class="verticalText">EKSPORT</div>
+                                    </th>
+                                    <th rowspan="2" style="background-color: #4682B4; vertical-align:middle; text-align:center;color:#ffff00;width:40px;padding: 1px;">
+                                        <div class="verticalText">STAWKA</div>
+                                    </th>
+                                    </tr>
+                                    <tr style="height:40px;">
+                                        <th style="background-color: #4682B4; vertical-align:middle; text-align:center;color:#ffff00;">NAZWA</th>
+                                        <th style="background-color: #4682B4; vertical-align:middle; text-align:center;color:#ffff00;">TARGI</th>
+                                        <th style="background-color: #4682B4; vertical-align:middle; text-align:center;color:#ffff00;">KLIENT</th>
+                                        <th style="background-color: #4682B4; vertical-align:middle; text-align:center;color:#ffff00;">STOISKO</th>
+                                        <th style="background-color: #4682B4; vertical-align:middle; text-align:center;color:#ffff00;">MAGAZYN</th>
+                                        <th style="background-color: #4682B4; vertical-align:middle; text-align:center;color:#ffff00;">OD</th>
+                                        <th style="background-color: #4682B4; vertical-align:middle; text-align:center;color:#ffff00;">DO</th>
+                                    </tr>
+                                </tr>
+
+                                </thead>
+                                <tbody>
+                                {% for s in sklad %}
+                                    <tr>
+                                        <td style="vertical-align:middle; text-align:center;">
+                                            {% if s.nr_sde %}
+                                                <a href="{% url 'sklad_detail' pk=s.nr_sde.pk mag=mag st=st_pr %}" style="color:brown;"><i class="fa fa-list-alt"></i></a>
+                                            {% else %}
+                                                <a href="{% url 'sklad_detail' pk=0 mag=mag st=st_pr %}" style="color:brown;"><i class="fa fa-list-alt"></i></a>
+                                            {% endif %}
+                                        </td>
+                                        <td style="vertical-align:middle; text-align:center;">{{ s.nr_sde.nazwa }}</td>
+                                        <td style="vertical-align:middle; text-align:center;">{{ s.nr_sde.targi }}</td>
+                                        <td style="vertical-align:middle; text-align:center;">{{ s.nr_sde.klient }}</td>
+                                        <td style="vertical-align:middle; text-align:center;">{{ s.nr_sde.stoisko }}</td>
+                                        <td style="vertical-align:middle; text-align:center;color: gray;font-style: italic;">{{ s.magazyn_opis }}</td>
+                                        <td style="vertical-align:middle; text-align:center;">{{ s.czas_od|date:'d.m.Y' }}</td>
+                                        <td {% if s.status == 2 %}
+                                                style="vertical-align:middle; text-align:center;background-color: #FFCCCC;"
+                                            {% elif s.status == 1 %}
+                                                style="vertical-align:middle; text-align:center;background-color: #FFFFCC;"
+                                            {% elif s.status == 0 %}
+                                                style="vertical-align:middle; text-align:center;background-color: #CCFFCC;"
+                                            {% endif %}
+                                        >
+                                            {{ s.czas_do|date:'d.m.Y' }}
+                                        </td>
+                                        <td style="vertical-align:middle; text-align:center;">{{ s.nr_sde.pm }}</td>
+                                        <td style="vertical-align:middle; text-align:center;">
+                                            <a href="#" data-toggle="modal" data-target="#CASH{{ s.id }}"><i class="fa fa-money" style="color:brown;"></i></a>
+
+                                            <div class="modal fade" id="CASH{{ s.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                     <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                             <div class="modal-header">
+                                                                 <span class="modal-title" id="exampleModalLongTitle2" style="color:brown;">
+                                                                     {% if s.nr_sde %}
+                                                                     <strong>{{ s.nr_sde.nazwa }}</strong>, <i>{{ s.nr_sde.targi }}, {{ s.nr_sde.klient }},</i> {{ s.nr_sde.stoisko }}
+                                                                     {% else %}
+                                                                     <strong>???</strong>
+                                                                     {% endif %}
+                                                                 </span>
+                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                 </button>
+                                                             </div>
+                                                             <div class="modal-body">
+
+                                                                 <br>
+                                                                 <table class="table table-bordered table-condensed">
+                                                                     <tr>
+                                                                         <th style="background:#FFFACD; text-align:center;">Całkowita powierzchnia przechowywania</th> <!--  colspan="3" -->
+                                                                         <td style="text-align:right;font-weight:bold;">{{ s.suma_pow }} m²</td>
+                                                                     </tr>
+                                                                     <tr>
+                                                                         <th style="background:#FFFACD; text-align:center;">Całkowity koszt przechowania dla [{{ s.nr_sde.nazwa }}]</th> <!--  colspan="3" -->
+                                                                         <td style="text-align:right;font-weight:bold;color:brown;">{{ s.suma }}</td>
+                                                                     </tr>
+<!--                                                                 </table>-->
+<!--                                                                 <table class="table table-bordered table-condensed">-->
+                                                                     <tr>
+                                                                         <th style="background:#FAEBD7; text-align:center;color:gray;">Suma zwolniona dla [{{ s.nr_sde.nazwa }}] </th> <!--  colspan="3" -->
+                                                                         <td style="text-align:right;font-weight:bold;color:green;">{{ s.suma_zw }}</td>
+                                                                     </tr>
+                                                                     <tr>
+                                                                         <th style="background:#FAEBD7; text-align:center;color:gray;">Suma nieprzypisana dla [{{ s.nr_sde.nazwa }}]</th> <!--  colspan="3" -->
+                                                                         <td style="text-align:right;font-weight:bold;color:red;">{{ s.suma_np }}</td>
+                                                                     </tr>
+                                                                 </table>
+                                                                 </p>
+
+                                                             </div>
+                                                             <div class="modal-footer" style="background-color: #eeeeee;">
+                                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                             </div>
+                                                        </div>
+                                                     </div>
+                                                 </div>
+
+                                        </td>
+                                        <td {% if s.flaga_op == 2 %}
+                                                style="vertical-align:middle; text-align:center;background-color: #CCFFCC;"
+                                            {% elif s.flaga_op == 1 %}
+                                                style="vertical-align:middle; text-align:center;background-color: #CCFFCC;"
+                                            {% else %}
+                                                style="vertical-align:middle; text-align:center;background-color: #FFFFCC;"
+                                            {% endif %}
+                                        > <!-- #99FF99; -->
+                                            {% if s.flaga_op == 2 %}
+                                                <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                            {% elif s.flaga_op == 1 %}
+                                                <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                            {% else %}
+                                                &nbsp;
+                                            {% endif %}
+                                        </td>
+
+
+                                        <td style="vertical-align:middle; text-align:center;">
+                                            {% if s.nr_sde %}
+                                            <a href="{% url 'sklad_pdf' pk=s.pk mag=mag %}" style="color:brown;"  title="Pełen PDF">
+                                                <i class="fa fa-file-pdf-o"></i>
+                                            </a>
+                                            {% endif %}
+                                            &nbsp;
+                                            {% if s.nr_sde %}
+                                            <a href="{% url 'sklad_pdf_bc' pk=s.pk mag=mag %}" style="color:blue;"  title="PDF bez cen">
+                                                <i class="fa fa-file-pdf-o"></i>
+                                            </a>
+                                            {% endif %}
+                                        </td>
+                                        <td style="vertical-align:middle; text-align:center;">
+                                            {% if admin %}
+                                                <a href="#" data-toggle="modal" data-target="#STAWKA{{ s.id }}">
+                                                    <i class="fa fa-pencil-square-o fa-fw" style="color:brown;"></i>
+                                                </a>
+                                            {% else %}
+<!--                                                <a href="#" data-toggle="modal" data-target="#STAWKA{{ s.id }}">-->
+                                                    <i class="fa fa-pencil-square-o fa-fw" style="color:grey;"></i>
+<!--                                                </a>-->
+                                            {% endif %}
+<!-- -->
+                                                <div class="modal fade" id="STAWKA{{ s.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                     <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                             <div class="modal-header">
+                                                                 <span class="modal-title" id="exampleModalLongTitle4" style="color:brown;">
+                                                                     {% if s.nr_sde %}
+                                                                     <strong>{{ s.nr_sde.nazwa }}</strong>, <i>{{ s.nr_sde.targi }}, {{ s.nr_sde.klient }},</i> {{ s.nr_sde.stoisko }}
+                                                                     {% else %}
+                                                                     <strong>???</strong>
+                                                                     {% endif %}
+                                                                 </span>
+                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                 </button>
+                                                             </div>
+                                                             <div class="modal-body">
+
+                                                                 <form metod="GET" action="{% url 'sklad_list' mag=mag %}">
+                                                                    {% csrf_token %}
+                                                                     <input name="SDE_ID" type="text" value="{{ s.nr_sde.id }}" hidden>
+                                                                     <table width="100%">
+                                                                         <tr>
+                                                                             <td width="40%" align="right">Stawka:&nbsp;</td>
+                                                                             <td width="20%">
+                                                                                 <input id="in_stawka" type="text" name="STAWKA" class="form-control" value="{{ s.stawka.amount }}">
+                                                                             </td>
+                                                                             <td width="40%" align="left">&nbsp;€</td>
+                                                                         </tr>
+                                                                         <tr>
+                                                                             <td height="10px" colspan="3"><hr></td>
+                                                                         </tr>
+                                                                         <tr>
+                                                                             <td colspan="3">
+                                                                                 <button class="btn btn-success" type="submit">ZAPISZ</button>&nbsp;&nbsp;
+                                                                                 <button type="button" class="btn btn-danger" data-dismiss="modal">ANULUJ</button>
+                                                                             </td>
+                                                                         </tr>
+                                                                     </table>
+<!--                                                                    <div class="input-group custom-search-form">-->
+<!--                                                                        <input type="text" name="STAWKA" class="form-control" value="{{ s.stawka }}">-->
+<!--                                                                    </div>-->
+<!--                                                                 <button class="btn btn-success" type="submit">ZAPISZ</button>-->
+<!--                                                                 <button type="button" class="btn btn-danger" data-dismiss="modal">ANULUJ</button>-->
+                                                                 </form>
+
+
+                                                             </div>
+                                                        </div>
+                                                     </div>
+                                                </div>
+<!-- -->
+                                        </td>
+
+                                    </tr>
+
+
+                                {% endfor %}
+                                </tbody>
+
+
+
+                            </table>
+
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+
+
+                             <div class="modal fade" id="HELP_HELP" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                 <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                         <div class="modal-header">
+                                             <span class="modal-title" id="exampleModalLongTitle3"><strong>Informacja.</strong></span>
+                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                             </button>
+                                         </div>
+                                         <div class="modal-body">
+
+                                             <div class="panel panel-default" style="border-left: 4px solid coral" id="panel_glowny1">
+                                                 <div class="panel-body">
+                                                     <h4><strong>Pole STATUS</strong></h4>
+                                                     <table width="100%" class="table">
+                                                         <tr>
+                                                             <td style="vertical-align:middle; text-align:center;background-color: #FFFFCC;width:40px;height:40px;"></td>
+                                                             <td> Co najmniej jedna pozycja z wskazanego SDA nie jest wypełniona.</td>
+                                                         </tr>
+                                                         <tr>
+                                                             <td style="vertical-align:middle; text-align:center;background-color: #CCFFCC;width:40px;height:40px;"><i class="fa fa-chevron-down" aria-hidden="true"></i></td>
+                                                             <td> Wszytskie pozycje z wskazanego SDA są wypełnione prawidłowo.</td>
+                                                         </tr>
+                                                     </table>
+                                                     <br>
+                                                     <h4><strong>Pole DATA DO</strong></h4>
+                                                     <table width="100%" class="table">
+                                                         <tr>
+                                                             <td style="vertical-align:middle; text-align:center;background-color: #FFCCCC;width:40px;height:40px;"></td>
+                                                             <td> Termin został przekroczony.</td>
+                                                         </tr>
+                                                         <tr>
+                                                             <td style="vertical-align:middle; text-align:center;background-color: #FFFFCC;width:40px;height:40px;"></td>
+                                                             <td> Data zbliża się do zapisanego terminu. Poniżej 30 dni.</td>
+                                                         </tr>
+                                                         <tr>
+                                                             <td style="vertical-align:middle; text-align:center;background-color: #CCFFCC;width:40px;height:40px;"></td>
+                                                             <td> Termin zakończenia jest większy niż 30 dni.</td>
+                                                         </tr>
+                                                     </table>
+
+                                                 </div>
+                                            </div>
+
+                                         </div>
+                                         <div class="modal-footer" style="background-color: #eeeeee;">
+                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                         </div>
+                                    </div>
+                                 </div>
+                             </div>
+
+
+
+
+                </div>
+
+{% endblock %}
+
+
+{% block script %}
+{% endblock %}
+
+
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

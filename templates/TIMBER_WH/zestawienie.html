@@ -1,0 +1,290 @@
+{% extends "timber_dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+{% endblock %}
+
+
+{% block retbutton %}
+<li>
+    <a class="btn btn-primary" href="{% url 'timber_list' mag=mag fl=fl %}"><font color="white"><i class="fa fa-dashboard fa-fw"></i> Lista towaru</font></a>
+</li>
+{% endblock %}
+
+{% block userlog %}
+                {{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+<br><br>
+{% endblock %}
+
+{% block logo %}
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+{% block style %}
+              a:link.dt, a:visited.dt {
+                         text-decoration: none;
+              }
+              a:hover.dt, a:active.dt {
+                         text-decoration: none;
+                         display: inline-block;
+              }
+
+              #wpz {
+                    color: brown;
+                    font-weight: bold;
+              }
+              #wrz {
+                    color: #a9a9a9;
+              }
+
+              .verticalText{
+                    text-align: center;
+                    vertical-align: middle;
+                    -webkit-transform: rotate(90deg);
+                    -moz-transform: rotate(90deg);
+              }
+              #panel_glowny {
+<!--                    border-color: #5cb85c;-->
+<!--                    color: white;-->
+<!--                    background-color: #8cf88c;-->
+              }
+              #panel_naglowek {
+                    background-color: #6cd86c;
+              }
+
+              #naglowek > tbody > tr > td{
+                    border: 1px solid #00dd00;
+              }
+                   #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
+                        color: #fff;
+                        background-color: #595959;
+              }
+              .table > tbody > tr:hover {
+                        background-color: #f5f5f5;
+              }
+
+              #nav1, #nav2, #nav3, #nav4 {
+                    color: white;
+                    font-weight: bold;
+                    background-color: #909000;
+                    box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+              }
+              #nav1:hover, #nav2:hover, #nav3:hover, #nav4:hover {
+                    color: yellow;
+                    font-weight: bold;
+                    background-color: #808000;
+              }
+              #nav5 {
+                    color: white;
+                    font-weight: bold;
+                    background-color: #4169E1;
+              }
+              #nav5:hover {
+                    color: yellow;
+                    font-weight: bold;
+                    background-color: #3159D1;
+              }
+            .panel-green > .panel-heading {
+                border-color: #5cb85c;
+                color: white;
+                background-color: #999999;
+            }
+            .panel-green {
+                border-color: #999999;
+            }
+{% endblock %}
+
+
+{% block content %}
+
+
+                <div class="col-lg-12">
+                    <div class="panel panel-green" id="panel_glowny">
+                        <div class="panel-heading">
+                            <table width="100%">
+                                <tr>
+                                    <td style="text-align:center;">
+                                        <font style="font-size:18px;"><strong>{{ title }}</strong></font>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br>
+                            <table width="100%" class="table  table-bordered table-condensed" id="naglowek" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
+                                <tr>
+                                    <td style="text-align:center; width:10%; background-color:#229954;"><strong>Nazwa</strong></td>
+                                    <td style="text-align:center; background-color:#1E8449; color:yellow;"><strong>{{ nazwa }}</strong></td> <!-- width:22%; -->
+                                    <td style="text-align:center; width:10%;background-color:#229954;"><strong>Stan</strong></td>
+                                    <td style="text-align:center; width:11%;background-color:#1E8449; color:yellow;"><strong>{{ stan }}</strong></td>
+                                    <td style="text-align:center; width:11%;background-color:#229954;"><strong>Cena</strong></td>
+                                    <td style="text-align:center; width:11%; background-color:#1E8449; color:yellow;"><strong>{{ cena }}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;background-color:#229954;vertical-align:middle;"><strong>Opis</strong></td>
+                                    <td style="text-align:center;background-color:#1E8449;vertical-align:middle;">{{ opis }}</td>
+                                    <td style="text-align:center;background-color:#1E8449;" colspan="4">
+
+                                        <button type="button" class="btn btn-success">
+                                          Przychody <span class="badge badge-light">
+                                            <font size="3" color="gray">{{ kp }}</font>
+                                        </span>
+                                        </button>
+                                        <button type="button" class="btn btn-primary">
+                                          Rozchody <span class="badge badge-light">
+                                            <font size="3" color="gray">{{ kr }}</font>
+                                        </span>
+                                        </button>
+                                        <button type="button" class="btn btn-danger">
+                                          Stan <span class="badge badge-light">
+                                            <font size="3" color="gray">{{ kw }}</font>
+                                        </span>
+                                        </button>
+
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body">
+
+                            <table width="100%">
+                                <tr>
+                                    <td width="320px">
+                                        {% if viewm %}
+                                        <a type="button" class="btn" id="nav1" {% if nav1 %} style="background-color: #C0C000;" {% endif %} href="{% url 'zestawienie' pk=pk mag=mag fl=fl sel='ze' %}">WSZYSTKO</a>
+                                        <a type="button" class="btn" id="nav2" {% if nav2 %} style="background-color: #C0C000;" {% endif %} href="{% url 'zestawienie' pk=pk mag=mag fl=fl sel='pr' %}">PRZYCHÓD</a>
+                                        <a type="button" class="btn" id="nav3" {% if nav3 %} style="background-color: #C0C000;" {% endif %} href="{% url 'zestawienie' pk=pk mag=mag fl=fl sel='ro' %}">ROZCHÓD</a>
+                                        <!--<a type="button" class="btn" id="nav4" {% if nav4 %} style="background-color: #C0C000;" {% endif %} href="{% url 'zestawienie' pk=pk mag=mag fl=fl sel='zw' %}">ZWROTY</a>-->
+                                        {% endif %}
+                                    </td>
+                                    <td align="center">
+
+<!--                                        <button type="button" class="btn btn-success" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">-->
+<!--                                          Przychody <span class="badge badge-light">-->
+<!--                                            <font size="3" color="gray">{{ kp }}</font>-->
+<!--                                        </span>-->
+<!--                                        </button>-->
+<!--                                        <button type="button" class="btn btn-primary" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">-->
+<!--                                          Rozchody <span class="badge badge-light">-->
+<!--                                            <font size="3" color="gray">{{ kr }}</font>-->
+<!--                                        </span>-->
+<!--                                        </button>-->
+<!--                                        <button type="button" class="btn btn-danger" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">-->
+<!--                                          Całość <span class="badge badge-light">-->
+<!--                                            <font size="3" color="gray">{{ kw }}</font>-->
+<!--                                        </span>-->
+<!--                                        </button>-->
+
+                                    </td>
+                                    <td width="230px" style=" padding: 5px; border-right:1pt solid #F3F3F3;">
+                                                <form metod="GET" action="{% url 'zest_search' pk=pk mag=mag fl=fl sel='ze' %}">
+                                                    {% csrf_token %}
+                                                    <div class="input-group custom-search-form">
+                                                        <select class="form-control" name="NRSDE" id="ONRSDE" >
+                                                           {% for nr in nrsde %}
+                                                             <option>{{ nr.nazwa }}</option>
+                                                           {% endfor %}
+                                                        </select>
+                                                        <span class="input-group-btn">
+                                                            <button class="btn btn-default" type="submit"  style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;"><i class="fa fa-search">&nbsp;SDE</i></button>
+                                                        </span>
+                                                   </div>
+                                                </form>
+                                            </td>
+<!--                                    <td width="80px">-->
+<!--                                        <a type="button" class="btn" id="nav5" href="{% url 'dok_ze_pdf' pk=pk mag=mag fl=fl sel=sel %}"  style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">PDF</a>-->
+<!--                                    </td>-->
+                                    <td width="80px">
+                                        <a class="btn" id="nav5" href="{% url 'dok_ze_xls' pk=pk mag=mag fl=fl sel=sel %}"  style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
+                                            XLS - całość dla tej pozycji
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br>
+
+                            <table width="100%" class="table  table-bordered table-condensed">
+                                <thead>
+                                    <tr height="60px">
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px;width:40px;"><font color="#ffff00">ID</font></th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px;width:10%;"><font color="#ffff00">Data</font></th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px;width:10%;"><font color="#ffff00">Operacja</font></th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px;"><font color="#ffff00">Opis</font></th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px;" colspan="2"><font color="#ffff00">Ilość</font></th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px;width:10%;"><font color="#ffff00">Kwota</font></th>
+                                        <th style="background-color: #90867c; vertical-align:middle; text-align:center;color:#FFFACD; padding: 1px;width:10%;"><font color="#ffff00">Nr SDE</font></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  {% for r in out %}
+                                     <tr>
+                                         <td style="vertical-align:middle; text-align:center;">{{ r.dok_id }}</td>
+                                         <td style="vertical-align:middle; text-align:center;">{{ r.data | date:'d-m-Y' }}</td>
+                                         <td style="vertical-align:middle; text-align:center;">{{ r.operacja }}</td>
+                                         <td style="vertical-align:middle; text-align:center;">{{ r.opis }}</td>
+                                         <td style="vertical-align:middle; text-align:center;">{{ r.ilosc }}</td>
+                                         <td style="vertical-align:middle; text-align:center;width:40px;">{{ r.jm }}</td>
+                                         <td style="vertical-align:middle; text-align:right;">{{ r.kwota }}</td>
+                                         <td style="vertical-align:middle; text-align:center;">
+                                         {% if SDE_None != r.nr_sde %}
+                                             {{ r.nr_sde.nazwa }}
+                                         {% endif %}
+                                         </td>
+                                     </tr>
+                                  {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="panel-footer">
+                            {% if SDE_None != wartosc %}
+                            <p align="center">Kwota nie przypisana do SDE: <font color="brown"><strong>{{ wartosc }}</strong></font> PLN</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+{% endblock %}
+
+
+{% block script %}
+
+        $(document).ready(function() {
+              $('#ONRSDE').select2();
+              $('#ONRSDE').val(null).trigger('change');
+              $('#ONRMPK').select2();
+              $('#ONRMPK').val(null).trigger('change');
+              $('#id_nr_sde').select2();
+              $('#id_nr_mpk').select2();
+        });
+
+
+{% endblock %}
+
+
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

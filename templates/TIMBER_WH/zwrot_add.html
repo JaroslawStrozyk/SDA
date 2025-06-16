@@ -1,0 +1,184 @@
+{% extends "timber_dashboard.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block leftbutton %}
+{% endblock %}
+
+
+{% block retbutton %}
+{% endblock %}
+
+{% block userlog %}
+{{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+
+{% block content %}
+       <style>
+                    #id_cena_0 {
+                        width: 130px;
+                        height: 34px;
+                        text-align: right;
+                        font-size: 14px;
+                        border-radius: 4px;
+                        border-width: 1px;
+                        border: 1px solid #ccc;
+                        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                        color: #555;
+                        background-color: #fff;
+                    }
+                    #id_cena_1 {
+                        width: 60px;
+                        height: 34px;
+                        font-size: 14px;
+                        border-radius: 4px;
+                    }
+                    #id_kasa_pln, #id_kasa_euro, #id_kasa_funt, #id_kasa_dolar {
+                        width: 100%;
+                        text-align: right;
+                    }
+
+                    #id_data_od_day, #id_data_do_day {
+                        width: 60px;
+                    }
+                    #id_data_od_month, #id_data_do_month {
+                        width: 120px;
+                    }
+                    #id_data_od_year, #id_data_do_year {
+                        width: 80px;
+                    }
+                   #okno {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+                   #div_id_silnik_poj {
+                        margin-top: 30px;
+                        margin-bottom: 0px;
+                   }
+                   #id_data, #id_ilosc, #id_jm {
+                        text-align: center;
+                   }
+       </style>
+        <br><br>
+                <div class="col-lg-12"  style="height:100vh">
+                    <div class="panel panel-green" id="okno">
+                        <div class="panel-heading">
+                            <table width="100%">
+                                <tr>
+                                    <td align="center"><strong><font style="font-size:20px;">{{ title }}</font></strong></td>
+                                </tr>
+                                <tr>
+                                    <td align="center"><font style="font-size:18px;">{{ plyta_nazwa }}</font></td>
+                                </tr>
+                            </table>
+
+                        </div>
+                        <div class="panel-body" style="background-color: #f5f5f5;">
+                            <form method="POST"  class="post-form">{% csrf_token %}
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 mb-0">
+                                        {{ form.cel|as_crispy_field }}
+                                    </div>
+                                </div>
+                                        <div class="form-row">
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.data|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-6 mb-0">
+                                                       {{ form.nr_sde|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.ilosc|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.jm|as_crispy_field }}
+                                                  </div>
+                                        </div>
+                        </div>
+                        <div class="panel-footer">
+                                        <table width="100%"><tr>
+                                            <td align="right" width="50%"><button type="submit" class="save btn btn-success">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Zapisz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>&nbsp;</td>
+                                            <td align="left"><a href="{% url 'zwrot_list' pk=pk mag=mag fl=fl %}" class="primary btn btn-danger"><font color="#ffffff">Anuluj</font></a></td>
+
+                                            {% if edycja %}
+                                            <td align="right" width="50px">
+                                                <a href="#"  data-toggle="modal" data-target="#info1" class="primary btn btn-warning">
+                                                    <font color="white"><i class="fa fa-trash-o fa-fw"></i></font>
+                                                </a>
+                                            </td>
+                                            {% endif %}
+                                        </tr></table>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="info1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <span class="modal-title   panel-green" id="exampleModalLongTitle1">Kasowanie...</span>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                        Czy jesteś pewien, że chcesz nieodwracalnie skasować bieżące dane?
+                            </div>
+                            <div class="modal-footer">
+                                <a href="{% url 'zwrot_delete' pk=pk po=po mag=mag fl=fl %}" class="primary btn btn-danger">
+                                    <font color="white">&nbsp;&nbsp;TAK&nbsp;&nbsp;</font>
+                                </a>
+                                <button type="button" class="btn btn-success" data-dismiss="modal">&nbsp;&nbsp;NIE&nbsp;&nbsp;</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}
+
+{% block script %}
+        $('#id_data').datetimepicker({
+              language:  'pl',
+              format: 'dd.mm.yyyy',
+              todayBtn:  1,
+              autoclose: 1,
+              minView: 2,
+              startDate: "2009-01-01",
+        });
+
+        $(document).ready(function() {
+              $('#id_nr_sde').select2();
+        });
+
+{% endblock %}
+

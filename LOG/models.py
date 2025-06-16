@@ -29,7 +29,7 @@ class ErrorList(models.Model):
         verbose_name_plural = "ErrorListy"
 
 
-class Log(models.Model):
+class LogSystem(models.Model):
     status_id = models.DecimalField(max_digits=4, decimal_places=0, default=0, verbose_name="Status id")
     status = models.CharField(max_length=10, verbose_name="Status", null=True, blank=True)
     data = models.DateField(verbose_name="Data", null=True,  blank=True)
@@ -38,10 +38,11 @@ class Log(models.Model):
     komunikat = models.ForeignKey('ErrorList', verbose_name="ID Komunikatu", max_length=150, on_delete=models.SET_NULL, null=True, blank=True)
     opis = models.CharField(max_length=400, verbose_name="Opis", null=True, blank=True)
     kto = models.CharField(max_length=10, verbose_name="Kto", null=True, blank=True)
+    czas = models.DecimalField(max_digits=4, decimal_places=0, default=0, verbose_name="Czas")
     nowy = models.BooleanField(default=False, verbose_name="Nowy wpis")
 
     def save(self, *args, **kwargs):
-        super(Log, self).save(*args, **kwargs)
+        super(LogSystem, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.pk)

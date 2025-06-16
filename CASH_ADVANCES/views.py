@@ -16,10 +16,10 @@ from LOG.logs import Logi, Logi_r
 from .functions import suma_wartosci
 
 
-def test_admin(request):
+def top_user(request):
     admini = False
     gr = str(Group.objects.filter(user=request.user).first())
-    if gr == 'administrator':
+    if gr == 'administrator' or gr == 'ksiegowosc' or gr == 'ksiegowosc1':
         admini = True
     return admini
 
@@ -28,7 +28,7 @@ def test_osoba(request):
     name_log = request.user.first_name + " " + request.user.last_name
     inicjaly = '.'.join([x[0] for x in name_log.split()]) + '.'
 
-    if inicjaly == 'P.Z.' or inicjaly == 'J.S.' or inicjaly == 'M.O.':
+    if inicjaly == 'P.Z.' or inicjaly == 'J.S.' or inicjaly == 'M.O.' or inicjaly == 'J.M.' or inicjaly == 'M.S.':
         rozliczenie = 1
     else:
         rozliczenie = 0
@@ -50,9 +50,11 @@ def test_rok(request):
 def cash_start_p(request):
     lata, rok, brok = test_rok(request)
     name_log, inicjaly, rozliczenie = test_osoba(request)
+    top_us = top_user(request)
     about = settings.INFO_PROGRAM
     pp = settings.PAGIN_PAGE
     sv = settings.SIMPLE_VIEW
+    en_dodaj = False
 
     if int(rok) == int(brok):
         b_rok = True
@@ -63,15 +65,23 @@ def cash_start_p(request):
     tytul = 'Zaliczki - Pozycje'
 
     if sv == True:
-        if test_admin(request):
+        if top_us:
             pozycje = Pozycja.objects.filter(rok=rok, nr_roz__kontrola=False).order_by('-pk')
+            test = len(Rozliczenie.objects.filter(rok=rok))
         else:
             pozycje = Pozycja.objects.filter(rok=rok, nr_roz__kontrola=False, inicjaly=inicjaly).order_by('-pk')
+            test = len(Rozliczenie.objects.filter(rok=rok, inicjaly=inicjaly))
     else:
-        if test_admin(request):
+        if top_us:
             pozycje = Pozycja.objects.filter(rok=rok).order_by('-pk')
+            test = len(Rozliczenie.objects.filter(rok=rok))
         else:
             pozycje = Pozycja.objects.filter(rok=rok, inicjaly=inicjaly).order_by('-pk')
+            test = len(Rozliczenie.objects.filter(rok=rok, inicjaly=inicjaly))
+
+    if test:
+        en_dodaj = True
+
 
     tzero = 0  # Money('00.00', PLN)
 
@@ -86,7 +96,7 @@ def cash_start_p(request):
         'pozycje': ppozycje,
         'name_log': name_log,
         'tytul_tabeli': tytul,
-        'admini': test_admin(request),
+        'admini': top_us,
         'about': about,
         'lata': lata,
         'rok': rok,
@@ -95,7 +105,8 @@ def cash_start_p(request):
         'nrmpk': nrmpk,
         'sv': sv,
         'szukanie': False,
-        'b_rok': b_rok
+        'b_rok': b_rok,
+        'en_dodaj': en_dodaj
     })
 
 
@@ -113,7 +124,7 @@ def cash_start_pw(request):
 
     tytul = 'Zaliczki - Pozycje'
 
-    if test_admin(request):
+    if top_user(request):
         pozycje = Pozycja.objects.filter(rok=rok, ).order_by('-pk')
     else:
         pozycje = Pozycja.objects.filter(rok=rok, inicjaly=inicjaly).order_by('-pk')
@@ -127,11 +138,16 @@ def cash_start_pw(request):
     strona = request.GET.get('page')
     ppozycje = paginator.get_page(strona)
 
+    if inicjaly == 'J.M.':
+        inc = True
+    else:
+        inc = False
+
     return render(request, 'CASH_ADVANCES/cash_main_p.html', {
         'pozycje': ppozycje,
         'name_log': name_log,
         'tytul_tabeli': tytul,
-        'admini': test_admin(request),
+        'admini': top_user(request),
         'about': about,
         'lata': lata,
         'rok': rok,
@@ -140,7 +156,8 @@ def cash_start_pw(request):
         'nrmpk': nrmpk,
         'sv': True,
         'szukanie': False,
-        'b_rok': b_rok
+        'b_rok': b_rok,
+        'inc': inc
     })
 
 
@@ -203,13 +220,22 @@ def cash_new_p(request):
     lata, rok, brok = test_rok(request)
     name_log, inicjaly, rozliczenie = test_osoba(request)
     about = settings.INFO_PROGRAM
+
+    if int(rok) == int(brok):
+        b_rok = True
+    else:
+        b_rok = False
+
     tytul = "Zaliczki - Nowa pozycja [" + name_log + "]"
     if request.method == "POST":
-        pozf = PozycjaForm(request.POST or None, rok=brok)
+        pozf = PozycjaForm(request.POST or None, rok=rok)
         if pozf.is_valid():
             ps = pozf.save(commit=False)
 
-            trig = request.POST.get("kwota_netto_1", "")
+            # trig = request.POST.get("kwota_netto_1", "")
+            id_roz = int(request.POST.get("nr_roz", ""))
+            trig = Rozliczenie.objects.get(pk=id_roz).zal_kwota_currency
+
             dataf = request.POST.get("data_zak", "")
             ps.kwota_netto = Money(str(ps.kwota_netto.amount), trig)
             ps.kwota_brutto = Money(str(ps.kwota_brutto.amount), trig)
@@ -239,25 +265,25 @@ def cash_new_p(request):
                 + ", Kwota Netto: " + str(ps.kwota_netto) + ", Faktura: " + str(ps.nr_fv)
             Logi(0, s, inicjaly)
 
-
-
             ps.save()
             return redirect('cash_start_p')
         else:
             return redirect('error')
     else:
-        if test_admin(request):
-            pozf = PozycjaForm(rok = brok)
+        if top_user(request):
+            pozf = PozycjaForm(rok = rok)
         else:
             nr_roz = Rozliczenie.objects.filter(inicjaly=inicjaly).last().id
-            pozf = PozycjaForm(user=inicjaly, initial={'nr_roz': nr_roz}, rok=brok)
+            pozf = PozycjaForm(user=inicjaly, initial={'nr_roz': nr_roz}, rok=rok)
     return render(request, 'CASH_ADVANCES/cash_new_p.html', {
         'form': pozf,
         'name_log': name_log,
         'about': about,
         'tytul': tytul,
         'edycja': False,
-        'cash_id': 0
+        'cash_id': 0,
+        'b_rok': b_rok,
+        'rok': rok
     })
 
 
@@ -267,14 +293,22 @@ def cash_edit_p(request, pk):
     name_log, inicjaly, rozliczenie = test_osoba(request)
     about = settings.INFO_PROGRAM
 
+    if int(rok) == int(brok):
+        b_rok = True
+    else:
+        b_rok = False
+
     tytul = "Zaliczki - Edycja pozycja [" + name_log + "]"
     pozm = get_object_or_404(Pozycja, pk=pk)
     if request.method == "POST":
-        pozf = PozycjaForm(request.POST or None, instance=pozm, rok=brok)
+        pozf = PozycjaForm(request.POST or None, instance=pozm, rok=rok)
         if pozf.is_valid():
             ps = pozf.save(commit=False)
 
-            trig = request.POST.get("kwota_netto_1", "")
+            #trig = request.POST.get("kwota_netto_1", "")
+            id_roz = int(request.POST.get("nr_roz", ""))
+            trig = Rozliczenie.objects.get(pk=id_roz).zal_kwota_currency
+
             dataf = request.POST.get("data_zak", "")
             ps.kwota_netto = Money(str(ps.kwota_netto.amount), trig)
             ps.kwota_brutto = Money(str(ps.kwota_brutto.amount), trig)
@@ -307,14 +341,16 @@ def cash_edit_p(request, pk):
         else:
             return redirect('error')
     else:
-        pozf = PozycjaForm(instance=pozm, rok=brok)
+        pozf = PozycjaForm(instance=pozm, rok=rok, user=inicjaly)
     return render(request, 'CASH_ADVANCES/cash_new_p.html', {
         'form': pozf,
         'name_log': name_log,
         'about': about,
         'tytul': tytul,
         'edycja': True,
-        'cash_id': pk
+        'cash_id': pk,
+        'b_rok': b_rok,
+        'rok': rok
     })
 
 
@@ -332,7 +368,7 @@ def cash_search_p(request):
                 'nr_mpk__nazwa', 'nr_sde__nazwa', 'nr_roz__data_zal'
             ]
             f = search_filter(search_fields, query)
-            if test_admin(request):
+            if top_user(request):
                 pozycje = Pozycja.objects.filter(f).filter(rok=rok)
             else:
                 pozycje = Pozycja.objects.filter(f).filter(rok=rok, inicjaly=inicjaly)
@@ -356,7 +392,7 @@ def cash_search_p(request):
             'pozycje': pozycje,
             'name_log': name_log,
             'tytul_tabeli': tytul,
-            'admini': test_admin(request),
+            'admini': top_user(request),
             'about': about,
             'lata': lata,
             'rok': rok,
@@ -449,12 +485,12 @@ def cash_start_r(request):
     tytul = 'Zaliczki - Rozliczenia'
 
     if sv == True:
-        if test_admin(request):
+        if top_user(request):
             rozliczenia = Rozliczenie.objects.filter(rok=rok, kontrola=False).order_by('-id')
         else:
             rozliczenia = Rozliczenie.objects.filter(rok=rok, kontrola=False, inicjaly=inicjaly).order_by('-id')
     else:
-        if test_admin(request):
+        if top_user(request):
             rozliczenia = Rozliczenie.objects.filter(rok=rok).order_by('-id')
         else:
             rozliczenia = Rozliczenie.objects.filter(rok=rok, inicjaly=inicjaly).order_by('-id')
@@ -466,11 +502,15 @@ def cash_start_r(request):
 
     wpisy = Pozycja.objects.filter(rok=rok).order_by('data_zak')
 
+    paginator = Paginator(rozliczenia, pp)
+    strona = request.GET.get('page')
+    rrozliczenia = paginator.get_page(strona)
+
     return render(request, 'CASH_ADVANCES/cash_main_r.html', {
-        'rozliczenia': rozliczenia,
+        'rozliczenia': rrozliczenia,
         'name_log': name_log,
         'tytul_tabeli': tytul,
-        'admini': test_admin(request),
+        'admini': top_user(request),
         'about': about,
         'lata': lata,
         'rok': rok,
@@ -500,7 +540,7 @@ def cash_start_rw(request):
 
     tytul = 'Zaliczki - Rozliczenia'
 
-    if test_admin(request):
+    if top_user(request):
         rozliczenia = Rozliczenie.objects.filter(rok=rok).order_by('-id')
     else:
         rozliczenia = Rozliczenie.objects.filter(rok=rok, inicjaly=inicjaly).order_by('-id')
@@ -516,7 +556,7 @@ def cash_start_rw(request):
         'rozliczenia': rozliczenia,
         'name_log': name_log,
         'tytul_tabeli': tytul,
-        'admini': test_admin(request),
+        'admini': top_user(request),
         'about': about,
         'lata': lata,
         'rok': rok,
@@ -534,6 +574,11 @@ def cash_new_r(request):
     lata, rok, brok = test_rok(request)
     name_log, inicjaly, rozliczenie = test_osoba(request)
     about = settings.INFO_PROGRAM
+
+    if int(rok) == int(brok):
+        b_rok = True
+    else:
+        b_rok = False
 
     tytul = "Nowe rozliczenie"
     if request.method == "POST":
@@ -571,7 +616,9 @@ def cash_new_r(request):
         'tytul': tytul,
         'potwierdzenie': rozliczenie,
         'edycja': False,
-        'cash_id': 0
+        'cash_id': 0,
+        'b_rok': b_rok,
+        'rok': rok
     })
 
 
@@ -581,6 +628,11 @@ def cash_edit_r(request, pk):
     name_log, inicjaly, rozliczenie = test_osoba(request)
     about = settings.INFO_PROGRAM
 
+    if int(rok) == int(brok):
+        b_rok = True
+    else:
+        b_rok = False
+
     tytul = "Edycja rozliczenia"
 
     rozm = get_object_or_404(Rozliczenie, pk=pk)
@@ -588,7 +640,7 @@ def cash_edit_r(request, pk):
         rozf = RozliczenieForm(request.POST or None, request.FILES or None, instance=rozm)
         if rozf.is_valid():
             ps = rozf.save(commit=False)
-            ps.rok = datetime.date.today().year
+            #ps.rok = datetime.date.today().year
 
             ps.zal_suma, ps.saldo = PozycjeUpdate(pk, ps.zal_kwota, ps.przek)
 
@@ -626,7 +678,9 @@ def cash_edit_r(request, pk):
         'tytul': tytul,
         'potwierdzenie': rozliczenie,
         'edycja': True,
-        'cash_id': pk
+        'cash_id': pk,
+        'b_rok': b_rok,
+        'rok': rok
     })
 
 
@@ -663,7 +717,7 @@ def cash_search_r(request):
             'rozliczenia': rozliczenia,
             'name_log': name_log,
             'tytul_tabeli': tytul,
-            'admini': test_admin(request),
+            'admini': top_user(request),
             'about': about,
             'lata': lata,
             'rok': rok,

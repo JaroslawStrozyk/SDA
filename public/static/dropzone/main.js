@@ -5,5 +5,5 @@ const myDropzone = new Dropzone("#my-awesome-dropzone",{
     maxFiles: 1,
     maxFilesize: 2,
     acceptedFiles: '.pdf',
-    dictDefaultMessage: "<i>Przeciągnij w to miejsce plik źródłowy lub klikając w okno wybierz obiekt z dysku...</i><br> Dopuszczalne formaty plików to *.pdf"
+    dictDefaultMessage: "<i>Przeciągnij w to miejsce plik źródłowy lub klikając w okno wybierz obiekt z dysku...</i><br><font style='color: red; font-weight: bold;'>Dopuszczalny format pliku to *.pdf<font>"
 })

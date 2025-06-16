@@ -1,0 +1,296 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <link rel="icon" href="{% static 'favicon.ico' %}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Pulpit SDA</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="{% static 'vendor/metisMenu/metisMenu.min.css' %}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{% static 'dist/css/sb-admin-2.css' %}" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="{% static 'vendor/morrisjs/morris.css' %}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
+    <link href="{% static 'DP/bootstrap-datetimepicker.min.css' %}" rel="stylesheet" type="text/css">
+
+
+    <style>
+                   #belka {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                        margin-bottom: 0px;
+                   }
+
+                   #lewa_belka {
+                        width: 0px;
+
+                        /* box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px; */
+                        /* margin-bottom: 0px; */
+                   }
+
+                   #wrapper {
+                        background-color: #ffffff;
+                   }
+
+                   #page-wrapper {
+                        border-left: 1px solid #ffffff;
+                   }
+
+                   #panel_glowny {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   a:link, a:visited, a:active {
+                        decoration: none;
+                        color: #7c91ab;
+                   }
+
+                   a:hover {
+                        color: #33455a;
+                   }
+
+                   #page-wrapper {
+                        margin: 0 0 0 0px;
+                   }
+                   body {
+                        background-color: #ffffff;
+                   }
+
+    </style>
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" id="belka">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'desktop' %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SmartDesign
+                Expo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+        <!-- /.navbar-header -->
+
+        <ul class="nav navbar-top-links navbar-left">
+
+            {% block leftbutton %}
+            {% endblock %}
+        </ul>
+        <ul class="nav navbar-top-links navbar-right">
+            {% block retbutton %}
+            {% endblock %}
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-user fa-fw"></i>
+                    {% block userlog %}
+                    {% endblock %}
+                    <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#exampleModalCenter"><i
+                                class="fa fa-star-o fa-fw"></i> O programie</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+<!--                        <a href="{% url 'logout' %}"><i class="fa fa-sign-out fa-fw"></i> Wyjście z programu</a>-->
+                            <form action="{% url 'logout' %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link"><i class="fa fa-sign-out fa-fw"></i> Wyjście z programu</button>
+                            </form>
+                    </li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+            {% block o_prog %}
+            {% endblock %}
+            <!-- /.dropdown -->
+        </ul>
+        <!-- /.navbar-top-links -->
+
+        <div class="navbar-default sidebar" role="navigation" id="lewa_belka">
+           <!-- <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li>
+                        {% block logo %}
+                        {% endblock %}
+                    </li>
+                    <li>
+                        {% block leftmenu %}
+                        {% endblock %}
+                    </li>
+                </ul>
+            </div>-->
+            <!-- /.sidebar-collapse -->
+        </div>
+        <!-- /.navbar-static-side -->
+    </nav>
+
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    {% block title %}
+                    {% endblock %}
+
+                </h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row" height="100%">
+            {% block content %}
+            {% endblock %}
+
+        </div>
+    </div>
+    <!-- /#page-wrapper -->
+
+
+    <!-- Modal    data-toggle="modal" data-target="#exampleModalCenter" -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-title" id="exampleModalLongTitle">O Programie...</span>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <table class="table table-striped">
+                        <tr>
+                            <th class="text-center" colspan="2"><h1><strong>SDA</strong></h1>
+                                <h3>Smart Design Assistant</h3></th>
+                        </tr>
+
+                        {% block about %}
+                        {% endblock %}
+
+                        <tr>
+                            <td colspan="2" class="text-center"><img src="{% static 'img/python.png' %}"
+                                                                     width="100"><img
+                                    src="{% static 'img/django.png' %}" width="100"><img src="{% static 'img/pg.png' %}"
+                                                                                         width="100"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-justify" colspan="2">
+                                Jest to program wspierający pracę ksiegowości, spedycji, biura i IT w firmie SmartDesign
+                                Expo w Wysogotowie.
+                                Jest on zgodny z zaleceniami RODO (ROZPORZĄDZENIE PARLAMENTU EUROPEJSKIEGO I RADY (UE)
+                                2016/679 z dnia
+                                27 kwietnia 2016 r.).
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<!-- /#wrapper -->
+
+<!-- jQuery -->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'DP/bootstrap-datetimepicker.js' %}" charset="UTF-8"></script>
+<script type="text/javascript" src="{% static 'DP/bootstrap-datetimepicker.pl.js' %}" charset="UTF-8"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script>
+         $('#id_us').datetimepicker({
+              language:  'pl',
+              format: 'dd.mm.yyyy',
+              todayBtn:  1,
+              autoclose: 1,
+              minView: 2,
+              startDate: "2009-01-01",
+        });
+         $('#id_ps').datetimepicker({
+              language:  'pl',
+              format: 'dd.mm.yyyy',
+              todayBtn:  1,
+              autoclose: 1,
+              minView: 2,
+              startDate: "2009-01-01",
+        });
+        $('#id_drl').datetimepicker({
+              language:  'pl',
+              format: 'dd.mm.yyyy',
+              todayBtn:  1,
+              autoclose: 1,
+              minView: 2,
+              startDate: "2009-01-01",
+        });
+        $('#id_dzl').datetimepicker({
+              language:  'pl',
+              format: 'dd.mm.yyyy',
+              todayBtn:  1,
+              autoclose: 1,
+              minView: 2,
+              startDate: "2009-01-01",
+        });
+
+
+</script>
+
+
+<!-- Metis Menu Plugin JavaScript -->
+<script src="{% static 'vendor/metisMenu/metisMenu.min.js' %}"></script>
+
+<!-- Morris Charts JavaScript -->
+<script src="{% static 'vendor/raphael/raphael.min.js' %}"></script>
+<script src="{% static 'vendor/morrisjs/morris.min.js' %}"></script>
+<script src="{% static 'data/morris-data.js' %}"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="{% static 'dist/js/sb-admin-2.js' %}"></script>
+<script type="text/javascript">$("#password").password('toggle');</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-show-password/1.0.3/bootstrap-show-password.min.js"></script>
+
+</body>
+
+</html>

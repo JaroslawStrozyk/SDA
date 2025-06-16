@@ -1,0 +1,561 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pulpit SDA.</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link href="{% static 'COMP/css/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'COMP/comp.css' %}" rel="stylesheet" type="text/css">
+    <style>
+        #fir1 {
+            color: #FFFFFF;
+            background-color: #DAA520;
+            border-color: #DAA520;
+            box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+        }
+
+        #fir1:hover {
+            color: #FFFFFF;
+            background-color: #B8860B;
+            border-color: #B8860B;
+        }
+
+        #kol1 {
+            background-color: #CD5C5C;
+            vertical-align: middle;
+            text-align: center;
+            color: yellow;
+            width: 30px;
+            padding: 1px;
+            font-size: 75%;
+            font-weight: bold;
+        }
+
+        .verticalText1 {
+            text-align: center;
+            vertical-align: middle;
+            -webkit-transform: rotate(270deg);
+            -moz-transform: rotate(270deg);
+        }
+
+        #inst {
+            background-color: #53a94f;
+            border-color: #3fa43a;
+            box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+        }
+
+        #inst:hover {
+            background-color: #53894f;
+            border-color: #3f843a;
+        }
+
+        #ret {
+            color: #FFFACD;
+            background-color: #70665c;
+            border-color: #70665c;
+            box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+        }
+
+        #ret:hover {
+            color: #FFFACD;
+            background-color: #60564c;
+            border-color: #60564c;
+        }
+
+        #BDG {
+            color: #FFFACD;
+            font-weight: bold;
+            background-color: #4c6056;
+            border-color: #4c6056;
+            box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+        }
+
+        #BDG:hover {
+            color: #FFFACD;
+            font-weight: bold;
+            background-color: #4c6056;
+            border-color: #4c6056;
+            box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+        }
+
+        .panel-green > .panel-heading {
+            border-color: #5cb85c;
+            color: white;
+            background-color: #999999;
+        }
+        .panel-green {
+            border-color: #999999;
+        }
+
+
+        #hover-box {
+            max-width: 400px; /* Ograniczenie szerokości */
+            white-space: nowrap; /* Tekst w jednej linii */
+            text-overflow: ellipsis; /* Wielokropek dla zbyt długiego tekstu */
+            overflow: hidden; /* Ukrycie nadmiaru tekstu */
+            background-color: #f9f9f9; /* Kolor tła */
+            border: 1px solid #ccc; /* Obramowanie */
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4); /* Subtelny cień */
+            padding: 10px; /* Odstępy wewnętrzne */
+            border-radius: 4px; /* Zaokrąglone rogi */
+            z-index: 1000; /* Wysoki priorytet wyświetlania */
+            position: absolute; /* Absolutne pozycjonowanie */
+            display: none; /* Ukryte, dopóki nie zostanie aktywowane */
+        }
+
+        #loading-spinner {
+            display: flex; /* Spinner widoczny na początku */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+        }
+
+        .fa-spinner {
+            font-size: 200px;
+            color: #4c6056; /* #0bab0b; */ /* #007bff; */
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #data-container {
+            display: none; /* Domyślnie ukryty */
+        }
+
+
+        .active-row {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+.okres-row:hover {
+    background-color: #f0f0f0;
+}
+
+
+
+        #flaga_2 {
+    background-color: #dff0d8; /* jasny zielony */
+    color: #3c763d;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#flaga_1 {
+    background-color: #fcf8e3; /* jasny żółty */
+    color: #8a6d3b;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#flaga_0 {
+    background-color: #f2dede; /* jasny czerwony */
+    color: #a94442;
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+
+
+            #flaga_0 {
+                vertical-align:middle;
+                text-align:center;
+                background-color: #FBA8A8;
+                color:gray;
+            }
+            #flaga_1 {
+                vertical-align:middle;
+                text-align:center;
+                background-color: #FBFBA8;
+                color: gray;
+            }
+            #flaga_2 {
+                vertical-align:middle;
+                text-align:center;
+                background-color: #A8FBA8;
+                color: gray;
+            }
+
+    </style>
+</head>
+<body>
+
+
+    <div class="container">
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" id="belka">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'desktop' %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SmartDesign&nbsp;&nbsp;Expo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            </div>
+
+            <ul class="nav navbar-top-links navbar-left"  style="margin-top:1px;margin-bottom:1px;">
+
+            </ul>
+            <ul class="nav navbar-top-links navbar-right" style="margin-top:1px;margin-bottom:1px;margin-right:2px;">
+
+                <li>
+                    <a class="btn" href="{% url 'ncomp_list' mag=mag %}" id="ret">
+                            <i class="fa fa-reply-all" aria-hidden="true"></i> Pulpit
+                    </a>
+                </li>
+                <li class="dropdown" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="adt">
+                        <i class="fa fa-user fa-fw"></i>
+                        {{ name_log }}
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li>
+                                <form action="{% url 'logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-link"><i class="fa fa-sign-out fa-fw"></i> Wyjście z programu</button>
+                                </form>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+        </nav>
+
+        <div class="container" id="gpanel">
+
+            <div class="panel panel-green"  id="main-content" > <!-- main-content data-container-->
+                <div class="panel-heading">
+                    <table width="100%">
+                        <tr>
+                            <td style="text-align: center; width:80px">
+
+                                <!-- Rozwijane menu dla zmiennej firma -->
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        Wybierz firmę
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                        {% for f in firma %}
+                                            <li><a href="{% url 'nokr_lista' mag=mag fl=f.id %}">{{ f.nazwa }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+
+                            </td>
+                            <td>
+                                <h3 class="panel-title" align="center"><strong>{{ title }} {{ opis }}</strong></h3>
+                            </td>
+
+                            <td width="50px" align="right">
+                                <a href="{% url 'nokr_add' mag=mag fl=fl %}" class="danger btn btn-danger" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
+                                    <font color="#fff"><i class="fa fa-plus" aria-hidden="true"></i></font>
+                                </a>
+                            </td>
+                            <td width="10px"></td>
+
+
+                            <td width="50px" align="right">
+
+                                <a class="btn btn-primary" href="#"  target="_blank" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;" disabled>
+                                    <strong><font color="yellow"><i class="fa fa-file-pdf-o"></i>&nbsp;Zestawienie</font></strong>
+                                </a>
+
+                            </td>
+
+
+                        </tr>
+                    </table>
+                </div>
+                <div class="panel-body">
+
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr style="height:40px;background-color: #90867c; color:#FFFACD;">
+                                <th style="vertical-align:middle; text-align:center;width:">FIRMA</th>
+                                <th style="vertical-align:middle; text-align:center;width:">NAZWA</th>
+                                <th style="vertical-align:middle; text-align:center;width:150px;">OD DATY</th>
+                                <th style="vertical-align:middle; text-align:center;width:150px;">DO DATY</th>
+                                <th style="vertical-align:middle; text-align:right;width:80px;">STAWKA</th>
+<!--                                <th style="vertical-align:middle; text-align:right;width:100px;">KOSZT</th>-->
+                                <th style="vertical-align:middle; text-align:center;width:100px;">FAKTURA</th>
+                                <th style="vertical-align:middle; text-align:center;width:100px;">ZWOLNIONY</th>
+                                <th style="vertical-align:middle; text-align:center;width:50px;">AKCJA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for o in op %}
+                            <tr class="okres-row" data-okres-id="{{ o.id }}" style="cursor: pointer;">
+                                <td style="vertical-align:middle; text-align:center;color: gray;">{{ o.firma }}</td>
+                                <td style="vertical-align:middle; text-align:center;color: gray;">{{ o.nazwa }}</td>
+                                <td style="vertical-align:middle; text-align:center;color: gray;">{{ o.data_od|date:'d.m.Y' }}</td>
+                                <td style="vertical-align:middle; text-align:center;color: gray;">{{ o.data_do|date:'d.m.Y' }}</td>
+                                <td style="vertical-align:middle; text-align:center;color: gray;">{{ o.stawka }}</td>
+<!--                                <td style="vertical-align:middle; text-align:center;color: gray;">{{ o.suma_kosztow }}</td>-->
+                                <td style="vertical-align:middle; text-align:center;color: gray;">{{ o.faktura }}</td>
+                                <td style="vertical-align:middle; text-align:center;color: gray;">{{ o.zwolniony }}</td>
+                                <td style="vertical-align:middle; text-align:center;">
+                                    <a href="{% url 'nokr_edit' mag=mag fl=fl pk=o.id %}">
+                                        <i class="fa fa-pencil-square-o fa-fw" style="color:brown;"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                                <!-- Tytuł dla tabeli Składu -->
+                                <div id="sklad-title" style="display: none; margin-top: 30px;color:gray;">
+                                    <h3>Elementy powiązane z okresem</h3>
+                                    <p id="wybrany-okres"></p>
+                                </div>
+
+                                <!-- Spinner podczas ładowania danych -->
+                                <div id="loading-spinner" style="display: none; text-align: center; margin: 20px 0;">
+                                    <i class="fa fa-spinner fa-spin fa-3x"></i>
+                                    <p>Pobieranie danych...</p>
+                                </div>
+
+                                <!-- Tabela Składu -->
+                                <div id="sklad-container" style="display: none; margin-top: 20px;">
+                                    <table class="table table-hover table-bordered">
+                                        <thead>
+                                            <tr style="height:40px;background-color: #90867c; color:#FFFACD;">
+                                                <th style="vertical-align:middle; text-align:center;">STOISKO (NR SDE)</th>
+                                                <th style="vertical-align:middle; text-align:center;width:50px;">STAN</th>
+                                                <th style="vertical-align:middle; text-align:center;width:100px;">MAGAZYN</th>
+                                                <th style="vertical-align:middle; text-align:center;width:100px;">POWIERZCHNIA</th>
+                                                <th style="vertical-align:middle; text-align:center;width:150px;">SUMA</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="sklad-tbody">
+                                            <!-- Tutaj będą wstawiane wiersze poprzez JavaScript -->
+                                        </tbody>
+                                        <tfoot>
+                                            <tr style="font-weight: bold; background-color: #f5f5f5;">
+                                                <td colspan="4" style="text-align:right;color:gray;">SUMA CAŁKOWITA:</td>
+                                                <td id="suma-total" style="text-align:right;color:gray;"></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+
+                                <!-- Informacja o braku danych -->
+                                <div id="no-data-message" style="display: none; margin-top: 20px; text-align: center;">
+                                    <p class="alert alert-info">Brak powiązanych elementów dla wybranego okresu.</p>
+                                </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="HELP_HELP" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span class="modal-title" id="exampleModalLongTitle3"><strong>Instrukcja działania.</strong></span>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p style="text-align:justify;">
+                                Uwagi użytkowania:<br>
+                                - dane w tabeli są danymi skondensowanymi to znaczy w tabeli jest tylko jedna reprezentacja przechowywanego elementu,<br>
+                                - wyświetlane w tabeli są tylko ostatnie wpisy dotyczące danego elementu.<br>
+                            </p>
+
+                            <div class="panel panel-default" style="border-left: 4px solid coral">
+                              <div class="panel-body">
+                                  <h4>Sprawdzanie historii wydań na targi:</h4>
+                                  <ul>
+                                      <li style="text-align:justify;">Znajdź kolumnę "<font style="color:brown;font-weight: bold;">WYDANIA NA TARGI</font>" i przesuń kursor myszki na poszukiwany wiersz,</li>
+                                      <li style="text-align:justify;">Przesuwając kursor po wierszach tej kolumny w 'wyskakujących' oknach pojawia się historia wydań,</li>
+                                      <li style="text-align:justify;">Jeśli element jest w trakcie wypożyczenia to odpowiednia linia jest zaznzczona kolorem czerownym.</li>
+                                  </ul>
+                              </div>
+                            </div>
+
+                            <div class="panel panel-default" style="border-left: 4px solid red">
+                              <div class="panel-body">
+                                  <h4>Dodawanie nowego elementu do przechowalni:</h4>
+                                  <p style="text-align:justify;">
+                                  Nowy element stoiska do przechowalni dodaje się przez użycie go na jakimś stoisku. Zrobisz to w dwóch krokach:
+                                  </p>
+                                  <ul>
+                                      <li style="text-align:justify;">
+                                          Przejdż wyżej do "<font style="color:brown;font-weight: bold;">Lista elementów stoisk przechowywanych dla innych firm.</font>",
+                                      </li>
+                                      <li style="text-align:justify;">
+                                          Wybierz przycisk Nowy element i wypełnij dokładnie cały formularz nie zapominają o zaznaczeniu opcji 'Wielokrotne użycie' oraz towarzyszącej opcji do jakiej firmy ma przynależeć (domyślnie ogólne).
+                                      </li>
+                                  </ul>
+                                  <p style="text-align:justify;">
+                                      Po tym działaniu w tabeli Targów pod odpowiednim SDE znajdziesz swoją nową pozycję zgodnie z wypełnionymi danymi.
+                                      Dodatkowo ta sama pozycja pojawi się w Elementach wielkorotnego użytku.
+                                      Jeżeli opcja Firma została na wartości 'ogólne' to trafia do magazynu ogólnego.
+                                      Jeśli wybierzesz firmę to element ten będzie powiązany tylko z tą firmą.
+                                  </p>
+                              </div>
+                            </div>
+
+                            <div class="panel panel-default" style="border-left: 4px solid green">
+                              <div class="panel-body">
+                                  <h4>Edytowanie oraz dodawanie istniejącego elementu do nowych targów:</h4>
+                                  <p style="text-align:justify;">
+                                  To są dwie czynności sprzężone ze sobą i zaleca się wykonywanie jej w pozycji tego okna. Takie rozwiązanie ma zminimalizować ilość wpisywanych/zmienianych danych.
+                                  </p><br>
+                                  <p style="text-align:justify;">
+                                      <font style="color:brown;font-weight: bold;">Edytowanie danych</font>:<br>
+                                      Znajdź kolumnę EDYCJA i wywołaj formularz dla odpowiedniego wiersza. Zmodyfikuj odpowiednio dane i zapisz.<br>
+                                      <font color="red"><i>Pamiętaj jednak, że w tym przypadku SDE w polu Stoisko formularza nie może być zmienione!</i></font>
+                                  </p><br>
+                                  <p style="text-align:justify;">
+                                      <font style="color:brown;font-weight: bold;">Dodawanie istniejącego elementu do nowego stoiska targowego:</font>:<br>
+                                      Znajdź kolumnę EDYCJA i wywołaj formularz dla odpowiedniego wiersza. Zmodyfikuj jeśli to konieczne odpowiednie dane i zapisz.<br>
+                                      <font color="red"><i>W tym przypadku SDE w polu Stoisko formularza musi być zmienione na numer stoiska, do którego ma być przypisane!</i></font><br>
+                                      W efekcie w bazie pojawia się nowy wpis dotyczący nowego stoiska targowego wraz ze zmodyfikowanymi danymi.
+                                  </p>
+                              </div>
+                            </div>
+
+
+
+
+
+
+                        </div>
+                        <div class="modal-footer" style="background-color: #eeeeee;">
+                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </div> <!-- KONIEC DIV GŁÓWNEGO -->
+<!--    <script src="{% static 'COMP/comp.js' %}"></script>-->
+<script>
+
+$(document).ready(function() {
+    // Obsługa kliknięcia na wiersz okresu
+    $('.okres-row').click(function() {
+        // Pobierz ID okresu
+        var okresId = $(this).data('okres-id');
+        var okresNazwa = $(this).find('td:nth-child(2)').text();
+        var okresDataOd = $(this).find('td:nth-child(3)').text();
+        var okresDataDo = $(this).find('td:nth-child(4)').text();
+
+        // Ustaw wybraną nazwę okresu
+        $('#wybrany-okres').text(okresNazwa + ' (' + okresDataOd + ' - ' + okresDataDo + ')');
+
+        // Pokaż tytuł dla tabeli Składu
+        $('#sklad-title').show();
+
+        // Pokaż spinner ładowania
+        $('#loading-spinner').show();
+
+        // Ukryj tabele i komunikaty
+        $('#sklad-container').hide();
+        $('#no-data-message').hide();
+
+        // Podświetl wybrany wiersz i usuń podświetlenie z innych
+        $('.okres-row').removeClass('active-row');
+        $(this).addClass('active-row');
+
+        // Wywołaj zapytanie AJAX, aby pobrać powiązane elementy Składu
+        $.ajax({
+            url: '{% url "get_sklad_by_okres" %}',
+            type: 'GET',
+            data: {
+                okres_id: okresId
+            },
+            dataType: 'json',
+            success: function(data) {
+                // Ukryj spinner ładowania
+                $('#loading-spinner').hide();
+
+                if (data.length > 0) {
+                    // Mamy dane, wypełnij tabelę
+                    $('#sklad-tbody').empty();
+
+                    var sumaTotal = 0;
+                    var sumaPowierzchnia = 0;
+                    var waluta = '';
+
+                    data.forEach(function(item) {
+                        // Przygotuj komórkę z flagą w zależności od wartości
+                        var flagaCell = '';
+                        if (item.flaga == 2) {
+                            flagaCell = '<td id="flaga_2"><i class="fa fa-check" aria-hidden="true"></i></td>';
+                        } else if (item.flaga == 1) {
+                            flagaCell = '<td id="flaga_1"><i class="fa fa-times" aria-hidden="true"></i></td>';
+                        } else {
+                            flagaCell = '<td id="flaga_0"><i class="fa fa-times" aria-hidden="true"></i></td>';
+                        }
+
+                        var row = '<tr>' +
+                            '<td style="vertical-align:middle; text-align:center;color: gray;">' + (item.nr_sde_nazwa || '-') + '</td>' +
+                            flagaCell +
+                            '<td style="vertical-align:middle; text-align:center;color: gray;">' + item.magazyn + '</td>' +
+                            '<td style="vertical-align:middle; text-align:center;color: gray;">' + item.powierzchnia + '</td>' +
+                            '<td style="vertical-align:middle; text-align:right;color: brown; font-weight:bold;">' + item.suma + '</td>' +
+                            '</tr>';
+                        $('#sklad-tbody').append(row);
+
+                        // Ekstrakcja wartości dla sumowania
+                        var sumaValue = parseFloat(item.suma.split(' ')[0]);
+                        var powierzchniaValue = parseFloat(item.powierzchnia.split(' ')[0]);
+
+                        if (!isNaN(sumaValue)) sumaTotal += sumaValue;
+                        if (!isNaN(powierzchniaValue)) sumaPowierzchnia += powierzchniaValue;
+
+                        // Zapisz walutę
+                        if (!waluta && item.suma.includes(' ')) {
+                            waluta = item.suma.split(' ')[1];
+                        }
+                    });
+
+                    // Wyświetl sumy całkowite w stopce tabeli
+                    $('#suma-powierzchnia').text(sumaPowierzchnia.toFixed(1) + ' m²');
+                    $('#suma-total').text(sumaTotal.toFixed(2) + ' ' + waluta);
+
+                    // Pokaż tabelę Składu
+                    $('#sklad-container').show();
+                } else {
+                    // Brak danych, pokaż komunikat
+                    $('#no-data-message').show();
+                }
+            },
+            error: function(xhr, status, error) {
+                // Ukryj spinner ładowania
+                $('#loading-spinner').hide();
+
+                // Pokaż komunikat o błędzie
+                $('#no-data-message').text('Wystąpił błąd podczas pobierania danych: ' + error).show();
+            }
+        });
+    });
+});
+
+</script>
+</body>
+</html>
+

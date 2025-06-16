@@ -1,7 +1,6 @@
 from django.db import models
-from django.utils import timezone
 from djmoney.models.fields import MoneyField
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, post_delete, pre_save
 from django.dispatch import receiver
 
 from SDA.settings import ORD_PM
@@ -34,17 +33,41 @@ class NrSDE(models.Model):
     nazwa_id = models.CharField(max_length=250, blank=True, verbose_name="ID Nazwa", default="")
     klient = models.CharField(max_length=500, blank=True, verbose_name="Klient")
     targi  = models.CharField(max_length=500, blank=True, verbose_name="Targi")
-    opis  = models.CharField(max_length=500, blank=True, verbose_name="Opis/Stoisko")
+    stoisko = models.CharField(max_length=500, blank=True, verbose_name="Stoisko")
+    opis  = models.CharField(max_length=500, blank=True, verbose_name="Opis")
     fv    = models.CharField(max_length=500, blank=True, verbose_name="Faktura")
     rks   = models.CharField(max_length=50, blank=True, verbose_name="Rok sprzedaży (z FV)")
     mcs   = models.CharField(max_length=50, blank=True, verbose_name="Miesiąc sprzedaży (z FV)", choices=CHOISES_MC, default='')
     pm    = models.CharField(max_length=500, blank=True, verbose_name="Project Manager", choices=CHOISES_PM, default='')
     uwagi = models.TextField(blank=True, verbose_name="Uwagi")
-    sum_direct  = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Suma koszty bezpośrednie")
+    sum_direct = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Suma koszty bezpośrednie")
     sum_cash   = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Suma koszty gotówkowe")
+    sum_premie = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Suma Premie")
+    sum_deleg  = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Suma Delegacje")
+    sum_pre_del = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Premie i delegacje")
+    pow_stoisko = models.IntegerField(default=0, verbose_name="Powierzchnia stoiska")
+    pow_pietra  = models.IntegerField(default=0, verbose_name="Powierzchnia piętra")
+    deleg_sum   = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Suma delegacji")
+    magazyn_dre = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Magazyny drewna")
+    magazyn_wewn = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11,verbose_name="Magazyn wewnętrzny")
+    mpk_402111 = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11,verbose_name="402-11-1")
+    mpk_402112 = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="402-11-2")
+    mpk_403161 = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="403-16-1")
+    mpk_403162 = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="403-16-2")
+    mpk_403163 = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="403-16-3")
+    mpk_403164 = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="403-16-4")
+    mpk_403165 = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="403-16-5")
+    mpk_403166 = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="403-16-6")
+    mpk_403167 = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="403-16-7")
+    del_roznica = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Delegacja różnica")
+    del_wyjazd = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Delegacja wyjazd")
 
     def __str__(self):
-        return self.nazwa + "......" + self.opis
+        if self.stoisko != '':
+            tekst = self.nazwa + "......" + self.targi + ' - ' + self.klient +' /' + self.stoisko + '/'
+        else:
+            tekst = self.nazwa + "......" + self.opis
+        return tekst
 
     class Meta:
         ordering = ["nazwa"]
@@ -73,6 +96,7 @@ class NrMPK(models.Model):
     gr = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Grudzień")
     b_d = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Bez daty")
     suma = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Suma")
+    lsde = models.BooleanField(default=False, verbose_name="Lista dla SDE")
 
     def __str__(self):
         return self.nazwa + "......" + self.opis
@@ -83,6 +107,29 @@ class NrMPK(models.Model):
         verbose_name_plural = "Numery MPK"
 
 
+class FlagaSzukania(models.Model):
+    nazwa = models.CharField(default='', max_length=100, verbose_name="Nazwa")
+    uwagi = models.CharField(default='', max_length=200, verbose_name="Uwagi")
+
+    def __str__(self):
+        return self.nazwa
+
+    class Meta:
+        verbose_name = "Flaga szukania"
+        verbose_name_plural = "Flagi szukania"
+
+
+class Nip(models.Model):
+    nip = models.CharField(max_length=100, verbose_name="NIP")
+    kontrahent = models.CharField(max_length=300, verbose_name="Kontrahent", blank=True)
+
+    def __str__(self):
+        return self.nip + '..... [' + self.kontrahent + ']'
+    class Meta:
+        verbose_name = "NIP"
+        verbose_name_plural = "NIP-y"
+
+
 class Zamowienie(models.Model):
     CHOISES_SPOSOB = (
         ('Przelew', 'Przelew'),
@@ -91,10 +138,10 @@ class Zamowienie(models.Model):
     )
 
     CHOISES_RODZAJ = (
-        ('Zaliczka', 'Zaliczka'),
+        ('Faktura', 'Faktura'),
         ('Proforma', 'Proforma'),
         ('Zamowienie', 'Zamówienie'),
-        ('Faktura', 'Faktura'),
+        ('Zaliczka', 'Zaliczka'),
         ('Korekta','Korekta'),
         ('Nota','Nota'),
         ('Polisa', 'Polisa'),
@@ -104,20 +151,26 @@ class Zamowienie(models.Model):
 
     rok          = models.IntegerField(default=0, verbose_name="Rok wg SDE")
     rokk         = models.IntegerField(default=0, verbose_name="Rok kalendarzowy")
+    nip_ind      = models.ForeignKey('Nip', verbose_name="NIP", max_length=100,  on_delete=models.SET_NULL, null=True, blank=True)
+    nip          = models.CharField(default='', max_length=100, verbose_name="NIP1", blank=True)
     opis         = models.CharField(max_length=300, verbose_name="Opis zamówienia")
     kontrahent   = models.CharField(max_length=300, verbose_name="Kontrahent")
+    flaga_sz     = models.ForeignKey('FlagaSzukania', verbose_name="Flaga wyszukiwania", max_length=100, on_delete=models.SET_NULL, null=True, blank=True)
     wartosc_zam  = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Wartość zamówienia")
     nr_zam       = models.CharField(max_length=300, verbose_name="Nr zamówienia", blank=True)
     sposob_plat  = models.CharField(max_length=100, verbose_name="Sposób płatności", choices=CHOISES_SPOSOB, default='', blank=True)
     rodzaj_plat  = models.CharField(max_length=100, verbose_name="Rodzaj dokumentu", choices=CHOISES_RODZAJ, default='', blank=True)
     nr_sde       = models.ForeignKey('NrSDE', verbose_name="Nr SDE", max_length=100,  on_delete=models.SET_NULL, null=True, blank=True)
     nr_mpk       = models.ForeignKey('NrMPK', verbose_name="Nr MPK", max_length=100,  on_delete=models.SET_NULL, null=True, blank=True)
-    nr_dok1      = models.CharField(max_length=100, verbose_name="Nr dokumentu 1", blank=True)
-    zal1         = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Zal 1/proforma")
-    nr_dok2      = models.CharField(max_length=100, verbose_name="Nr dokumentu 2", blank=True)
-    zal2         = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Zaliczka 2")
+    nr_dok1      = models.CharField(max_length=100, verbose_name="Nr proformy", blank=True)
+    zal1         = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Proforma")
+    zal1_bi      = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Brutto Inne")
+    nr_dok2      = models.CharField(max_length=100, verbose_name="Nr zaliczki", blank=True)
+    zal2         = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Zaliczka")
+    zal2_bi      = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Brutto Inne")
     nr_dok3      = models.CharField(max_length=100, verbose_name="Nr FV rozliczającej", blank=True)
     zal3         = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="FV rozliczająca")
+    zal3_bi      = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Brutto Inne")
     kwota_netto  = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Kwota [NETTO]")
     kwota_brutto = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Kwota [BRUTTO]")
     kwota_netto_pl = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11,  verbose_name="Kwota [NETTO PLN]")
@@ -141,6 +194,11 @@ class Zamowienie(models.Model):
     class Meta:
         verbose_name = "Zamowienie"
         verbose_name_plural = "Zamowienia"
+
+
+@receiver(pre_save, sender=Zamowienie)
+def pozycja_przed_zapisem(sender, instance, **kwargs):
+    pass
 
 
 

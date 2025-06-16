@@ -1,0 +1,52 @@
+{% extends "lan_dashboard.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="col-lg-12">
+        <div class="panel panel-green" id="panel_glowny">
+            <div class="panel-heading">
+                <table width="100%">
+                    <tr>
+                        <td><font size="+1"><strong>Edycja wpisu</strong></font></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="panel-body">
+
+                <form>
+                    {% csrf_token %}
+                    <input type="hidden" id="member_id" value="{{ member.id }}"/>
+
+                    <div class="mb-3">
+                        <label>Adres IP</label>
+                        <input type="text" id="ip" value="{{ member.ip }}" class="form-control" required="required"/>
+                    </div>
+                    <div class="mb-3">
+                        <label>Nazwa</label>
+                        <input type="text" id="nazwa" value="{{ member.nazwa }}" class="form-control" required="required"/>
+                    </div>
+                    <div class="mb-3">
+                    <label>Typ</label>
+                        <input type="text" id="typ" value="{{ member.typ }}" class="form-control" required="required"/>
+                    </div>
+                    <div class="mb-3">
+                        <label>Opis</label>
+                        <input type="text" id="opis" value="{{ member.opis }}" class="form-control" required="required"/>
+                    </div>
+                    <div class="mb-3">
+                        <label>Uwagi</label>
+                        <input type="text" id="uwagi" value="{{ member.uwagi }}" class="form-control" required="required"/>
+                    </div>
+                    <div class="mb-3">
+                        <button type="button" id="update" class="btn btn-warning">Zapisz</button>
+                        <button type="button" id="update_row" class="btn btn-primary">Zapisz1</button>
+                    </div>
+                </form>
+
+            </div>
+            <div class="panel-footer">
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -9,7 +9,9 @@ public/media/faktury/
 public/media/cars/
 public/media/insurance/
 public/media/protokoly/
+public/media/import/
 *.py_
+*.html_
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -139,3 +141,23 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+# Dodaj na końcu pliku .gitignore:
+echo "" >> .gitignore
+echo "# Media files to exclude" >> .gitignore
+echo "SDA/public/cars/*.jpg" >> .gitignore
+echo "SDA/public/cars/*.jpeg" >> .gitignore
+echo "SDA/public/cars/*.png" >> .gitignore
+echo "SDA/public/cars/*.gif" >> .gitignore
+echo "SDA/public/cars/*.pdf" >> .gitignore
+echo "SDA/public/documents/*.pdf" >> .gitignore
+echo "SDA/public/faktury/*.pdf" >> .gitignore
+echo "SDA/public/insurance/*.pdf" >> .gitignore
+echo "SDA/public/magazyn/*.pdf" >> .gitignore
+echo "SDA/public/magazyn/*.jpg" >> .gitignore
+echo "SDA/public/magazyn/*.jpeg" >> .gitignore
+echo "SDA/public/magazyn/*.png" >> .gitignore
+echo "SDA/public/magazyn_fv/*.pdf" >> .gitignore
+echo "SDA/public/protokoły/*.pdf" >> .gitignore
+echo "SDA/public/wdokumenty/*.pdf" >> .gitignore

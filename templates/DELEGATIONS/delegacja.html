@@ -1,0 +1,281 @@
+{% extends "dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+    <li>
+        <a class="warning btn btn-warning"  data-toggle="tooltip" data-placement="bottom" title="Stawki diet i noclegów." href="{% url 'delegacja_dieta' %}">
+            <font color="#ffffff"><i class="fa fa-copy"></i> <strong>Diety i noclegi</strong></font>
+        </a>
+    </li>
+{% endblock %}
+
+
+{% block retbutton %}
+                        <li>
+                            <a class="primary btn btn-primary"  href="/task" style="color:white;"><i class="fa fa-dashboard fa-fw"></i> <strong>Pulpit</strong></a>
+                        </li>
+{% endblock %}
+
+{% block userlog %}
+                {{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+<table width="100%" height="80px"><tr><td style="width:120px;"><img src="{% static 'img/ico_twoje_konta1.png' %}" width="80px"></td><td>Delegacje</td></tr></table>
+
+{% endblock %}
+
+{% block logo %}
+
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+
+{% block content %}
+        <style>
+              a:link.dt, a:visited.dt {
+                         text-decoration: none;
+              }
+              a:hover.dt, a:active.dt {
+                         text-decoration: none;
+                         display: inline-block;
+              }
+
+              #wpz {
+                    color: brown;
+                    font-weight: bold;
+              }
+              #wrz {
+                    color: #a9a9a9;
+              }
+
+              .verticalText{
+                    text-align: center;
+                    vertical-align: middle;
+                    -webkit-transform: rotate(90deg);
+                    -moz-transform: rotate(90deg);
+              }
+
+              #belka > ul.nav.navbar-top-links.navbar-left > li > a:hover {
+                    background-color: gray;
+              }
+
+              #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
+                    background-color: gray;
+              }
+
+              #mark1, #mark2, #mark3, #mark4, #mark5 {
+                     text-align:center;
+                     vertical-align: middle;
+              }
+
+        </style>
+
+                <div class="col-lg-12">
+                    <div class="panel panel-green" id="panel_glowny">
+                        <div class="panel-heading">
+                            <table width="100%">
+                                <tr>
+                                    {% if flw %}
+                                    <td width="250px;">
+                                        <form metod="GET" action="{% url 'delegacja_search' %}">
+                                            {% csrf_token %}
+                                            <div class="input-group custom-search-form">
+                                                <input type="text" name="SZUKAJ" class="form-control" placeholder="Szukaj...">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                                                </span>
+                                            </div>
+                                        </form>
+                                    </td>
+                                    {% endif %}
+                                    <td align="center">
+                                        <font style="font-size:18px;"><strong>{{ title }}</strong></font>
+                                    </td>
+                                    {% if fl_mask %}
+                                    <td style="width:120px;">
+                                        <a class="primary btn btn-primary" href="{% url 'delegacja_add' fl='del' %}" style="color:white;"><strong>Nowa delegacja</strong></a>
+                                    </td>
+<!--                                    <td>-->
+<!--                                        Osoby-->
+<!--                                    </td>-->
+                                    {% endif %}
+                                </tr>
+                            </table>
+
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-striped  table-bordered">
+                                <tr height="40px">
+                                    <td style="background-color: #2E8B57; vertical-align:middle; text-align:center; color:#ffff00; width:80px;"><strong>Numer<br>dok.</strong></td>
+                                    <td style="background-color: #BD752F; vertical-align:middle; text-align:center; color:#ffff00; width:100px;"><strong>Data Od</strong></td>
+                                    <td style="background-color: #BD752F; vertical-align:middle; text-align:center; color:#ffff00; width:100px;"><strong>Data Do</strong></td>
+<!--                                    <th style="background-color: #4682A4; vertical-align:middle; text-align:center; color:#ffff00;">Imię i Nazwisko stare</th>-->
+                                    <th style="background-color: #4682A4; vertical-align:middle; text-align:center; color:#ffff00;">Imię i Nazwisko</th>
+                                    <th style="background-color: #4682A4; vertical-align:middle; text-align:center; color:#ffff00;">Nazwa Targów</th>
+                                    <th style="background-color: #4682A4; vertical-align:middle; text-align:center; color:#ffff00;">Kraj docelowy</th>
+                                    <th style="background-color: #4682A4; vertical-align:middle; text-align:center; color:#ffff00;">Cel wyjazdu</th>
+                                    <th style="background-color: #4682A4; vertical-align:middle; text-align:center; color:#ffff00;">Środek<br>lokomocji</th>
+                                    <td  style="background-color: #9A35B3; vertical-align:middle; text-align:center; color:#ffff00; width:120px;"><strong>Gotówka<br>[&nbsp;PLN&nbsp;]</strong></td>
+                                    <td  style="background-color: #9A35B3; vertical-align:middle; text-align:center; color:#ffff00; width:120px;"><strong>Gotówka<br>[&nbsp;€&nbsp;]</strong></td>
+                                    <td  style="background-color: #9A35B3; vertical-align:middle; text-align:center; color:#ffff00; width:120px;"><strong>Gotówka<br>[&nbsp;£&nbsp;]</strong></td>
+                                    <td  style="background-color: #9A35B3; vertical-align:middle; text-align:center; color:#ffff00; width:120px;"><strong>Gotówka<br>[&nbsp;$&nbsp;]</strong></td>
+                                    <td  style="background-color: #9A35B3; vertical-align:middle; text-align:center; color:#ffff00; width:120px;"><strong>Gotówka<br>[&nbsp;₣&nbsp;]</strong></td>
+                                    <td  style="background-color: #9A35B3; vertical-align:middle; text-align:center; color:#ffff00; width:120px;"><strong>Karta<br>[&nbsp;Kwota&nbsp;]</strong></td>
+                                    <td style="background-color: #C0C0C0; vertical-align:middle; text-align:center;" width="20"><div class="verticalText"><strong>P.W.</strong></div></td>
+                                    <td style="background-color: #C0C0C0; vertical-align:middle; text-align:center;" width="20"><div class="verticalText"><strong>Del.</strong></div></td>
+                                </tr>
+                                {% for del in delegacje %}
+                                <tr>
+                                    <td style="text-align:center;vertical-align: middle;">{{ del.numer }}</td>
+                                    {% if del.zrobione %}
+                                    <td style="text-align:center;vertical-align: middle;">
+                                        {% if fl_mask %}
+                                           <a class="dt" href="{% url 'delegacja_edit' pk=del.pk %}">{{ del.data_od | date:'d-m-Y' }}</a>
+                                        {% else %}
+                                           {{ del.data_od | date:'d-m-Y' }}
+                                        {% endif %}
+                                    {% else %}
+                                    <td style="background: #CB4335; text-align:center;vertical-align: middle;">
+                                        {% if fl_mask %}
+                                           <a class="dt" href="{% url 'delegacja_edit' pk=del.pk %}" style="color: yellow;">{{ del.data_od | date:'d-m-Y' }}</a>
+                                        {% else %}
+                                           <font style="color: yellow;">{{ del.data_od | date:'d-m-Y' }}</font>
+                                        {% endif %}
+                                    {% endif %}
+                                    </td>
+                                    <td style="text-align:center;vertical-align: middle;">{{ del.data_do | date:'d-m-Y' }}</td>
+                                   <!-- <td style="text-align:center;vertical-align: middle;">{{ del.naz_imie }}</td>-->
+                                    <td style="text-align:center;vertical-align: middle;">{{ del.osoba }}</td>
+                                    <td style="text-align:center;vertical-align: middle;">{{ del.targi }}</td>
+                                    <td style="text-align:center;vertical-align: middle;">{{ del.lok_targi }}</td>
+                                    <td style="text-align:center;vertical-align: middle;">{{ del.cel_wyj }}</td>
+                                    <td style="text-align:center;vertical-align: middle;">{{ del.transport }}</td>
+                                    <td style="text-align:right;vertical-align: middle;">
+                                        {% if del.kasa_pln > 0 %}
+                                        <font id="wpz">{{ del.kasa_pln }}</font>
+                                        {% else %}
+                                        <font id="wrz">{{ del.kasa_pln }}</font>
+                                        {% endif %}
+                                    </td>
+                                    <td style="text-align:right;vertical-align: middle;">
+                                        {% if del.kasa_euro > 0 %}
+                                        <font id="wpz">{{ del.kasa_euro }}</font>
+                                        {% else %}
+                                        <font id="wrz">{{ del.kasa_euro }}</font>
+                                        {% endif %}
+                                    </td>
+                                    <td style="text-align:right;vertical-align: middle;">
+                                        {% if del.kasa_funt > 0 %}
+                                        <font id="wpz">{{ del.kasa_funt }}</font>
+                                        {% else %}
+                                        <font id="wrz">{{ del.kasa_funt }}</font>
+                                        {% endif %}
+                                    </td>
+                                    <td style="text-align:right;vertical-align: middle;">
+                                        {% if del.kasa_dolar > 0 %}
+                                        <font id="wpz">{{ del.kasa_dolar }}</font>
+                                        {% else %}
+                                        <font id="wrz">{{ del.kasa_dolar }}</font>
+                                        {% endif %}
+                                    </td>
+                                    <td style="text-align:right;vertical-align: middle;">
+                                        {% if del.kasa_inna.amount > 0 %}
+                                        <font id="wpz">{{ del.kasa_inna }}</font>
+                                        {% else %}
+                                        <font id="wrz">{{ del.kasa_inna }}</font>
+                                        {% endif %}
+                                    </td>
+                                    <td style="text-align:right;vertical-align: middle;">
+                                         {% if del.kasa_karta.amount > 0 %}
+                                        <font id="wpz">{{ del.kasa_karta }}</font>
+                                        {% else %}
+                                        <font id="wrz">{{ del.kasa_karta }}</font>
+                                        {% endif %}
+                                    </td>
+
+                                    {% if del.zrobione %}
+                                        <td id="mark1">
+                                            <a href="{% url 'delegacja_pw' pk=del.id %}" style="color:#4A235A;"><i class="fa fa-file-pdf-o fa-fw"></i></a>
+                                        </td>
+                                    {% elif del.pobrane_pw %}
+                                        <td id="mark2" style="background-color:#FCF3CF;">
+                                            <a href="{% url 'delegacja_pw' pk=del.id %}" style="color:red;"><i class="fa fa-file-pdf-o fa-fw"></i></a>
+                                        </td>
+                                    {% else %}
+                                        <td id="mark3" style="background-color:#D35400;">
+                                            <a href="{% url 'delegacja_pw' pk=del.id %}" style="color:yellow;"><i class="fa fa-file-pdf-o fa-fw"></i></a>
+                                        </td>
+                                    {% endif %}
+
+
+                                    {% if del.zrobione %}
+                                        <td id="mark4">
+                                            <a href="{% url 'delegacja_rz' pk=del.id %}" style="color:#4A235A;"><i class="fa fa-clipboard fa-fw"></i></a>
+                                        </td>
+                                    {% else %}
+                                        <td id="mark5" style="background-color:#D35400;">
+                                            <a href="{% url 'delegacja_rz' pk=del.id %}" style="color:yellow;"><i class="fa fa-clipboard fa-fw"></i></a>
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </table>
+
+
+                            <br>
+
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                </div>
+
+
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if delegacje.has_previous %}
+                                <a href="?page=1" class="btn btn-default">&laquo; Pierwsza</a>
+                                <a href="?page={{ delegacje.previous_page_number }}" class="btn btn-default">Poprzednia</a>
+                            {% endif %}
+
+                            <span class="current">
+                                Strona {{ delegacje.number }} z {{ delegacje.paginator.num_pages }}.
+                            </span>
+
+                            {% if delegacje.has_next %}
+                                <a href="?page={{ delegacje.next_page_number }}" class="btn btn-default">Następna</a>
+                                <a href="?page={{ delegacje.paginator.num_pages }}" class="btn btn-default">Ostatnia &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+
+
+
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

@@ -2,43 +2,56 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from .models import Faktura, Osoba
 from TaskAPI.models import Asp
-from TaskAPI.rap_temp import email_temp1, email_temp2
+from TaskAPI.rap_temp import email_temp1, email_temp2, faktura_body
 from django.conf import settings
+from SDA.settings import INFO_PROGRAM
 
 def TempSkype(cel, adres, instance):
-    tytul = "Zgłoszenie faktury od " + instance.imie + " " + instance.nazwisko
+    tytul = "Zgłoszenie faktury od " + instance.osoba.naz_imie
+    # info = tytul + '\n\r' \
+    #        + "TARGI ________: " + instance.targi + "\n" \
+    #        + "STOISKO ______: " + instance.stoisko + "\n" \
+    #        + "RODZAJ FV ____: " + instance.rfaktura + "\n" \
+    #        + "TERMIN _______: " + str(instance.termin) + "\n" \
+    #        + "KWOTA ________: " + str(instance.kwota) + "\n" \
+    #        + "ZA CO ________: " + instance.zaco + "\n" \
+    #        + "SPECYFIKACJA _: " + instance.spec + "\n"
+    # info = info + "\n" + "ZGŁOSZENIE: " + str(instance.data)
+
     info = tytul + '\n\r' \
-           + "TARGI ________: " + instance.targi + "\n" \
-           + "STOISKO ______: " + instance.stoisko + "\n" \
-           + "RODZAJ FV ____: " + instance.rfaktura + "\n" \
-           + "TERMIN _______: " + str(instance.termin) + "\n" \
-           + "KWOTA ________: " + str(instance.kwota) + "\n" \
-           + "ZA CO ________: " + instance.zaco + "\n" \
-           + "SPECYFIKACJA _: " + instance.spec + "\n"
-    info = info + "\n" + "ZGŁOSZENIE: " + str(instance.data)
+           + "\u2007\u2007\u2007\u2007\u2007\u2007\u2008TARGI:\u2003\u2007" + instance.targi + "\n" \
+           + "\u2007\u2007\u2007\u2007\u2008STOISKO:\u2003\u2007" + instance.stoisko + "\n" \
+           + "\u2007\u2007RODZAJ\u2007FV:\u2003\u2007" + instance.rfaktura + "\n" \
+           + "\u2007\u2007\u2007\u2007\u2007TERMIN:\u2003\u2007" + str(instance.termin) + "\n" \
+           + "\u2007\u2007\u2007\u2007\u2007\u2008KWOTA:\u2003\u2007" + str(instance.kwota) + "\n" \
+           + "\u2007\u2007\u2007\u2007\u2007\u2007ZA\u2007CO:\u2003\u2007" + instance.zaco + "\n" \
+           + "SPECYFIKACJA:\u2003\u2007" + instance.spec + "\n"
+    formatted_time = instance.data.strftime('%Y-%m-%d %H:%M:%S')
+    info = info + "\n" + "ZGŁOSZENIE: " + formatted_time    #str(instance.data)
+
     asp = Asp.objects.create(cel=cel, adres=adres, tytul=tytul, info=info, data=instance.data)
     asp.save()
 
 
 def TempEmail(cel, adres, instance):
-    tytul = "Zgłoszenie faktury od " + instance.imie + " " + instance.nazwisko
-
-    info = email_temp1(tytul)
-    info = info \
-           + "<tr><td width='150'><strong>Targi</strong></td><td width='10'>:</td><td>" + instance.targi + "</td></tr>" \
-           + "<tr><td><strong>Stoisko</strong></td><td>:</td><td>" + instance.stoisko + "</td></tr>" \
-           + "<tr><td><strong>Rodzaj FV</strong></td><td>:</td><td>" + instance.rfaktura + "</td></tr>" \
-           + "<tr><td><strong>Termin</strong></td><td>:</td><td>" + str(instance.termin) + "</td></tr>" \
-           + "<tr><td><strong>Kwota</strong></td><td>:</td><td>" + str(instance.kwota) + "</td></tr>" \
-           + "<tr><td><strong>Za co</strong></td><td>:</td><td>" + instance.zaco + "</td></tr>" \
-           + "<tr><td><strong>Specyfikacja</strong></td><td>:</td><td>" + instance.spec + "</td></tr>" \
-           + "<tr><td><strong>Uwagi</strong></td><td>:</td><td>" + instance.uwagi + "</td></tr>"
-    info = info + email_temp2()
+    tytul = "Zgłoszenie faktury od " + instance.osoba.naz_imie
     data = str(instance.data)
-    info = info + "<h4><font color='#000099'>" + "Zgłoszenie: " + data + "</font></h4>"
+
+    osoba= instance.osoba.naz_imie
+    targi= instance.targi
+    stoisko= instance.stoisko
+    rodzaj_fv= instance.rfaktura
+    termin= str(instance.termin)
+    kwota= str(instance.kwota)
+    za_co= instance.zaco
+    projekt_specyfikacja= instance.spec
+    zgloszenie= data
+    sda_wersja= INFO_PROGRAM[0]['WERSJA']
+    info = faktura_body(osoba, targi, stoisko, rodzaj_fv, termin, kwota, za_co, projekt_specyfikacja, zgloszenie, sda_wersja)
 
     asp = Asp.objects.create(cel=cel, adres=adres, tytul=tytul, info=info, data=data)
     asp.save()
+
 
 
 @receiver([post_save], sender=Faktura)
@@ -63,7 +76,8 @@ def Faktura_save(sender, instance, **kwargs):
                 con = 2
 
             try:
-                row = Osoba.objects.filter(naz_imie=instance.naz_imie).values_list('skype','email')
+                row = Osoba.objects.filter(naz_imie=instance.osoba.naz_imie).values_list('skype','email')
+
                 adres1 = str(row[0][0])
                 adres2 = str(row[0][1])
             except:

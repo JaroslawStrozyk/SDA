@@ -1,0 +1,286 @@
+{% extends "logs_dashboard.html" %}
+{% load static %}
+
+{% block style %}
+                   .alarm{
+                          background-color: #FFE4E1;
+                   }
+                   .alarm1{
+                          background-color: #E1E4FF;
+                   }
+                   .valarm{
+                          background-color: #FFFFE0;
+                   }
+                   .ok{
+                          background-color: #90EE90;
+                   }
+                   .verticalText{
+                          text-align: center;
+                          vertical-align: middle;
+                          -webkit-transform: rotate(90deg);
+                          -moz-transform: rotate(90deg);
+                   };
+                   th {
+                          text-align: center;
+                   }
+
+
+                   #wrapper > nav {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   #tabela {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   #tabela > table > tbody > tr:hover {
+                        background-color: #f5f5f5;
+                   }
+
+                   .custome-size {
+                        width: 1300px;
+                   }
+                   .nav-pills>li.active>a, .nav-pills>li.active>a:focus {
+                        color: #fff;
+                        background-color: #d43f3a;
+                   }
+                   .nav-pills>li.active>a:hover {
+                        color: #fff;
+                        background-color: #595959;
+                   }
+
+                   .nav-pills>li>a {
+                        color: #fff;
+                        background-color: #a5a5a5;
+                   }
+                   .nav-pills>li>a:hover {
+                        color: #fff;
+                        background-color: #595959;
+                   }
+
+                   .container {
+                        width: 100%;
+                   }
+
+                   .klasa1 {
+                        text-align: center;
+                        background-color: #98FB98;
+                   }
+                   .klasa2 {
+                        text-align: center;
+                        background-color: #FF6347;
+                   }
+                   .klasa3 {
+                        text-align: center;
+                        background-color: #FBFB98;
+                   }
+                   .klasa4 {
+                        text-align: center;
+                        background-color: #9898FB;
+                   }
+
+
+            #SEL-LOG:link, #EWU:visited {
+                color: #FFFACD;
+                background-color: #70665c;
+                border-color: #70665c;
+            }
+
+            #SEL-LOG:hover {
+                color: #FFFACD;
+                background-color: #60564c;
+                border-color: #60564c;
+            }
+
+            #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
+                background-color: #236ab7;
+                border-color: #1e5da4;
+            }
+
+
+{% endblock %}
+
+{% block leftbutton %}
+                    <li class="dropdown"  style="font-weight:bold;">
+
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"  id="SEL-LOG">
+                            <i class="fa fa-clone fa-fw"></i> &nbsp;Rodzaj logu <i class="fa fa-caret-down"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="{% url 'log' %}"><i class="fa fa-certificate fa-fw"></i> Bieżące logowanie</a></li>
+                           <li><a href="{% url 'log_arch' %}"><i class="fa fa-certificate fa-fw"></i> Archiwalne logowanie</a></li>
+                        </ul>
+
+                    </li>
+{% endblock %}
+
+
+{% block retbutton %}
+    <li>
+        <a class="btn btn-primary" href="{% url 'desktop' %}"><i class="fa fa-dashboard fa-fw"></i> Pulpit</a>
+    </li>
+{% endblock %}
+
+{% block userlog %}
+{{ name_log }}
+{% endblock %}
+
+{% block rightmenu %}
+{% endblock %}
+
+{% block logo %}
+{% endblock %}
+
+{% block content %}
+
+    <div class="col-lg-12">
+        <br><br>
+        <div class="panel panel-default" id="tabela">
+            <div class="panel-heading">
+
+                <table width="100%">
+                    <tr>
+                        <td align="center"><h4><strong>{{ tytul }}</strong></h4></td>
+                        <td width="20px" align="center"><h4><strong><font color="green"><span id="znak">☱</span></font></strong></h4></td>
+                    </tr>
+                </table>
+
+            </div>
+            <table id="logTable" class="table table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th style="text-align: center;background-color: #9E5FA0; color:#ffff00;width:60px;">Status</th>
+                        <th style="text-align: center;width:90px;background-color: #2E8B57; color:#ffff00;">Data</th>
+                        <th style="text-align: center;width:70px;background-color: #5F9EA0; color:#ffff00;">Godzina</th>
+                        <th style="text-align: center;width:150px;background-color: #BA55D3; color:#ffff00;">Moduł</th>
+                        <th style="text-align: center;width:350px;background-color: #5F9EA0; color:#ffff00;">Komunikat</th>
+                        <th style="text-align: center;background-color: #A09E5F; color:#ffff00;">Opis</th>
+                        <th style="text-align: center;background-color: #A09E5F; color:#ffff00;width:100px;">Czas</th>
+                        <th style="text-align: center;background-color: #9E5FA0; color:#ffff00;width:50px;">Kto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for tab in log_tab %}
+                   <tr>
+                       <!--
+                       zielony:   #98FB98;
+                       żółty:     #FBFB98;
+                       niebieski: #9898FB;
+                       czerwony:  #FF6347;
+                       -->
+
+                       <td>{{ tab.status }}</td>
+                       <td>{{ tab.data|date:'Y-m-d' }}</td>
+                       <td>{{ tab.godz|date:'H:i:s' }}</td>
+                       <td>{{ tab.modul }}</td>
+                       <td>{{ tab.komunikat }}</td>
+                       <td>{{ tab.opis }}</td>
+                       <td align="right">{{ tab.czas }}</td>
+                       <td>{{ tab.kto }}</td>
+                   </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <br>
+
+    </div>
+
+{% endblock %}
+
+
+{% block javascript %}
+        $(document).ready(function() {
+
+            // Zmiana sygnalizacji działania
+            function zmienZnak() {
+              var znakElement = document.getElementById('znak');
+              if (znakElement.innerText=="☱") {
+                out = "☲";
+              } else if (znakElement.innerText=="☲") {
+                out = "☴";
+              } else {
+                out = "☱";
+              }
+              znakElement.innerText = out;
+            }
+
+            // Pobranie danych za pomocą AJAX i aktualizacja tabeli
+            function getLogData() {
+                $.ajax({
+                    url: '/LOG/get_logs/',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        updateTable(data);
+                    }
+                });
+            }
+
+            // Aktualizacja tabeli na podstawie pobranych danych
+            function updateTable(data) {
+                var tableBody = $('#logTable tbody');
+                tableBody.empty();
+
+                zmienZnak();
+
+                data.forEach(function(log) {
+                    var row = $('<tr>');
+
+                    if (log.status_id==1) {
+                      row.addClass('klasa1');
+                    } else if (log.status_id==2) {
+                      row.addClass('klasa2');
+                    } else if (log.status_id==3) {
+                      row.addClass('klasa3');
+                    } else if (log.status_id==4) {
+                      row.addClass('klasa4');
+                    }
+
+                    $('<td>').text(log.status).appendTo(row);
+                    $('<td>').text(log.data).appendTo(row);
+                    $('<td>').text(log.godz).appendTo(row);
+                    $('<td>').text(log.modul).appendTo(row);
+                    $('<td>').text(log.komunikat).appendTo(row);
+                    $('<td>').text(log.opis).appendTo(row);
+                    $('<td>').text(log.czas).appendTo(row);
+                    $('<td>').text(log.kto).appendTo(row);
+                    tableBody.append(row);
+                });
+            }
+
+            // Wywołanie funkcji pobierającej dane przy załadowaniu strony
+            getLogData();
+
+            // Odświeżanie tabeli co 5 sekund
+            setInterval(getLogData, 5000);
+        });
+
+{% endblock %}
+
+
+{% block about %}
+    <tr>
+        <td class="text-right" width="300">
+            <br>Wersja:
+            <br>Ostatnia modyfikacja:<br>
+            <br>Firma:
+            <br>Autor:
+            <br>Email:
+            <br>Tel. kom.:<br>
+            <br>
+        </td>
+        <td>
+            {% for ab in about %}
+            <br>{{ ab.WERSJA }}
+            <br>{{ ab.MODYFIKACJA }}
+            <br>
+            <br>{{ ab.FIRMA }}
+            <br>{{ ab.AUTOR }}
+            {% endfor %}
+            <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+            <br>+48 791-648-417<br>
+        </td>
+    </tr>
+{% endblock %}

@@ -1,0 +1,725 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pulpit SDA.</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link href="{% static 'COMP/css/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'COMP/comp.css' %}" rel="stylesheet" type="text/css">
+    <style>
+        #fir1 {
+            color: #FFFFFF;
+            background-color: #DAA520;
+            border-color: #DAA520;
+            box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+        }
+
+        #fir1:hover {
+            color: #FFFFFF;
+            background-color: #B8860B;
+            border-color: #B8860B;
+        }
+
+        #kol1 {
+            background-color: #CD5C5C;
+            vertical-align: middle;
+            text-align: center;
+            color: yellow;
+            width: 30px;
+            padding: 1px;
+            font-size: 75%;
+            font-weight: bold;
+        }
+
+        .verticalText1 {
+            text-align: center;
+            vertical-align: middle;
+            -webkit-transform: rotate(270deg);
+            -moz-transform: rotate(270deg);
+        }
+
+        #inst {
+            background-color: #53a94f;
+            border-color: #3fa43a;
+            box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+        }
+
+        #inst:hover {
+            background-color: #53894f;
+            border-color: #3f843a;
+        }
+
+        #ret {
+            color: #FFFACD;
+            background-color: #70665c;
+            border-color: #70665c;
+            box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+        }
+
+        #ret:hover {
+            color: #FFFACD;
+            background-color: #60564c;
+            border-color: #60564c;
+        }
+
+        #BDG {
+            color: #FFFACD;
+            font-weight: bold;
+            background-color: #4c6056;
+            border-color: #4c6056;
+            box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+        }
+
+        #BDG:hover {
+            color: #FFFACD;
+            font-weight: bold;
+            background-color: #4c6056;
+            border-color: #4c6056;
+            box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+        }
+
+        .panel-green > .panel-heading {
+            border-color: #5cb85c;
+            color: white;
+            background-color: #999999;
+        }
+        .panel-green {
+            border-color: #999999;
+        }
+
+
+        #hover-box {
+            max-width: 400px; /* Ograniczenie szerokości */
+            white-space: nowrap; /* Tekst w jednej linii */
+            text-overflow: ellipsis; /* Wielokropek dla zbyt długiego tekstu */
+            overflow: hidden; /* Ukrycie nadmiaru tekstu */
+            background-color: #f9f9f9; /* Kolor tła */
+            border: 1px solid #ccc; /* Obramowanie */
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4); /* Subtelny cień */
+            padding: 10px; /* Odstępy wewnętrzne */
+            border-radius: 4px; /* Zaokrąglone rogi */
+            z-index: 1000; /* Wysoki priorytet wyświetlania */
+            position: absolute; /* Absolutne pozycjonowanie */
+            display: none; /* Ukryte, dopóki nie zostanie aktywowane */
+        }
+
+        #loading-spinner {
+            display: flex; /* Spinner widoczny na początku */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+        }
+
+        .fa-spinner {
+            font-size: 200px;
+            color: #4c6056; /* #0bab0b; */ /* #007bff; */
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #data-container {
+            display: none; /* Domyślnie ukryty */
+        }
+
+    </style>
+</head>
+<body>
+
+
+    <div class="container">
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" id="belka">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'desktop' %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SmartDesign&nbsp;&nbsp;Expo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            </div>
+
+            <ul class="nav navbar-top-links navbar-left"  style="margin-top:1px;margin-bottom:1px;">
+                <li>
+                    <a class="btn" href="{% url 'firma-strona' mag=mag fl=fl %}" id="fir1">
+                           <i class="fa fa-industry" aria-hidden="true"></i> <strong>Firmy</strong>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-top-links navbar-right" style="margin-top:1px;margin-bottom:1px;margin-right:2px;">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#HELP_HELP" class="btn" id="inst">
+                         <strong><font color="#FFFF00"><i class="fa fa-clone" aria-hidden="true"></i> INSTRUKCJA</font></strong>
+                    </a>
+                </li>
+                <li>
+                    <a class="btn" href="{% url 'comp_list' mag=mag %}" id="ret">
+                            <i class="fa fa-reply-all" aria-hidden="true"></i> Pulpit
+                    </a>
+                </li>
+                <li class="dropdown" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="adt">
+                        <i class="fa fa-user fa-fw"></i>
+                        {{ name_log }}
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+
+                        <li>
+                                <form action="{% url 'logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-link"><i class="fa fa-sign-out fa-fw"></i> Wyjście z programu</button>
+                                </form>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+        </nav>
+
+        <div class="container" id="gpanel">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table width="100%">
+                        <tr>
+                            <td style="text-align: center;">
+                                {% for f in firma %}
+                                    {% if f.id == fl %}
+                                        <a data-filter="filter" type="button" class="btn btn-primary active" href="{% url 'comp_multi' mag=mag fl=f.id %}" style="margin-top: 2px;box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;"><strong>{{ f.nazwa|upper  }}</strong></a>
+                                    {% else %}
+                                        <a data-filter="filter" type="button" class="btn btn-primary" href="{% url 'comp_multi' mag=mag fl=f.id %}" style="margin-top: 2px;box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;"><strong>{{ f.nazwa|upper  }}</strong></a>
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Spinner widoczny podczas ładowania -->
+<!--            <div id="loading-spinner" class="text-center" style="margin-top: 20%; display: block;">-->
+<!--                <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">-->
+<!--                    <span class="sr-only">Loading...</span>-->
+<!--                </div>-->
+<!--                <i class="fa fa-spinner" aria-hidden="true"></i><br>-->
+<!--                <p> Ładowanie danych, proszę czekać...</p>-->
+<!--            </div>-->
+
+            <div class="panel panel-green"  id="main-content" > <!-- main-content data-container-->
+                <div class="panel-heading">
+                    <table width="100%">
+                        <tr>
+                            <td width="250px">
+                                <form metod="GET" action="{% url 'comp_multi' mag=mag fl=fl %}">
+                                    {% csrf_token %}
+                                    <div class="input-group custom-search-form" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
+                                        <input type="text" name="SZUKAJ" class="form-control" placeholder="Szukaj...">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </td>
+                            <td>
+                                <h3 class="panel-title" align="center"><strong>{{ title }}</strong></h3>
+                            </td>
+                            <td width="200px" align="right">
+                                <button class="btn btn-primary" id="BDG">
+                                  Całość:&nbsp;<span class="badge badge-light">
+                                    <font size="3" color="red">&nbsp;&nbsp;{{ suma_c }}&nbsp;&nbsp;</font>
+                                </span><!-- € -->
+                                </button>
+                            </td>
+
+                            <td width="10px" align="right"></td>
+
+                            <td width="50px" align="right">
+                                {% if setD %}
+                                <a class="btn btn-primary" href="{% url 'ewu_pdf_bc' pk=fl mag=mag %}"  target="_blank" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;" disabled>
+                                    <strong><font color="yellow"><i class="fa fa-file-pdf-o"></i>&nbsp;Zestawienie</font></strong>
+                                </a>
+                                {% else %}
+                                <a class="btn btn-primary" href="{% url 'ewu_pdf_bc' pk=fl mag=mag %}"  target="_blank" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
+                                    <strong><font color="yellow"><i class="fa fa-file-pdf-o"></i>&nbsp;Zestawienie</font></strong>
+                                </a>
+                                {% endif %}
+                            </td>
+
+
+                        </tr>
+                    </table>
+                </div>
+                <div class="panel-body">
+
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr style="height:40px;background-color: #90867c; color:#FFFACD;">
+                                <th colspan="5" style="vertical-align:middle; text-align:center;">PRZECHOWUJEMY</th>
+                                <th rowspan="2" style="vertical-align:middle; text-align:center;width:80px;">SDE</th>
+
+                                <th colspan="3" style="vertical-align:middle; text-align:center;">CZAS PRZECHOWYWANIA</th>
+                                <th rowspan="2" style="vertical-align:middle; text-align:center;width:40px;padding: 1px;">
+                                    <div class="verticalText">KOSZTY<br>I POWIE</div>
+                                </th>
+                                <th rowspan="2" style="vertical-align:middle; text-align:center;width:80px;padding: 1px;">
+                                    KOSZT<br>PRZECHO.
+                                </th>
+                                <th rowspan="2" style="vertical-align:middle; text-align:center;width:80px;padding: 1px;">
+                                    WYDANIA<br>NA<br>TARGI
+                                </th>
+                                <th rowspan="2" style="vertical-align:middle; text-align:center;width:40px;padding: 1px;">
+                                    <div class="verticalText">ZWOLNIO.</div>
+                                </th>
+                                <th rowspan="2" style="vertical-align:middle; text-align:center;width:40px;padding: 1px;">
+                                    <div class="verticalText">EDYCJA</div>
+                                </th>
+
+                            </tr>
+                            <tr style="height:40px;background-color: #90867c; color:#FFFACD;">
+                                <th style="vertical-align:middle; text-align:center;" colspan="2">NAZWA</th>
+                                <th style="vertical-align:middle; text-align:center;width:80px;">NR. PAL.</th>
+                                <th style="vertical-align:middle; text-align:center;width:80px;">WYGLĄD</th>
+                                <th style="vertical-align:middle; text-align:center;width:80px;">USZKODZENIA</th>
+
+                                <th style="vertical-align:middle; text-align:center;width:100px;">OD</th>
+                                <th style="vertical-align:middle; text-align:center;width:100px;">DO</th>
+                                <th style="vertical-align:middle; text-align:center;width:100px;">MAGAZYN</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in sklad %}
+                            <tr>
+
+                                {% if item.do_skasowania %}
+                                    <td id="kol1">
+                                        <div class="verticalText1">KAS</div>
+                                    </td>
+                                {% else %}
+                                    <td width="30px"></td>
+                                {% endif %}
+                                <td style="vertical-align:middle; text-align:center;color: gray;">{{ item.przech_nazwa }}</td>
+                                <td style="vertical-align:middle; text-align:center;color: gray;">{{ item.przech_nrpalet }}</td>
+                                <td style="vertical-align:middle; text-align:center;">
+                                    {% if item.przech_zdjecie or item.przech_zdjecie2 %}
+                                    <a href="#" data-toggle="modal" data-target="#VIEW{{ item.id }}"><font color="brown"><i class="fa fa-picture-o"></i></font></a>
+
+                                        <div class="modal fade" id="VIEW{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <span class="modal-title" id="exampleModalLongTitle">
+                                                            <strong>{{ item.przech_nazwa }}</strong>
+                                                        </span>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table width="100%">
+                                                            <tr>
+                                                                <td>
+                                                                    {% if item.przech_zdjecie %}
+                                                                        <img src="{{ item.przech_zdjecie.url }}" width="100%"/>
+                                                                    {% endif %}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding-top: 5px;">
+                                                                    {% if item.przech_zdjecie2 %}
+                                                                        <img src="{{ item.przech_zdjecie2.url }}" width="100%"/>
+                                                                    {% endif %}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding-top: 5px;">
+                                                                    {% if item.przech_zdjecie3 %}
+                                                                        <img src="{{ item.przech_zdjecie3.url }}" width="100%"/>
+                                                                    {% endif %}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding-top: 5px;">
+                                                                    {% if item.przech_zdjecie4 %}
+                                                                        <img src="{{ item.przech_zdjecie4.url }}" width="100%"/>
+                                                                    {% endif %}
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div class="modal-footer" style="background-color: #eeeeee;">
+                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td style="vertical-align:middle; text-align:center;">
+                                    {% if item.uszkodz_zdjecie1 or item.uszkodz_zdjecie2 or item.uszkodz_zdjecie3 or item.uszkodz_zdjecie4  %}
+                                    <a href="#" data-toggle="modal" data-target="#VIEWU{{ item.id }}"><font color="brown"><i class="fa fa-picture-o"></i></font></a>
+                                        <div class="modal fade" id="VIEWU{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <span class="modal-title" id="exampleModalLongTitleU">
+                                                            <strong>{{ item.przech_nazwa }}</strong>
+                                                        </span>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table width="100%">
+                                                            {% if item.uszkodz_zdjecie1 %}
+                                                                <tr>
+                                                                    <td>
+                                                                        <img src="{{ item.uszkodz_zdjecie1.url }}" width="100%"/>
+                                                                    </td>
+                                                                </tr>
+                                                            {% endif %}
+                                                            {% if item.uszkodz_zdjecie2 %}
+                                                                <tr>
+                                                                    <td style="padding-top: 5px;">
+                                                                         <img src="{{ item.uszkodz_zdjecie2.url }}" width="100%"/>
+                                                                    </td>
+                                                                </tr>
+                                                            {% endif %}
+                                                            {% if item.uszkodz_zdjecie3 %}
+                                                                <tr>
+                                                                    <td style="padding-top: 5px;">
+                                                                        <img src="{{ item.uszkodz_zdjecie3.url }}" width="100%"/>
+                                                                    </td>
+                                                                </tr>
+                                                            {% endif %}
+                                                            {% if item.uszkodz_zdjecie4 %}
+                                                                <tr>
+                                                                    <td style="padding-top: 5px;">
+                                                                        <img src="{{ item.uszkodz_zdjecie4.url }}" width="100%"/>
+                                                                    </td>
+                                                                </tr>
+                                                            {% endif %}
+                                                        </table>
+                                                    </div>
+                                                    <div class="modal-footer" style="background-color: #eeeeee;">
+                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td style="vertical-align:middle; text-align:center;color: gray;">{{ item.nr_sde.nazwa }}</td>
+
+                                {% if blokz %}
+                                    <td style="vertical-align:middle; text-align:center;color:brown;">{{ item.czas_od|date:'Y-m-d' }}</td>
+                                    <td style="vertical-align:middle; text-align:center;color:brown;">{{ item.czas_do|date:'Y-m-d' }}</td>
+                                {% else %}
+                                    <td style="vertical-align:middle; text-align:center;color: gray;">{{ item.czas_od|date:'Y-m-d' }}</td>
+                                    <td style="vertical-align:middle; text-align:center;color: gray;">{{ item.czas_do|date:'Y-m-d' }}</td>
+                                {% endif %}
+                                <td style="vertical-align:middle; text-align:center;color: gray;">{{ item.magazyn }}</td>
+
+                                <td style="vertical-align:middle; text-align:center;">
+                                                <a href="#" data-toggle="modal" data-target="#CASH{{ item.id }}"><i class="fa fa-money" style="color:brown;"></i></a>
+
+                                                <div class="modal fade" id="CASH{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                         <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                 <div class="modal-header">
+                                                                     <span class="modal-title" id="exampleModalLongTitle2" style="color:brown;">
+                                                                         {% if item.nr_sde %}
+                                                                         <strong>{{ item.nr_sde.nazwa }}</strong>, <i>{{ item.nr_sde.targi }}, {{ item.nr_sde.klient }},</i> {{ item.nr_sde.stoisko }}
+                                                                         {% else %}
+                                                                         <strong>???</strong>
+                                                                         {% endif %}
+                                                                     </span>
+                                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                     </button>
+                                                                 </div>
+                                                                 <div class="modal-body">
+                                                                     <table class="table table-bordered table-condensed">
+                                                                         <tr>
+                                                                             <th style="background:#F5F5DC; text-align:center;" colspan="3">{{ item.przech_nazwa }}</th>
+                                                                         </tr>
+                                                                         <tr>
+                                                                             <th style="background:#F5F5DC; text-align:center;">Szerokość [m]</th>
+    <!--                                                                         <th style="background:#F5F5DC; text-align:center;">Wysokość [m]</th>-->
+                                                                             <th style="background:#F5F5DC; text-align:center;">Głębokość [m]</th>
+                                                                             <th style="background:#F5F5DC; text-align:center;">Powierzchnia [m²]</th>
+                                                                         </tr>
+                                                                         <tr>
+                                                                             <td>{{ item.przech_sze }}</td>
+    <!--                                                                         <td style="color:gray;">{{ s.przech_wys }}</td>-->
+                                                                             <td>{{ item.przech_gl }}</td>
+                                                                             <td style="font-weight:bold;background:#7FFFD4;">{{ item.przech_pow }}</td>
+                                                                         </tr>
+                                                                     </table>
+
+                                                                     <table class="table table-bordered table-condensed">
+                                                                         <tr>
+                                                                             <th style="background:#FFFACD; text-align:center;">Ilość dni przechowania dla wybranej pozycji</th> <!--  colspan="3" -->
+                                                                             <td style="text-align:right;font-weight:bold;">{{ item.ilosc_dni }}</td>
+                                                                         </tr>
+                                                                         <tr>
+                                                                             <th style="background:#FFFACD; text-align:center;">Stawka przechowania dla wybranej pozycji</th> <!--  colspan="3" -->
+                                                                             <td style="text-align:right;font-weight:bold;">{{ item.stawka }}</td>
+                                                                         </tr>
+                                                                         <tr>
+                                                                             <th style="background:#FFFACD; text-align:center;">Koszt przechowania wybranej pozycji</th> <!--  colspan="3" -->
+                                                                             {% if item.zwolnione %}
+                                                                                <td style="text-align:right;font-weight:bold;text-decoration: line-through;color:gray;">&nbsp;&nbsp;{{ item.koszt_przech }}</td>
+                                                                             {% else %}
+                                                                                <td style="text-align:right;font-weight:bold;color:brown;">{{ item.koszt_przech }}</td>
+                                                                             {% endif %}
+                                                                         </tr>
+    <!--                                                                     <tr>-->
+    <!--                                                                         <th style="background:#FFFACD; text-align:center;">Całkowity koszt przechowania dla [{{ s.nr_sde.nazwa }}]</th> &lt;!&ndash;  colspan="3" &ndash;&gt;-->
+    <!--                                                                         <td style="text-align:right;font-weight:bold;color:brown;">{{ s.suma }}</td>-->
+    <!--                                                                     </tr>-->
+                                                                     </table>
+
+                                                                     <table class="table table-bordered table-condensed">
+                                                                         <tr>
+                                                                             <th style="background:#fef5e7; text-align:center;width:16%;">Data od</th><td style="text-align:center;width:16%;">{{ item.czas_od|date:'Y-m-d' }}</td>
+                                                                             <th style="background:#fef5e7; text-align:center;width:16%;">Data do</th><td style="text-align:center;width:16%;">{{ item.czas_do|date:'Y-m-d' }}</td>
+                                                                             <th style="background:#fef5e7; text-align:center;width:16%;">FV</th><td style="text-align:center;width:20%;">{{ item.faktura }}</td>
+                                                                         </tr>
+                                                                     </table>
+                                                                     </p>
+
+                                                                 </div>
+                                                                 <div class="modal-footer" style="background-color: #eeeeee;">
+                                                                     <table style="width:100%;">
+                                                                         <tr>
+                                                                             <td style="color:gray;text-align:center;">
+                                                                                 <strong>Podpowiedź:</strong> {{ item.koszt_przech }} = ({{ item.przech_pow }} * ({{ item.stawka }}/30)) * {{ item.ilosc_dni }}
+                                                                             </td>
+                                                                             <td>
+                                                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                                             </td>
+                                                                         </tr>
+                                                                     </table>
+                                                                 </div>
+                                                            </div>
+                                                         </div>
+                                                     </div>
+
+                                </td>
+
+
+
+
+
+
+                                <td style="vertical-align:middle; text-align:right;color: gray;font-weight:bold;width:100px;">{{ item.koszt_przech }}</td>
+                                <td class="multi-info" data-id="{{ item.multi_uzycie_id }}" style="vertical-align:middle; text-align:center;"> <!--  style="vertical-align:middle; text-align:center;" -->
+                                    {% if item.multi_uzycie_st > 1 %}
+                                        {{ item.multi_uzycie_st }}
+                                    {% else %}
+                                        <span style="color:red; font-weight:bold;">{{ item.multi_uzycie_st }}</span>
+                                    {% endif %}
+                                </td>
+                                <td style="vertical-align:middle; text-align:center;color: gray;">
+                                    {% if item.zwolnione %}<i class="fa fa-check" aria-hidden="true"></i>{% endif %}
+                                </td>
+                                <td style="vertical-align:middle; text-align:center;">
+                                    <a href="{% url 'comp_medit' pk=item.pk mag=mag fl=fl %}?SZUKAJ={{ request.GET.SZUKAJ }}">
+                                        <i class="fa fa-pencil-square-o fa-fw" style="color:brown;"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <!-- Kontener dla dynamicznego okna -->
+                    <div id="hover-box"></div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="HELP_HELP" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span class="modal-title" id="exampleModalLongTitle3"><strong>Instrukcja działania.</strong></span>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p style="text-align:justify;">
+                                Uwagi użytkowania:<br>
+                                - dane w tabeli są danymi skondensowanymi to znaczy w tabeli jest tylko jedna reprezentacja przechowywanego elementu,<br>
+                                - wyświetlane w tabeli są tylko ostatnie wpisy dotyczące danego elementu.<br>
+                            </p>
+
+                            <div class="panel panel-default" style="border-left: 4px solid coral">
+                              <div class="panel-body">
+                                  <h4>Sprawdzanie historii wydań na targi:</h4>
+                                  <ul>
+                                      <li style="text-align:justify;">Znajdź kolumnę "<font style="color:brown;font-weight: bold;">WYDANIA NA TARGI</font>" i przesuń kursor myszki na poszukiwany wiersz,</li>
+                                      <li style="text-align:justify;">Przesuwając kursor po wierszach tej kolumny w 'wyskakujących' oknach pojawia się historia wydań,</li>
+                                      <li style="text-align:justify;">Jeśli element jest w trakcie wypożyczenia to odpowiednia linia jest zaznzczona kolorem czerownym.</li>
+                                  </ul>
+                              </div>
+                            </div>
+
+                            <div class="panel panel-default" style="border-left: 4px solid red">
+                              <div class="panel-body">
+                                  <h4>Dodawanie nowego elementu do przechowalni:</h4>
+                                  <p style="text-align:justify;">
+                                  Nowy element stoiska do przechowalni dodaje się przez użycie go na jakimś stoisku. Zrobisz to w dwóch krokach:
+                                  </p>
+                                  <ul>
+                                      <li style="text-align:justify;">
+                                          Przejdż wyżej do "<font style="color:brown;font-weight: bold;">Lista elementów stoisk przechowywanych dla innych firm.</font>",
+                                      </li>
+                                      <li style="text-align:justify;">
+                                          Wybierz przycisk Nowy element i wypełnij dokładnie cały formularz nie zapominają o zaznaczeniu opcji 'Wielokrotne użycie' oraz towarzyszącej opcji do jakiej firmy ma przynależeć (domyślnie ogólne).
+                                      </li>
+                                  </ul>
+                                  <p style="text-align:justify;">
+                                      Po tym działaniu w tabeli Targów pod odpowiednim SDE znajdziesz swoją nową pozycję zgodnie z wypełnionymi danymi.
+                                      Dodatkowo ta sama pozycja pojawi się w Elementach wielkorotnego użytku.
+                                      Jeżeli opcja Firma została na wartości 'ogólne' to trafia do magazynu ogólnego.
+                                      Jeśli wybierzesz firmę to element ten będzie powiązany tylko z tą firmą.
+                                  </p>
+                              </div>
+                            </div>
+
+                            <div class="panel panel-default" style="border-left: 4px solid green">
+                              <div class="panel-body">
+                                  <h4>Edytowanie oraz dodawanie istniejącego elementu do nowych targów:</h4>
+                                  <p style="text-align:justify;">
+                                  To są dwie czynności sprzężone ze sobą i zaleca się wykonywanie jej w pozycji tego okna. Takie rozwiązanie ma zminimalizować ilość wpisywanych/zmienianych danych.
+                                  </p><br>
+                                  <p style="text-align:justify;">
+                                      <font style="color:brown;font-weight: bold;">Edytowanie danych</font>:<br>
+                                      Znajdź kolumnę EDYCJA i wywołaj formularz dla odpowiedniego wiersza. Zmodyfikuj odpowiednio dane i zapisz.<br>
+                                      <font color="red"><i>Pamiętaj jednak, że w tym przypadku SDE w polu Stoisko formularza nie może być zmienione!</i></font>
+                                  </p><br>
+                                  <p style="text-align:justify;">
+                                      <font style="color:brown;font-weight: bold;">Dodawanie istniejącego elementu do nowego stoiska targowego:</font>:<br>
+                                      Znajdź kolumnę EDYCJA i wywołaj formularz dla odpowiedniego wiersza. Zmodyfikuj jeśli to konieczne odpowiednie dane i zapisz.<br>
+                                      <font color="red"><i>W tym przypadku SDE w polu Stoisko formularza musi być zmienione na numer stoiska, do którego ma być przypisane!</i></font><br>
+                                      W efekcie w bazie pojawia się nowy wpis dotyczący nowego stoiska targowego wraz ze zmodyfikowanymi danymi.
+                                  </p>
+                              </div>
+                            </div>
+
+
+
+
+
+
+                        </div>
+                        <div class="modal-footer" style="background-color: #eeeeee;">
+                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </div> <!-- KONIEC DIV GŁÓWNEGO -->
+<!--    <script src="{% static 'COMP/comp.js' %}"></script>-->
+<script>
+
+<!--        $(document).ready(function() {-->
+<!--            // Pokaż spinner przy pierwszym wejściu na stronę-->
+<!--            $('#loading-spinner').fadeIn('fast');-->
+
+<!--            // Ukryj spinner po załadowaniu strony-->
+<!--            $(window).on('load', function() {-->
+<!--                $('#loading-spinner').fadeOut('fast', function() {-->
+<!--                    $('#main-content').fadeIn('fast'); // Pokaż panel-->
+<!--                });-->
+<!--            });-->
+
+<!--            // Obsługa kliknięcia linków (przycisków)-->
+<!--            $('body').on('click', 'a[data-filter="filter"]', function(event) {-->
+<!--                event.preventDefault(); // Zatrzymaj domyślne zachowanie linku-->
+<!--                const targetUrl = $(this).attr('href'); // Pobierz URL docelowy-->
+
+<!--                // Pokaż spinner i ukryj panel-->
+<!--                $('#main-content').fadeOut('fast', function() {-->
+<!--                    $('#loading-spinner').fadeIn('fast');-->
+
+<!--                    // Przejdź do nowej strony po krótkim czasie-->
+<!--                    setTimeout(function() {-->
+<!--                        window.location.href = targetUrl; // Przejdź do linku-->
+<!--                    }, 100); // Możesz dostosować opóźnienie w milisekundach-->
+<!--                });-->
+<!--            });-->
+<!--        });-->
+
+
+
+<!--        $(document).ready(function () {-->
+<!--            var hoverBox = $('#hover-box');-->
+
+<!--            // Obsługa najechania myszką-->
+<!--            $('.multi-info').on('mouseenter', function () {-->
+<!--                var $this = $(this);-->
+<!--                var multiId = $this.data('id');-->
+
+<!--                // Pozycjonowanie okna po lewej stronie pola-->
+<!--                var offset = $this.offset();-->
+<!--                hoverBox.css({-->
+<!--                    top: offset.top + 'px', // Górna krawędź pola-->
+<!--                    left: offset.left - hoverBox.outerWidth() - 10 + 'px', // Przesunięcie na lewo o szerokość okna i dodatkowe 10px-->
+<!--                    display: 'block' // Wyświetl okno-->
+<!--                }).html('Ładowanie danych...'); // Domyślna treść podczas ładowania-->
+
+<!--                // AJAX: Pobierz dane-->
+<!--                if (multiId) {-->
+<!--                    $.ajax({-->
+<!--                        url: '/COMP/ewu/get_multi_usage_details/', // Endpoint Django-->
+<!--                        type: 'GET',-->
+<!--                        data: { 'mltid': multiId },-->
+<!--                        success: function (data) {-->
+<!--                            hoverBox.html(data); // Wyświetl dane w oknie (renderowane jako HTML)-->
+<!--                        },-->
+<!--                        error: function () {-->
+<!--                            hoverBox.html('<strong>Błąd ładowania danych.</strong>'); // Komunikat o błędzie-->
+<!--                        }-->
+<!--                    });-->
+<!--                } else {-->
+<!--                    hoverBox.html('<strong>Brak identyfikatora.</strong>'); // Komunikat, jeśli brak ID-->
+<!--                }-->
+<!--            });-->
+
+<!--            // Ukrycie okna po opuszczeniu pola-->
+<!--            $('.multi-info').on('mouseleave', function () {-->
+<!--                hoverBox.hide(); // Ukryj okno-->
+<!--            });-->
+
+<!--            // Ukrycie okna, jeśli użytkownik przejdzie myszką poza okno-->
+<!--            hoverBox.on('mouseleave', function () {-->
+<!--                hoverBox.hide(); // Ukryj okno-->
+<!--            });-->
+<!--        });-->
+
+
+</script>
+</body>
+</html>
+

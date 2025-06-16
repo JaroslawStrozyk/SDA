@@ -1,0 +1,220 @@
+{% extends "dashboard.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block leftbutton %}
+{% endblock %} 
+
+
+{% block retbutton %}
+                        <li>
+                            <a href="/task"><i class="fa fa-dashboard fa-fw"></i> Pulpit</a> 
+                        </li>
+{% endblock %}
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+{{ tytul_okna }}
+{% endblock %}
+
+{% block logo %}
+                    <table width="100%" height="200" border="0"><tr><td align="center" valign="middle"><img src="{% static 'img/iconfinder_Refresh_58683.png' %}" width="128"></td></tr></table>
+{% endblock %}
+
+{% block leftmenu %}
+                        <li>
+                            <a href="{% url 'auta_start' %}"><i class="fa fa-dashboard fa-fw"></i> Dowody rejestracyjne</a>
+                        </li>
+{% endblock %}
+
+
+{% block content %}
+                <style>
+                    #id_data_zal, #id_data_roz {
+                        text-align: center;
+                    }
+
+                    #id_rul_0 {
+                        width: 100px;
+                        height: 34px;
+                        text-align: right;
+                        font-size: 14px;
+                        border-radius: 4px;
+                        border-width: 1px;
+                        border: 1px solid #ccc;
+                        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                        color: #555;
+                        background-color: #fff;
+                   }
+
+                   #id_rul_1 {
+                        width: 60px;
+                        height: 34px;
+                        font-size: 14px;
+                        border-radius: 4px;
+                   }
+
+                   #div_id_arch, #div_id_koniecl, #div_id_sprzedany, #div_id_deleg_auto {
+                        margin-top: 30px;
+                        margin-bottom: 0px;
+                   }
+
+                   #id_us, #id_ps, #id_drl, #id_dzl, #id_pt {
+                        text-align: center;
+                   }
+
+                </style>
+                <div class="col-lg-12">
+                    <div class="panel panel-default"  id="panel_glowny">
+                        <div class="panel-heading">
+                            Dowód pojazdu
+                        </div>
+                        <div class="panel-body">
+                            <form method="POST"  class="post-form" enctype="multipart/form-data">{% csrf_token %}
+                                       <div class="form-row">
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.rodzaj|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-3 mb-0">
+                                                        {{ form.typ|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-3 mb-0">
+                                                        {{ form.rej|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-4 mb-0">
+                                                        {{ form.imie_n|as_crispy_field }}
+                                                  </div>
+                                       </div>
+                                       <div class="form-row">
+                                                  <div class="form-group col-md-4 mb-0">
+                                                        {{ form.opis|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.us|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.ps|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.pt|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                       <div class="alert alert-info" role="alert">
+                                                           <p align="justify">Pole <strong>Data przeglądu tachometru</strong>
+                                                               należy wypełnić tylko w razie potrzeby.
+                                                           </p>
+                                                       </div>
+                                                  </div>
+                                       </div>
+
+                                       <div class="form-row">
+                                                  <div class="form-group col-md-4 mb-0">
+                                                        {{ form.nul|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.drl|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.dzl|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.rul|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.koniecl|as_crispy_field }}
+                                                  </div>
+                                       </div>
+                                       <div class="form-row">
+                                                  &nbsp;
+                                       </div>
+                                       <div class="form-row">
+                                                  <div class="form-group col-md-3 mb-0">
+                                                       {{ form.img1|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-3 mb-0">
+                                                       {{ form.img2|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.deleg_auto|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.arch|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.sprzedany|as_crispy_field }}
+                                                  </div>
+                                       </div>
+                                       <div class="form-row">
+                                                  <div class="form-group col-md-12 mb-0">
+                                                        {{ form.uwagi|as_crispy_field }}
+                                                  </div>
+                                       </div>
+                              <!--</form>      -->
+                        </div>
+                        <div class="panel-footer">
+                            <table width="100%">
+                                <tr>
+                                    <td style="text-align:right;">
+                                        <button type="submit" class="save btn btn-success">Zapisz</button>
+                                    </td>
+                                    <td width="10"></td>
+                                    <td style="text-align:left;">
+                                        <a href="{% url 'auta_start' %}" class="primary btn btn-danger"><font color="#ffffff">Anuluj</font></a>
+                                    </td>
+                                    {% if edycja %}
+                                       <td align="right" width="50"><a href="#"  data-toggle="modal" data-target="#info1" class="primary btn btn-warning"><font color="white"><i class="fa fa-trash-o fa-fw"></i></font></a></td>
+                                    {% endif %}
+                                </tr>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+
+<div class="modal fade" id="info1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-title   panel-green" id="exampleModalLongTitle1">Kasowanie...</span>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                            Czy jesteś pewien że chcesz nieodwracalnie skasować bierzące dane?
+                </div>
+                <div class="modal-footer">
+                    <a href="{% url 'auto_delete' pk=pojazd_id %}" class="primary btn btn-danger">&nbsp;&nbsp;TAK&nbsp;&nbsp;</a>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">&nbsp;&nbsp;NIE&nbsp;&nbsp;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

@@ -20,4 +20,8 @@ urlpatterns = [
     path('hip_konta/<pk>/',       views.hip_konta,  name='hip_konta'),
     path('hip_detail/<pk>/',      views.hip_detail, name='hip_detail'),
     path('<pk>/',                 views.hip_filtr,  name='hip_filtr'),
+    path('sp/<pk>/',              views.hip_filtr_s,  name='hip_filtr_s'),
+    path('serwis/<pk>/',          views.hip_serwis, name='hip_serwis'),
+    path('hip_new_ser/<pk>/',     views.hip_new_ser, name='hip_new_serwis'),
+    path('hip_edit_ser/<pk>/<lp>/', views.hip_edit_ser, name='hip_edit_serwis'),
 ]

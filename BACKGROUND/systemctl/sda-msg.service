@@ -1,6 +1,6 @@
 	
 [Unit]
-Description=Asynchroniczny System Powiadomien dla SDA
+Description=Asynchroniczny System Powiadomień dla SDA
 After=multi-user.target
 Conflicts=getty@tty1.service
 

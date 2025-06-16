@@ -9,7 +9,10 @@ class TelefonForm(forms.ModelForm):
 
     class Meta:
         model = Telefon
-        fields = ('usr', 'model', 'imei', 'sim', 'msisdn', 'kod', 'konto', 'haslo', 'data', 'uwagi','arch', 'pz','doc','docz','zam','pesel', 'mag')
+        fields = (
+            'usr', 'model', 'imei', 'msisdn', 'kod', 'bkod', 'konto', 'haslo', 'data', 'uwagi', 'arch', 'pz',
+            'doc', 'docz', 'zam', 'pesel', 'mag'
+        )
 
-    data = forms.DateField(widget=forms.SelectDateWidget(attrs={'style': 'display: inline-block; width: 33%;'},years=YEARS), initial=datetime.date.today, label="Data przekazania")
-    pz = forms.DateField(widget=forms.SelectDateWidget(attrs={'style': 'display: inline-block; width: 33%;'},years=YEARS),   initial=datetime.date.today, label="Data zdania")
+    # data = forms.DateField(widget=forms.SelectDateWidget(attrs={'style': 'display: inline-block; width: 33%;'},years=YEARS), initial=datetime.date.today, label="Data przekazania")
+    # pz = forms.DateField(widget=forms.SelectDateWidget(attrs={'style': 'display: inline-block; width: 33%;'},years=YEARS),   initial=datetime.date.today, label="Data zdania")

@@ -1,0 +1,41 @@
+from django.urls import path
+from . import views
+from . import xls
+
+urlpatterns = [
+    path('<mag>/<fl>/', views.timber_list, name='timber_list'),
+    path('<mag>/<fl>/export/<int:rok>/', views.timber_exp, name='export_all'),
+    path('<mag>/<fl>/texport/<start_d>/<stop_d>/', views.timber_exp_t, name='export_t'),
+    path('add/<mag>/<fl>/', views.timber_add, name='timber_add'),
+    path('pz/<mag>/<fl>/', views.timber_pz_add, name='timber_pz_add'),
+    path('edit/<pk>/<mag>/<fl>/', views.timber_edit, name='timber_edit'),
+    path('del/<pk>/<mag>/<fl>/', views.timber_delete, name='timber_delete'),
+    path('genpdf/<rk>/<mag>/<fl>/<dt>/', views.dok_inw_pdf_data, name='inw_pdf_data'),
+    path('przychod/<pk>/<mag>/<fl>/', views.przychod_list, name='przychod_list'),
+    path('przychod/add/<pk>/<mag>/<fl>/', views.przychod_add, name='przychod_add'),
+    #path('przychod/pz_add/<mag>/<fl>/', views.przychod_pz_add, name='przychod_pz_add'),
+    path('przychod/edit/<pk>/<po>/<mag>/<fl>/', views.przychod_edit, name='przychod_edit'),
+    path('przychod/del/<pk>/<po>/<mag>/<fl>/', views.przychod_delete, name='przychod_delete'),
+    path('rozchod/<pk>/<mag>/<fl>/', views.rozchod_list, name='rozchod_list'),
+    path('rozchod/add/<pk>/<mag>/<fl>/<stan>/', views.rozchod_add, name='rozchod_add'),
+    path('rozchod/edit/<pk>/<po>/<mag>/<fl>/<stan>/', views.rozchod_edit, name='rozchod_edit'),
+    path('rozchod/del/<pk>/<po>/<mag>/<fl>/', views.rozchod_delete, name='rozchod_delete'),
+    path('zwrot/<pk>/<mag>/<fl>/', views.zwrot_list, name='zwrot_list'),
+    path('zwrot/add/<pk>/<mag>/<fl>/', views.zwrot_add, name='zwrot_add'),
+    path('zwrot/edit/<pk>/<po>/<mag>/<fl>/', views.zwrot_edit, name='zwrot_edit'),
+    path('zwrot/del/<pk>/<po>/<mag>/<fl>/', views.zwrot_delete, name='zwrot_delete'),
+    path('dok_wz/<pk>/<po>/', views.dok_wz_pdf, name='dok_wz_pdf'),
+    path('dok_pz/<pk>/<po>/', views.dok_pz_pdf, name='dok_pz_pdf'),
+    path('dok_pzw/<pk>/<po>/', views.dok_pzw_pdf, name='dok_pzw_pdf'),
+    path('dok_pz/<pk>/<mag>/<fl>/<sel>/', views.dok_ze_pdf, name='dok_ze_pdf'),
+    path('dok_ze/<pk>/<mag>/<fl>/<sel>/', views.dok_ze_xls, name='dok_ze_xls'),
+    path('dok_inw/<mag>/', views.dok_inw_pdf, name='dok_inw_pdf'),
+    path('zest/<pk>/<mag>/<fl>/<sel>/', views.zestawienie, name='zestawienie'),
+    path('zest_search/<pk>/<mag>/<fl>/<sel>/', views.zest_search, name='zest_search'),
+    path('stat/<rk>/<mag>/<fl>/', views.timber_stat, name='timber_stat'),
+    path('inwentura/<rk>/<mag>/<fl>/', views.timber_inwentura, name='timber_inwentura'),
+    path('inwentura/pdf/<rk>/<mag>/<fl>/', views.dok_inw_pdf, name='dok_inw_pdf'),
+    path('inwentura/xls/<rk>/<mag>/<fl>/', views.dok_inw_xls, name='dok_inw_xls'),
+    path('sda/<rk>/<mag>/<fl>/', views.timber_sda, name='timber_sda'),
+
+]

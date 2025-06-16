@@ -1,10 +1,11 @@
 #!/opt/SD/env/bin/python3
 #
-#
-#  wersja 0.5.0 z 2021.12.17
+#  wersja 0.6.0 z 2022.03.13
 #
 #  pip3 install SkPy
 #  pip3 install psycopg2-binary
+#
+# Uwaga! pole adresata ma ograniczoną ilość znaków < 38znaków
 #
 
 import time
@@ -40,6 +41,7 @@ def Logi(i, s, kto):
         if (conn):
             cur.close()
             conn.close()
+
 
 def msg_skype(to_send, content):
     sk = Skype(SKY_USER, SKY_PASS)
@@ -101,17 +103,16 @@ def read_db():
                   i = r[0]
                   msg_email( r[2], r[3], r[4])
                   Logi(1, r[2],'sda')
-                  time.sleep( 1 )
+                  time.sleep(1)
 
     except (Exception, psycopg2.Error) as error :
+        print("ERR=> ",error)
         Logi(2, str(error),'sda')
     finally:
         if(conn):
             cur.close()
             conn.close()
-
     del_db()
-
 
 
 while( 1 ):

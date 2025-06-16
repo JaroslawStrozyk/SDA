@@ -1,5 +1,5 @@
 from django import forms
-from .models import Ubezpieczenie
+from .models import Ubezpieczenie, Termin
 import datetime
 
 
@@ -7,8 +7,17 @@ class UbezpieczenieForm(forms.ModelForm):
 
     class Meta:
         model = Ubezpieczenie
-        fields = ('nazwa','dotyczy', 'opiekun', 'skn1', 'skn2', 'daod', 'dado', 'uwagi',)
+        fields = (
+            'firma', 'nazwa', 'dotyczy', 'suma', 'skladka', 'doc1', 'doc2',
+            'data_od', 'data_do', 'raty', 'data_raty', 'uwagi'
+        )
 
-    # daod = forms.DateField(widget=forms.SelectDateWidget(attrs={'style': 'display: inline-block; width: 33%;'}), label="Data od", initial=datetime.date.today)
-    # dado = forms.DateField(widget=forms.SelectDateWidget(attrs={'style': 'display: inline-block; width: 33%;'}), label="Data do", initial=datetime.date.today)
-    #
+
+class TerminForm(forms.ModelForm):
+
+    class Meta:
+        model = Termin
+        fields = (
+            'firma', 'dotyczy', 'suma', 'skladka', 'doc1', 'doc2',
+            'data_od', 'data_do',  'uwagi'
+        )

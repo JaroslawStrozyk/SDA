@@ -1,0 +1,300 @@
+{% extends "timber_dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+<li>
+    <table width="240px" height="50px">
+        <tr>
+            <td>
+                 <form metod="GET" action="{% url 'timber_sda' mag=mag fl=fl rk=rk %}">
+                    {% csrf_token %}
+                    <div class="input-group custom-search-form">
+                        <select class="form-control" name="NRSDE" id="ONRSDE">
+                           {% for nr in nrsde %}
+                             <option>{{ nr.nazwa }}</option>
+                           {% endfor %}
+                        </select>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="fa fa-search">&nbsp;SDE</i></button>
+                        </span>
+                   </div>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+</li>
+{% endblock %}
+
+
+{% block retbutton %}
+
+{% if sw %}
+<li>
+    <button type="button" class="btn btn-success">
+        Magazyn drewna:&nbsp;<span class="badge badge-dark"><strong><font size="3">{{ suma_d }}</font></strong></span>
+    </button>
+</li>
+<li>
+    <button type="button" class="btn btn-primary">
+        Magazyn wewnętrzny:&nbsp;<span class="badge badge-dark"><strong><font size="3">{{ suma_w }}</font></strong></span>
+    </button>
+</li>
+<li>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</li>
+{% endif %}
+<li>
+    <a class="btn btn-primary" href="{% url 'timber_list' mag=mag fl=fl %}"><font color="white"><i class="fa fa-dashboard fa-fw"></i> Lista płyt</font></a>
+</li>
+{% endblock %}
+
+{% block userlog %}
+                {{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+<br><br>
+{% endblock %}
+
+{% block logo %}
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+{% block style %}
+              a:link.dt, a:visited.dt {
+                         text-decoration: none;
+              }
+              a:hover.dt, a:active.dt {
+                         text-decoration: none;
+                         display: inline-block;
+              }
+
+              #wpz {
+                    color: brown;
+                    font-weight: bold;
+              }
+              #wrz {
+                    color: #a9a9a9;
+              }
+
+              .verticalText{
+                    text-align: center;
+                    vertical-align: middle;
+                    -webkit-transform: rotate(90deg);
+                    -moz-transform: rotate(90deg);
+              }
+              #panel_glowny {
+<!--                    border-color: #5cb85c;-->
+<!--                    color: white;-->
+<!--                    background-color: #8cf88c;-->
+              }
+              #panel_naglowek {
+                    background-color: #6cd86c;
+              }
+
+              #naglowek > tbody > tr > td{
+                    border: 1px solid #00dd00;
+              }
+                   #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
+                        color: #fff;
+                        background-color: #595959;
+              }
+              .table > tbody > tr:hover {
+                        background-color: #f5f5f5;
+              }
+
+              #nav1, #nav2, #nav3, #nav4 {
+                    color: white;
+                    font-weight: bold;
+                    background-color: #909000;
+              }
+              #nav1:hover, #nav2:hover, #nav3:hover, #nav4:hover {
+                    color: yellow;
+                    font-weight: bold;
+                    background-color: #808000;
+              }
+              #nav5 {
+                    color: white;
+                    font-weight: bold;
+                    background-color: #4169E1;
+              }
+              #nav5:hover {
+                    color: yellow;
+                    font-weight: bold;
+                    background-color: #3159D1;
+              }
+
+              #panel_glowny0, #panel_glowny1, #panel_glowny2 {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+              #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(4) > a:hover {
+                        background-color: #576879;
+                        border-color: #778899;
+              }
+
+{% endblock %}
+
+
+{% block content %}
+
+
+    {% if sw %}
+
+        <div class="col-lg-12">
+
+            <div class="panel panel-default" id="panel_glowny0">
+              <div class="panel-body" align="center">
+                     <font style="font-size:18px;"><strong>{{ opis_sde }}</strong></font>
+              </div>
+            </div>
+
+            <div class="panel panel-green" id="panel_glowny1">
+                <div class="panel-heading">
+                    <table width="100%">
+                        <tr>
+                            <td style="text-align:center;">
+                                <font style="font-size:18px;"><strong>{{ title1 }}</strong></font>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="panel-body">
+
+                    <table width="100%" class="table table-bordered table-condensed">
+                        <thead>
+                            <tr height="60px">
+                                <th style="background-color: #BA5555; vertical-align:middle; text-align:center;color:yellow;">MAGAZYN</th>
+                                <th style="background-color: #4682B4; vertical-align:middle; text-align:center;width:40px;color:yellow;">ID.</th>
+                                <th style="background-color: #B0B090; vertical-align:middle; text-align:center;">NAZWA</th>
+                                <th style="background-color: #8246B4; vertical-align:middle; text-align:center;color:yellow;">CEL ROZCHODU</th>
+                                <th style="background-color: #4682B4; vertical-align:middle; text-align:center;width:10%;color:yellow;">DATA</th>
+                                <th style="background-color: #5F9EA0; vertical-align:middle; text-align:center;color:yellow;">ILOŚĆ</th>
+                                <th  style="background-color: #BA55D3; vertical-align:middle; text-align:center;width:10%;color:yellow;">CENA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for m in md1 %}
+                                <tr>
+                                    <td style="vertical-align:middle; text-align:center;">
+                                        {% if wz1 == m.plyta.magazyn %}Szparagowa{% endif %}
+                                        {% if wz2 == m.plyta.magazyn %}Podolany{% endif %}
+                                    </td>
+                                    <td style="vertical-align:middle; text-align:center;">{{ m.doc_id }}</td>
+                                    <td style="vertical-align:middle; text-align:center;">{{ m.plyta.nazwa }}</td>
+                                    <td style="vertical-align:middle; text-align:center;">{{ m.cel }}</td>
+                                    <td style="vertical-align:middle; text-align:center;">{{ m.data | date:'d-m-Y' }}</td>
+                                    <td style="vertical-align:middle; text-align:center;">{{ m.ilosc }}</td>
+                                    <td style="vertical-align:middle; text-align:right;">{{ m.kwota }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+
+                </div>
+                <div class="panel-footer">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="panel panel-primary" id="panel_glowny2">
+                <div class="panel-heading">
+                    <table width="100%">
+                        <tr>
+                            <td style="text-align:center;">
+                                <font style="font-size:18px;"><strong>{{ title2 }}</strong></font>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="panel-body">
+
+                    <table width="100%" class="table table-bordered table-condensed">
+                        <thead>
+                            <tr height="60px">
+                                <th style="background-color: #BA5555; vertical-align:middle; text-align:center;color:yellow;">MAGAZYN</th>
+                                <th style="background-color: #4682B4; vertical-align:middle; text-align:center;width:40px;color:yellow;">ID.</th>
+                                <th style="background-color: #B0B090; vertical-align:middle; text-align:center;">NAZWA</th>
+                                <th style="background-color: #8246B4; vertical-align:middle; text-align:center;color:yellow;">CEL ROZCHODU</th>
+                                <th style="background-color: #4682B4; vertical-align:middle; text-align:center;width:10%;color:yellow;">DATA</th>
+                                <th style="background-color: #5F9EA0; vertical-align:middle; text-align:center;color:yellow;">ILOŚĆ</th>
+                                <th  style="background-color: #BA55D3; vertical-align:middle; text-align:center;width:10%;color:yellow;">CENA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for m in md2 %}
+                                <tr>
+                                    <td style="vertical-align:middle; text-align:center;">
+                                        {% if wz1 == m.plyta.magazyn %}Szparagowa{% endif %}
+                                        {% if wz2 == m.plyta.magazyn %}Podolany{% endif %}
+                                        {% if wz3 == m.plyta.magazyn %}Chemii{% endif %}
+                                    </td>
+                                    <td style="vertical-align:middle; text-align:center;">{{ m.doc_id }}</td>
+                                    <td style="vertical-align:middle; text-align:center;">{{ m.plyta.nazwa }}</td>
+                                    <td style="vertical-align:middle; text-align:center;">{{ m.cel }}</td>
+                                    <td style="vertical-align:middle; text-align:center;">{{ m.data | date:'d-m-Y' }}</td>
+                                    <td style="vertical-align:middle; text-align:center;">{{ m.ilosc }}</td>
+                                    <td style="vertical-align:middle; text-align:right;">{{ m.kwota }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="panel-footer">
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <br><br><br>
+        <div class="alert alert-warning" role="alert" id="komunikat">
+              <p align="center"><strong><br>Brak danych dla wybranego kodu.<br></strong><br>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+
+{% block script %}
+
+        $(document).ready(function() {
+              $('#ONRSDE').select2();
+              $('#ONRSDE').val(null).trigger('change');
+              $('#ONRMPK').select2();
+              $('#ONRMPK').val(null).trigger('change');
+              $('#id_nr_sde').select2();
+              $('#id_nr_mpk').select2();
+        });
+
+
+{% endblock %}
+
+
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

@@ -1,0 +1,381 @@
+{% extends "cash_advances_dashboard.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block leftbutton %}
+
+{% endblock %}
+
+
+{% block retbutton %}
+<li>
+    <a class="btn btn-warning" href="{% url 'worker_start' %}" id="pulpit"><i class="fa fa-dashboard fa-fw"></i> Menu</a>
+</li>
+{% endblock %}
+
+{% block userlog %}
+{{ name_log }}
+{% endblock %}
+
+{% block rightmenu %}
+<li>
+    <a href="{% url 'worker_start' %}"><i class="fa fa-dashboard fa-fw"></i> Menu</a>
+</li>
+<li class="divider"></li>
+{% endblock %}
+
+{% block logo %}
+{% endblock %}
+
+{% block content %}
+<style>
+                   #opis_jest {
+                          background-color: #eeeeee;
+                   }
+
+                   #opis_nie {
+                   }
+
+                   #k_razem {
+                         /* background-color: #98FB98; */
+                          color: green;
+                          font-weight: bold;
+                   }
+
+                   .alarm{
+                          background-color: #FFE4E1;
+                   }
+                   .alarm1{
+                          background-color: #E1E4FF;
+                   }
+                   .valarm{
+                          background-color: #FFFFE0;
+                   }
+                   .ok{
+                          background-color: #90EE90;
+                   }
+                   .pok{
+                          color: yellow;
+                          font-weight: bold;
+                          background-color: #A5A5A5;
+                   }
+                   .verticalText{
+                          text-align: center;
+                          vertical-align: middle;
+                          -webkit-transform: rotate(90deg);
+                          -moz-transform: rotate(90deg);
+                   };
+                   th {
+                          text-align: center;
+                   }
+
+
+                   #wrapper > nav {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   #tabela {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   #tabela > table > tbody > tr:hover {
+                        background-color: #f5f5f5;
+                   }
+                   
+                   #belka > ul.nav.navbar-top-links.navbar-left > li > a:hover {
+                        background-color: gray;
+                   }
+                   #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
+                        background-color: gray;
+                   }
+                   #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(2) > a:hover {
+                        background-color: gray;
+                   }
+                   .custome-size {
+                        width: 1300px;
+                   }
+
+                   #komunikat {
+                        margin-top:25px;
+                        margin-left:10%;
+                        margin-right:10%;
+                   }
+                   #komunikat_przycisk {
+                        text-align: center;
+                        margin-bottom:25px;
+                   }
+                   #tab_row:hover {
+                        background-color: #dedede;
+                   }
+
+                   #przelicz_w {
+                        margin-top: 20px;
+                        margin-left: 40px;
+                        margin-bottom: 10px;
+                   }
+
+                   .badge {
+                        background-color: #5cb85c;
+                   }
+
+                   #nag {
+                        border: 1px;
+                        vertical-align:middle;
+                        text-align:right;
+                        background-color: #5cb85c;
+                        color: white;
+                        font-weight: bold;
+                   }
+
+                   #nag1 {
+                        border: 1px;
+                        vertical-align:middle;
+                        text-align:right;
+                        background-color: #800080;
+                        color: white;
+                        font-weight: bold;
+                   }
+
+                   #nag2 {
+                        border: 1px;
+                        vertical-align:middle;
+                        text-align:right;
+                        background-color: #BA0000;
+                        color: white;
+                        font-weight: bold;
+                   }
+
+                   #lk {
+                        color: green;
+                        text-decoration: none;
+                   }
+
+                   #lk:hover {
+                        color: brown;
+                        text-decoration: none;
+                   }
+                   #dodatki {
+                        font-weight: bold;
+                        background-color: #BA55D3;
+                        border-color: #9A35B3;
+                   }
+                   #dodatki:hover {
+                        font-weight: bold;
+                        background-color: #9A35B3;
+                        border-color: #BA55D3;
+                   }
+                   #oblicz {
+                        background-color: #99AABB;
+                        border-color: #99AABB;
+                   }
+                   #oblicz:hover {
+                        background-color: #778899;
+                        border-color: #778899;
+                   }
+
+                   #kilometr {
+                        font-weight: bold;
+                        background-color: #A0522D;
+                        border-color: #80322B;
+                   }
+                   #kilometr:hover {
+                        font-weight: bold;
+                        background-color: #80322B;
+                        border-color: #A0522D;
+                   }
+                   #obciazenia {
+                        font-weight: bold;
+                   }
+                   #obciazenia:hover {
+                        font-weight: bold;
+                   }
+
+                   #delegacja {
+                        font-weight: bold;
+                        background-color: #778899;
+                        border-color: #576879;
+                        }
+
+                   #delegacja:hover {
+                        font-weight: bold;
+                        background-color: #576879;
+                        border-color: #778899;
+                        }
+
+                   #my-awesome-dropzone > div.dz-preview.dz-error.dz-complete.dz-image-preview > div.dz-error-mark {
+                        border-radius: 30px;
+                        background-color: #ff3333;
+                   }
+
+<!--                   #my-awesome-dropzone > div.dz-preview.dz-error.dz-complete.dz-image-preview > div.dz-success-mark {-->
+<!--                        border-radius: 30px;-->
+<!--                        background-color: #33ff33;-->
+<!--                   }-->
+
+                   #pulpit {color: #FFFACD;background-color:#70665c;border-color: #70665c;}
+                   #pulpit:hover {color: #FFFACD;background-color:#50443a;border-color: #50443a;}
+                   #pulpit:visited {color: #FFFACD;background-color:#70665c;border-color: #70665c;}
+
+                   #adt {color: #fff; background-color: #404040; border-color: #404040;}
+                   #adt:hover {color: #fff; background-color: grey; border-color: grey;}
+                   #adt:visited {color: #fff; background-color: #404040; border-color: #404040;}
+
+</style>
+<div class="col-lg-12">
+    <br><br>
+    <div class="panel panel-default" id="tabela">
+        <div class="panel-heading">
+
+            <table width="100%">
+                <tr>
+                    <td width="230px" style="background-color: #F3F3F3; padding: 5px; border-right:1pt solid #F3F3F3;">
+                        <form metod="GET">
+                            {% csrf_token %}
+                            <div class="input-group custom-search-form">
+                                <select class="form-control" name="osoba" onchange="this.form.submit();">
+                                    <option value="">-- Wybierz osobę --</option>
+                                    {% for osoba in osoby %}
+                                     <option value="{{ osoba.id }}">{{ osoba.nazwisko }} {{ osoba.imie }}</option>
+                                    {% endfor %}
+                                </select>
+                           </div>
+                        </form>
+                    </td>
+                    <td align="center">
+                        <h4><strong>{{ tytul_tabeli }}</strong></h4>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div class="panel-body" style="padding:3px; ">
+
+        {% if brak_danych %}
+
+                    <div class="alert alert-warning" role="alert" id="komunikat">
+                          <p align="justify"><strong>Brak danych dla bieżącego pracownika!</strong><br>
+                             Jeśli chcesz wygenerować pozycje dla pracownika na podstawie bieżacych danych - wybierz pozycję w menu wyboru powyżej.
+                             <br>
+                          </p>
+
+        {% else %}
+
+                        <br>
+
+            <table width="100%" class="table table-bordered table-condensed" style="border: 0px;;">
+
+                <tr style=" padding:0px;">
+                    <th  style="background-color: #4682A4; vertical-align:middle; text-align:center;width:100px;"><font color="#ffff00">Rok</font></th>
+                    <th  style="background-color: #4682A4; vertical-align:middle; text-align:center;width:100px;"><font color="#ffff00">Miesiąc</font></th>
+                    <th  style="background-color: #BD752F; vertical-align:middle; text-align:center;"><font color="#ffff00">Pensja</font></th>
+                    <th  style="background-color: #BD752F; vertical-align:middle; text-align:center;"><font color="#ffff00">PPK</font></th>
+                    <th  style="background-color: #BA55D3; vertical-align:middle; text-align:center;"><font color="#ffff00">Przelew</font></th>
+                    <th  style="background-color: #9A35B3; vertical-align:middle; text-align:center;"><font color="#ffff00">Obciążenia</font></th>
+                    <th  style="background-color: #468284; vertical-align:middle; text-align:center;width:80px;"><font color="#ffff00">Różnica<br>delegacji</font></th>
+                    <th  style="background-color: #4682B4; vertical-align:middle; text-align:center;width:80px;"><font color="#ffff00">Wyjazd<br>standard</font></th>
+                    <th  style="background-color: #4682B4; vertical-align:middle; text-align:center;width:80px;"><font color="#ffff00">wyjazd<br>weekend<br>[SO]</font></th>
+                    <th  style="background-color: #4682B4; vertical-align:middle; text-align:center;width:80px;"><font color="#ffff00">wyjazd<br>weekend<br>[ND]</font></th>
+                    <th  style="background-color: #4682B4; vertical-align:middle; text-align:center;"><font color="#ffff00">Wyjazd<br>wartość</font></th>
+                    <th  style="background-color: #BA55D3; vertical-align:middle; text-align:center;"><font color="#ffff00">Premia<br>z SDA</font></th>
+                    <th  style="background-color: #2E8B57; vertical-align:middle; text-align:center;"><font color="#ffff00">RAZEM</font></th>
+                </tr>
+                {% for p in pen %}
+                <tr id="tab_row">
+                    <td align="center">{{ p.rok }}</td>
+                    <td align="center">
+                      {% if p.miesiac == 1 %}
+                        Styczeń
+                      {% elif p.miesiac == 2 %}
+                        Luty
+                      {% elif p.miesiac == 3 %}
+                        Marzec
+                      {% elif p.miesiac == 4 %}
+                        Kwiecień
+                      {% elif p.miesiac == 5 %}
+                        Maj
+                      {% elif p.miesiac == 6 %}
+                        Czerwiec
+                      {% elif p.miesiac == 7 %}
+                        Lipiec
+                      {% elif p.miesiac == 8 %}
+                        Sierpień
+                      {% elif p.miesiac == 9 %}
+                        Wrzesień
+                      {% elif p.miesiac == 10 %}
+                        Październik
+                      {% elif p.miesiac == 11 %}
+                        Listopad
+                      {% elif p.miesiac == 12 %}
+                        Grudzień
+                      {% endif %}
+                    </td>
+                    <td align="right">{{ p.wynagrodzenie }}</td>
+
+                    <td align="right">{{ p.ppk }}</td>
+                    <td align="right">{{ p.przelew }}</td>
+                    <td align="right">
+                        <font color="brown" data-toggle="tooltip" data-placement="top" title="{{ p.obciazenie_opis }}">
+                        {{ p.obciazenie }}
+                        </font>
+                    </td>
+                    <td align="right">{{ p.del_rozli }}</td>
+                    <td align="center">{{ p.del_ilosc_st }}</td>
+                    <td align="center">{{ p.del_ilosc_so }}</td>
+                    <td align="center">{{ p.del_ilosc_we }}</td>
+                    <td align="right">
+                        {{ p.del_ilosc_razem }}
+                    </td>
+                    <td align="right">
+                        <font color="brown" data-toggle="tooltip" data-placement="top" title="{{ p.premia_opis }}">
+                        {{ p.premia }}
+                            </font>
+                    </td>
+                    <td style="text-align:right;" id="k_razem">{{ p.razem }}</td>
+
+<!-- flagi -->
+
+                    </td>
+
+
+
+<!--                    <td style="text-align:right; color: #BA55D3; font-weight: bold;">{{ p.sum_kosztow }}</td>-->
+                </tr>
+                {% endfor %}
+            </table>
+
+        {% endif %}
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+{% endblock %}
+
+{% block about %}
+<tr>
+    <td class="text-right" width="300">
+        <br>Wersja:
+        <br>Ostatnia modyfikacja:<br>
+        <br>Firma:
+        <br>Autor:
+        <br>Email:
+        <br>Tel. kom.:<br>
+        <br>
+    </td>
+    <td>
+        {% for ab in about %}
+        <br>{{ ab.WERSJA }}
+        <br>{{ ab.MODYFIKACJA }}
+        <br>
+        <br>{{ ab.FIRMA }}
+        <br>{{ ab.AUTOR }}
+        {% endfor %}
+        <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+        <br>+48 791-648-417<br>
+    </td>
+</tr>
+{% endblock %}

@@ -1,19 +1,26 @@
 import datetime
+
+
+
+
+
 # from RK.models import Waluta
 
 from django.core.mail import EmailMessage
 from django.conf import settings
-from .models import Log
+
+from ORDERS.models import NrSDE
+#from .models import Log
 
 #import requests
 
 from django.db import connection
 
 
-def do_logu(modul, usr,uwagi):
-    dt = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    tb = Log(data=dt, modul=modul, usr=usr, uwagi=uwagi)
-    tb.save()
+# def do_logu(modul, usr,uwagi):
+#     dt = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+#     tb = Log(data=dt, modul=modul, usr=usr, uwagi=uwagi)
+#     tb.save()
 
 def get_user_label(request):
     return request.user.first_name + " " + request.user.last_name
@@ -54,6 +61,7 @@ def trans_month(amc):
     if amc == 'December':
         pmc = 'Grudzień'
     return pmc
+
 
 def intstr_month(amc):
     pmc = ''
@@ -108,6 +116,7 @@ def intstr_month(amc):
         pmc = 'Grudzień'
     return pmc
 
+
 def TestData(ind, sh, koniecl, sprzedany, arch, p_l):
     out = 0
     if sprzedany==False and arch==False:
@@ -129,6 +138,31 @@ def TestData(ind, sh, koniecl, sprzedany, arch, p_l):
     return out
 
 
+def TestDataT(ind, sh, koniecl, sprzedany, arch, p_l):
+    out = 0
+    if sprzedany==False and arch==False:
+        try:
+            dtnow = datetime.datetime.now()
+            dtin = datetime.datetime.strptime(ind, '%Y-%m-%d')
+            shift = datetime.timedelta(days=sh)
+            dttest = dtnow + shift
+
+            if dtin > dttest:
+                out = 1
+            if dtin < dttest and dtin > dtnow:
+                out = 2
+            if dtin < dtnow:
+                out = 3
+
+            if p_l==True and koniecl==True:
+                out = 0
+        except:
+            out=0
+
+    return out
+
+
+
 def pobierz_Dane(kod):
     print (kod)
 
@@ -148,13 +182,42 @@ def TestDataUslugi(ind, sh):
     if dtin < dtnow:
         out = 3
 
-    # print(" ")
-    # print("F_DT_NOW: ", dtnow)
-    # print("F_DT_TST: ", dtin)
-    # print("F_SHIFT: ", shift)
-    # print("F_TEST: ", dttest)
-    # print("F_OUT: ", out)
-
     return out
 
 
+def upgrade_sum_SDA():
+    for nr in NrSDE.objects.all():
+        s1 = nr.sum_premie
+        s2 = nr.sum_deleg
+        nr.sum_pre_del = s1 + s2
+        nr.save()
+
+
+def LiczbaDoTekst(mc):
+    tmc = ''
+    if mc == 1:
+        tmc = 'Styczeń'
+    elif mc == 2:
+        tmc = 'Luty'
+    elif mc == 3:
+        tmc = 'Marzec'
+    elif mc == 4:
+        tmc = 'Kwiecień'
+    elif mc == 5:
+        tmc = 'Maj'
+    elif mc == 6:
+        tmc = 'Czerwiec'
+    elif mc == 7:
+        tmc = 'Lipiec'
+    elif mc == 8:
+        tmc = 'Sierpień'
+    elif mc == 9:
+        tmc = 'Wrzesień'
+    elif mc == 10:
+        tmc = 'Październik'
+    elif mc == 11:
+        tmc = 'Listopad'
+    elif mc == 12:
+        tmc = 'Grudzień'
+
+    return tmc

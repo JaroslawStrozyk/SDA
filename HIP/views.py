@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from simple_search import search_filter
-from .models import Sprzet, Profil, System
-from .forms import SprzetForm, ProfilForm
+
+from MONIT.views import get_matrix, get_user
+from .models import Sprzet, Profil, System, Serwis
+from .forms import SprzetForm, ProfilForm, SerwisForm
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from .out_doc import hippdfpp, hippdfpz
@@ -180,7 +182,7 @@ def hip_search(request):
             return redirect('hip_start')
         search_fields = ['nazwa_siec', 'usr', 'typ', 'host', 'adres_ip', 'snk' ]
         f = search_filter(search_fields, query)
-        sprzety = Sprzet.objects.filter(f)
+        sprzety = Sprzet.objects.filter(f, sprzedany=False, mag=False)
 
         return render(request, 'HIP/hip_main.html', {
             'systemy': systemy,
@@ -210,6 +212,24 @@ def hip_filtr(request, pk):
         'admini': test_admin(request),
         'about': about
     })
+
+@login_required(login_url='error')
+def hip_filtr_s(request, pk):
+    systemy = System.objects.all()
+    sprzety = Sprzet.objects.filter(host=pk, arch=False, mag=False)
+    wybrany = '' #System.objects.filter(id=pk)[0]
+    name_log = request.user.first_name + " " + request.user.last_name
+    about = settings.INFO_PROGRAM
+
+    return render(request, 'HIP/hip_main.html', {
+        'sprzety': sprzety,
+        'systemy': systemy,
+        'wybrany': wybrany,
+        'name_log': name_log,
+        'admini': test_admin(request),
+        'about': about
+    })
+
 
 
 @login_required(login_url='error')
@@ -294,49 +314,46 @@ def hip_delete_p(request, pk, ret):
     return redirect('hip_detail', pk=ret)
 
 
-
 def hip_lista(request, pk):
-    search_fields = ['rodzaj_konta', 'adres']
+    tytul = ''
+    query = ''
+    profil = ''
+    search_fields = ['rodzaj_konta']
+    sw_pr = True
+    tab_usl = ''
+    us = []
 
     if pk == '1':
-        query = 'window'
-        tytul = 'Microsoft Windows'
+        query = 'SDA'
+        tytul = 'Lista kont programu SDA'
 
     if pk == '2':
-        query = 'Office'
-        tytul = 'Microsoft Office'
+        query = 'Google DOCS'
+        tytul = 'Lista kont Google Docs'
 
     if pk == '3':
-        query = 'Zwcad'
-        tytul = 'Zwcad'
+        tytul = 'Uprawnienia'
 
-    if pk == '4':
-        query = 'Corel'
-        tytul = 'Corel Draw'
-
-    if pk == '5':
-        query = 'Illustrator'
-        tytul = 'Adobe Illustrator'
-
-    if pk == '6':
-        query = 'Photoshop'
-        tytul = 'Adobe Photoshop'
-
-    if pk == '7':
-        query = 'max'
-        tytul = 'Autodesk 3dsmax'
-
-    f = search_filter(search_fields, query)
-    program = Profil.objects.filter(f)
+    if pk != '3':
+        f = search_filter(search_fields, query)
+        profil = Profil.objects.filter(f).order_by('sprzet__usr')
+    else:
+        sw_pr = False
+        tab_usl = get_matrix()
+        us = get_user()
 
     name_log = request.user.first_name + " " + request.user.last_name
     about = settings.INFO_PROGRAM
 
-    return render(request, 'HIP/hip_lista.html', {
-        'program': program,
-        'tytul': tytul,
+    return render(request, 'HIP/hip_main_list.html', {
+        'sw_pr': sw_pr,
+        'profil': profil,
+        'tytul_tabeli': tytul,
         'name_log': name_log,
-        'about': about
+        'admini': test_admin(request),
+        'about': about,
+        'tab_usl': tab_usl,
+        'us': us
     })
 
 
@@ -402,4 +419,80 @@ def hip_konta(request, pk):
         'tytul': tytul,
         'name_log': name_log,
         'about': about
+    })
+
+@login_required(login_url='error')
+def hip_serwis(request, pk):
+    name_log = request.user.first_name + " " + request.user.last_name
+    about = settings.INFO_PROGRAM
+
+    sprzet = Sprzet.objects.filter(id=pk)
+    serwis = Serwis.objects.filter(sprzet=pk).order_by('-data', '-id')
+
+    return render(request, 'HIP/hip_detail_ser.html', {
+        'name_log': name_log,
+        'sprzety': sprzet,
+        'serwisy': serwis,
+        'PK': pk,
+        'about': about
+    })
+
+
+@login_required(login_url='error')
+def hip_new_ser(request, pk):
+    tytul = 'Nowy wpis sewisowy'
+    naglowek = 'Nowy wpis serwisowy'
+    name_log = request.user.first_name + " " + request.user.last_name
+    about = settings.INFO_PROGRAM
+
+    if request.method == "POST":
+        serwisf = SerwisForm(request.POST or None, request.FILES or None)
+        if serwisf.is_valid():
+            ps = serwisf.save(commit=False)
+            # ps.sprzet = sprzet.id
+            ps.save()
+            return redirect('hip_serwis', pk=pk)
+        else:
+            return redirect('error')
+    else:
+        serwisf = SerwisForm(initial={'sprzet': pk})
+    return render(request, 'HIP/hip_new_ser.html', {
+        'form': serwisf,
+        'name_log': name_log,
+        'tytul': tytul,
+        'naglowek': naglowek,
+        'PK': pk,
+        'LP': 0,
+        'about': about,
+        'edycja': False
+    })
+
+
+@login_required(login_url='error')
+def hip_edit_ser(request, pk, lp):
+    tytul = 'Edycja pozycji serwisu'
+    naglowek = 'Edycja pozycji serwisu'
+    name_log = request.user.first_name + " " + request.user.last_name
+    about = settings.INFO_PROGRAM
+    serwism = get_object_or_404(Serwis, pk=lp, sprzet=pk)
+    if request.method == "POST":
+        serwisf = SerwisForm(request.POST or None, request.FILES or None, instance=serwism)
+        if serwisf.is_valid():
+            ps = serwisf.save(commit=False)
+
+            ps.save()
+            return redirect('hip_serwis', pk=pk)
+        else:
+            return redirect('error')
+    else:
+        serwisf = SerwisForm(instance=serwism)
+    return render(request, 'HIP/hip_new_ser.html', {
+        'form': serwisf,
+        'name_log': name_log,
+        'tytul': tytul,
+        'naglowek': naglowek,
+        'PK': pk,
+        'LP': lp,
+        'about': about,
+        'edycja': True
     })

@@ -5,6 +5,55 @@ from TaskAPI.models import Rok, URok, Waluta
 from django.contrib.auth.models import Group, User, User, Permission, PermissionsMixin
 
 
+def get_matrix():
+
+    x = '✅'
+    tab_usl = [
+        #                     admin, biuro,   ksieg, ksieg1, spedy,  stola,  kier,  prod, kontr,   mag,  mag1,  mag2, sklad
+        ['LAN struktura'    ,     x,    '',      '',    '',    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+        ['Hasła i profile'  ,     x,     x,      '',    '',    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+        ['Lista profili'    ,     x,    '',       x,    '',    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+        ['Usługi'           ,     x,    '',      '',    '',    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+        ['Magazyn'          ,     x,     x,      '',    '',    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+        ['Telefony'         ,     x,     x,      '',    '',    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+        ['Faktury'          ,     x,    '',       x,     x,    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+        ['Ubezpieczenia'    ,     x,    '',       x,     x,    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+        ['Delegacje'        ,     x,     x,       x,     x,    '',     '',     x,     x,    '',    '',    '',    '',    ''],
+        ['Dowody osobiste'  ,     x,     x,       x,    '',     x,     '',    '',    '',    '',    '',    '',    '',    ''],
+        ['Samochody & Wóżki',     x,     x,       x,     x,    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+        ['Kody SDE'         ,     x,     x,       x,     x,    '',     '',    '',    '',     x,    '',    '',    '',    ''],
+        ['Zamówienia'       ,     x,     x,       x,     x,     x,      x,    '',    '',     x,    '',    '',    '',    ''],
+        ['Zaliczki'         ,     x,     x,       x,     x,    '',      x,    '',    '',    '',    '',    '',    '',    ''],
+        ['Pracownicy'       ,     x,    '',       x,    '',    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+        ['Wyjazdówki i premie',   x,    '',       x,    '',    '',     '',     x,    '',    '',    '',    '',    '',    ''],
+        ['Magazyn drewna',        x,     x,       x,    '',    '',     '',     x,     x,     x,     x,     x,     x,    ''],
+        ['Magazyn wewnętrzny',    x,     x,       x,    '',    '',     '',     x,     x,     x,     x,     x,    '',    ''],
+        ['Przechowalnia',         x,     x,       x,    '',    '',     '',     x,     x,     x,     x,     x,    '',     x],
+        ['Dokumenty Google' ,     x,    '',       x,    '',    '',     '',    '',    '',     x,    '',    '',    '',    ''],
+        ['Logi'             ,     x,    '',      '',    '',    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+        ['Monitoring ustawienia', x,    '',      '',    '',    '',     '',    '',    '',    '',    '',    '',    '',    '']
+    ]
+
+    return tab_usl
+
+def get_user():
+    us = []
+    for gr in Group.objects.all().order_by('name'):
+        g = gr.name
+        users = User.objects.filter(groups__name=g).values()
+
+        lu = ''
+        for u in users:
+            lu += u['first_name'] + " " + u['last_name']+ ", "
+
+        r = [g, lu[:-2]]
+        us.append(r)
+    return us
+
+
+
+
+
 def test_admin(request):
     gr = ''
     admini = False
@@ -44,6 +93,9 @@ def logs_start(request):
     wal2 = Waluta.objects.filter(kod='GBP').order_by('-data')
     wal3 = Waluta.objects.filter(kod='USD').order_by('-data')
     wal4 = Waluta.objects.filter(kod='CHF').order_by('-data')
+    wal5 = Waluta.objects.filter(kod='NOK').order_by('-data')
+    wal6 = Waluta.objects.filter(kod='JPY').order_by('-data')
+    wal7 = Waluta.objects.filter(kod='DKK').order_by('-data')
     cron = settings.CRONJOBS
 
     lwal = settings.GET_NBP
@@ -73,15 +125,16 @@ def logs_start(request):
                       'wal2': wal2,
                       'wal3': wal3,
                       'wal4': wal4,
+                      'wal5': wal5,
+                      'wal6': wal6,
+                      'wal7': wal7,
                       'gt': gt
                   })
 
 
 @login_required(login_url='error')
 def logs_startp(request):
-    #lata, rok = test_rok(request)
     name_log, inicjaly = test_osoba(request)
-    #tytul_tabeli = "Zestawienie kursów walut"
     about = settings.INFO_PROGRAM
 
     cron = settings.CRONJOBS
@@ -102,16 +155,7 @@ def logs_startp(request):
         m_p = "E-MAIL"
 
     a_s = settings.DEL_SKYPE_DO_USERS
-    s = ""
-    for l in a_s:
-        s = s + l + ", "
-    a_s = s[:-2]
-
     a_e = settings.DEL_EMAIL_DO_USERS
-    s = ""
-    for l in a_e:
-        s = s + l + ", "
-    a_e = s[:-2]
 
     mp = settings.INVOICES_TO_TARGET
     if mp == 1:
@@ -120,16 +164,7 @@ def logs_startp(request):
         m_pf = "E-MAIL"
 
     a_sf = settings.INV_SKYPE_DO_USERS
-    s = ""
-    for l in a_sf:
-        s = s + l + ", "
-    a_sf = s[:-2]
-
     a_ef = settings.INV_EMAIL_DO_USERS
-    s = ""
-    for l in a_ef:
-        s = s + l + ", "
-    a_ef = s[:-2]
 
     mp = settings.CARS_TO_TARGET
     if mp == 1:
@@ -138,16 +173,7 @@ def logs_startp(request):
         m_ps = "E-MAIL"
 
     a_ss = settings.CARS_SKYPE_DO_USERS
-    s = ""
-    for l in a_ss:
-        s = s + l + ", "
-    a_ss = s[:-2]
-
     a_es = settings.CARS_EMAIL_DO_USERS
-    s = ""
-    for l in a_es:
-        s = s + l + ", "
-    a_es = s[:-2]
 
     w_pb = str(settings.CARS_DATE_SHIFT) + " dni"
     w_tl = str(settings.CARS_LEASING_SHIFT) + " dni"
@@ -169,27 +195,20 @@ def logs_startp(request):
     sds = str(settings.SERVICES_DATA_SHIFT) + " dni"
 
     ssdu = settings.SERVICES_SKYPE_DO_USERS
-    s = ""
-    for l in ssdu:
-        s = s + l + ", "
-    ssdu = s[:-2]
-
     sedu = settings.SERVICES_EMAIL_DO_USERS
-    s = ""
-    for l in sedu:
-        s = s + l + ", "
-    sedu = s[:-2]
 
-    gt = ""
+    gt = []
     for c in cron:
         if c[1] == "TaskAPI.cron.GetNBP":
             t = c[0].split(' ')
-            gt = "Godzina: "+t[1]+":"+t[0]+", Dzień miesiąca: każdy, Miesiąc: każdy, Dzień tygodnia: każdy "
+            gt.append("Godzina: "+t[1]+":"+t[0])
+            gt.append("Dzień miesiąca: każdy")
+            gt.append("Miesiąc: każdy")
+            gt.append("Dzień tygodnia: każdy")
 
 
     return render(request, 'MONIT/mainp.html',
                   {
-                      #'tytul_tabeli': tytul_tabeli,
                       'name_log': name_log,
                       'about': about,
                       'lwal': lwal,
@@ -219,38 +238,48 @@ def logs_startp(request):
 def logs_startu(request):
     name_log, inicjaly = test_osoba(request)
     about = settings.INFO_PROGRAM
-    x = '✅'
-    tab_usl = [
-        #                     admin, biuro, biuro_1, ksieg, zksieg, spedy, stola
-        ['Hasła i profile'  ,     x,    '',      '',    '',     '',    '',    ''],
-        ['Usługi'           ,     x,    '',      '',    '',     '',    '',    ''],
-        ['Magazyn'          ,     x,     x,      '',    '',     '',    '',    ''],
-        ['Telefony'         ,     x,    '',      '',    '',     '',    '',    ''],
-        ['Faktury'          ,     x,    '',      '',     x,      x,    '',    ''],
-        ['Ubezpieczenia'    ,     x,    '',      '',     x,      x,    '',    ''],
-        ['Delegacje'        ,     x,    '',      '',     x,      x,    '',    ''],
-        ['Dowody osobiste'  ,     x,     x,       x,     x,      x,    '',    ''],
-        ['Samochody & Wóżki',     x,    '',      '',    '',     '',     x,    ''],
-        ['Kody SDE'         ,     x,     x,      '',     x,      x,    '',    ''],
-        ['Zamówienia'       ,     x,     x,       x,     x,      x,    '',     x],
-        ['Zaliczki'         ,     x,     x,      '',     x,      x,    '',     x],
-        ['Pracownicy'       ,     x,    '',      '',     x,     '',    '',    ''],
-        ['Dokumenty Google' ,     x,    '',      '',     x,     '',    '',    ''],
-        ['Logi'             ,     x,    '',      '',    '',     '',    '',    '']
-    ]
 
-    us = []
+    tab_usl = get_matrix()
 
-    for gr in Group.objects.all():
-        g = gr.name
-        users = User.objects.filter(groups__name=g).values()
+    # x = '✅'
+    # tab_usl = [
+    #     #                     admin, biuro,   ksieg, ksieg1, spedy,  stola,  kier,  prod, kontr,   mag,  mag1,  mag2, sklad
+    #     ['LAN struktura'    ,     x,    '',      '',    '',    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+    #     ['Hasła i profile'  ,     x,     x,      '',    '',    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+    #     ['Lista profili'    ,     x,    '',       x,    '',    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+    #     ['Usługi'           ,     x,    '',      '',    '',    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+    #     ['Magazyn'          ,     x,     x,      '',    '',    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+    #     ['Telefony'         ,     x,     x,      '',    '',    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+    #     ['Faktury'          ,     x,    '',       x,     x,    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+    #     ['Ubezpieczenia'    ,     x,    '',       x,     x,    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+    #     ['Delegacje'        ,     x,     x,       x,     x,    '',     '',     x,     x,    '',    '',    '',    '',    ''],
+    #     ['Dowody osobiste'  ,     x,     x,       x,    '',     x,     '',    '',    '',    '',    '',    '',    '',    ''],
+    #     ['Samochody & Wóżki',     x,     x,       x,     x,    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+    #     ['Kody SDE'         ,     x,     x,       x,     x,    '',     '',    '',    '',     x,    '',    '',    '',    ''],
+    #     ['Zamówienia'       ,     x,     x,       x,     x,     x,      x,    '',    '',     x,    '',    '',    '',    ''],
+    #     ['Zaliczki'         ,     x,     x,       x,     x,    '',      x,    '',    '',    '',    '',    '',    '',    ''],
+    #     ['Pracownicy'       ,     x,    '',       x,    '',    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+    #     ['Wyjazdówki i premie',   x,    '',       x,    '',    '',     '',     x,    '',    '',    '',    '',    '',    ''],
+    #     ['Magazyn drewna',        x,     x,       x,    '',    '',     '',     x,     x,     x,     x,     x,     x,    ''],
+    #     ['Magazyn wewnętrzny',    x,     x,       x,    '',    '',     '',     x,     x,     x,     x,     x,    '',    ''],
+    #     ['Przechowalnia',         x,     x,       x,    '',    '',     '',     x,     x,     x,     x,     x,    '',     x],
+    #     ['Dokumenty Google' ,     x,    '',       x,    '',    '',     '',    '',    '',     x,    '',    '',    '',    ''],
+    #     ['Logi'             ,     x,    '',      '',    '',    '',     '',    '',    '',    '',    '',    '',    '',    ''],
+    #     ['Monitoring ustawienia', x,    '',      '',    '',    '',     '',    '',    '',    '',    '',    '',    '',    '']
+    # ]
 
-        lu = ''
-        for u in users:
-            lu += u['first_name'] + " " + u['last_name']+ ", "
+    us = get_user()
 
-        r = [g, lu[:-2]]
-        us.append(r)
+    # for gr in Group.objects.all().order_by('name'):
+    #     g = gr.name
+    #     users = User.objects.filter(groups__name=g).values()
+    #
+    #     lu = ''
+    #     for u in users:
+    #         lu += u['first_name'] + " " + u['last_name']+ ", "
+    #
+    #     r = [g, lu[:-2]]
+    #     us.append(r)
 
 
     return render(request, 'MONIT/mainu.html',

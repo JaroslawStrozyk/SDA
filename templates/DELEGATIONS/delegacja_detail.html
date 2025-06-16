@@ -1,0 +1,510 @@
+{% extends "del_dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+{% endblock %}
+
+
+{% block retbutton %}
+                        <li>
+                            <a class="primary btn btn-primary" href="{% url 'delegacja_lista' %}" style="color:white;">
+                                <i class="fa fa-dashboard fa-fw"></i> <strong>Lista poleceń wyjazdu</strong></a>
+                        </li>
+{% endblock %}
+
+{% block userlog %}
+                {{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+<br><br>
+{% endblock %}
+
+{% block logo %}
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+{% block style %}
+              a:link.dt, a:visited.dt {
+                         text-decoration: none;
+              }
+              a:hover.dt, a:active.dt {
+                         text-decoration: none;
+                         display: inline-block;
+              }
+
+              #wpz {
+                    color: brown;
+                    font-weight: bold;
+              }
+              #wrz {
+                    color: #a9a9a9;
+              }
+
+              .verticalText{
+                    text-align: center;
+                    vertical-align: middle;
+                    -webkit-transform: rotate(90deg);
+                    -moz-transform: rotate(90deg);
+              }
+              #panel_glowny {
+<!--                    border-color: #5cb85c;-->
+<!--                    color: white;-->
+<!--                    background-color: #8cf88c;-->
+              }
+              #panel_naglowek {
+                    background-color: #6cd86c;
+              }
+
+              #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
+                    background-color: gray;
+              }
+
+              #ALAM_PANEL {
+                    margin-left:25px;
+                    margin-right:25px;
+                    box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+              }
+
+{% endblock %}
+
+
+{% block content %}
+
+
+                <div class="col-lg-12">
+                    <div class="panel panel-green" id="panel_glowny">
+                        <div class="panel-heading" id="panel_naglowek">
+                            <table width="100%">
+                                <tr>
+                                    <td style="text-align:center;">
+                                        <font style="font-size:18px;"><strong>{{ tytul }}</strong></font>
+                                    </td>
+                                    <td style="text-align:right;width:100px;">
+                                        <a href="#" data-toggle="modal" data-target="#HELP_HELP" class=" btn btn-primary btn-sm" style="color:white;">
+                                            <i class="fa fa-exclamation-triangle" style="color:yellow;"></i>
+                                            <strong>  Instrukcja</strong>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                        <tr>
+                                          <td colspan="4" style="background-color: #dfdfdf;font-weight: bold;">
+                                              <table width="100%">
+                                                  <tr>
+                                                      <td>PODSTAWOWE DANE</td>
+                                                      <td style="width:10%;text-align:right;">
+                                                          <a href="{% url 'rdelegacja_edit' pk=delegacja.pk %}" class=" btn btn-danger btn-sm" style="color:white;">
+                                                              &nbsp;<strong>Edycja</strong>
+                                                          </a>
+                                                      </td>
+                                                  </tr>
+                                              </table>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:25%; font-weight:bold;">Imię i nazwisko</td>
+                                            <td>{{ delegacja.osoba.naz_imie }}</td>
+                                            <td style="width:25%; font-weight:bold;">Data pobrania zaliczki</td>
+                                            <td style="color:brown;">{{ delegacja.data_pobr_zal|date:'Y-m-d' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight:bold;">Nr dokumentu</td>
+                                            <td>{{ delegacja.numer }}</td>
+                                            <td style="width:25%; font-weight:bold;">Data rozliczenia</td>
+                                            {% if flaga_rozli %}
+                                                <td style="color:blue;">{{ delegacja.data_rozl|date:'Y-m-d' }}</td>
+                                            {% else %}
+                                                <td style="color:yellow;background-color:red;font-weight:bold;">{{ delegacja.data_rozl|date:'Y-m-d' }}</td>
+                                            {% endif %}
+                                        </tr>
+                                </table>
+
+                                <table class="table table-bordered">
+                                        <tr>
+                                          <td colspan="4" style="background-color: #dfdfdf;font-weight: bold;">TARGI</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:10%; font-weight:bold;">SDE 1</td>
+                                            <td style="width:40%;">{% if delegacja.kod_sde_targi1 != tnull %}{{ delegacja.kod_sde_targi1 }}{% endif %}</td>
+                                            <td style="width:10%; font-weight:bold;">SDE 2</td>
+                                            <td style="width:40%;">{% if delegacja.kod_sde_targi2 != tnull %}{{ delegacja.kod_sde_targi2 }}{% endif %}</td>
+                                        </tr>
+                                </table>
+
+                                <table class="table table-bordered">
+                                        <tr>
+                                          <td colspan="4" style="background-color: #dfdfdf;font-weight: bold;">PRZEBIEG PODRÓŻY</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:15%; font-weight:bold;">Kraj</td>
+                                            <td style="width:35%;">{{ delegacja.lok_targi }}</td>
+                                            <td style="width:15%; font-weight:bold;">Data/Czas rozpoczęcia</td>
+                                            <td style="width:35%;">{{ delegacja.dc_rozpo|date:'Y-m-d H:i' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight:bold;">Miejsce rozpoczęcia</td>
+                                            <td>Firma</td>
+                                            <td style="font-weight:bold;">Data/Czas zakończenia</td>
+                                            <td>{{ delegacja.dc_zakon|date:'Y-m-d H:i' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight:bold;">Miejsce docelowe</td>
+                                            <td>{{ delegacja.targi }}</td>
+                                            <td style="font-weight:bold;">Przekr. granicy</td>
+                                            <td {% if fkraj %} style="color:white;" {% else %} style="color:#333;" {% endif %}>{{ delegacja.przekr_gran|date:'Y-m-d H:i' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight:bold;">Cel wyjazdu</td>
+                                            <td>{{ delegacja.cel_wyj }}</td>
+                                            <td style="font-weight:bold;">Powrót do Kraju</td>
+                                            <td {% if fkraj %} style="color:white;" {% else %} style="color:#333;" {% endif %}>{{ delegacja.powrot_kraj|date:'Y-m-d H:i' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight:bold;">Transport</td>
+                                            <td>{{ delegacja.transport }}&nbsp;&nbsp;&nbsp;{% if delegacja.dane_auta == None %}{% else %}<font color="brown">{{ delegacja.dane_auta }}</font>{% endif %}</td>
+                                            <td colspan="2" style="text-align:right; color:grey;">{{ delegacja.czas_opis }}</td>
+                                        </tr>
+                                </table>
+
+                                <table class="table table-bordered">
+                                        <tr>
+                                          <td colspan="6" style="background-color: #dfdfdf;font-weight: bold;">LICZBA POSIŁKÓW ZAPEWNIONYCH W DELEGACJI</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:10%; font-weight:bold;">Śniadania</td>
+                                            <td style="width:23%;">{{ delegacja.sniadanie }}</td>
+                                            <td style="width:10%; font-weight:bold;">Obiady</td>
+                                            <td style="width:23%;">{{ delegacja.obiad }}</td>
+                                            <td style="width:10%; font-weight:bold;">Kolacje</td>
+                                            <td style="width:24%;">{{ delegacja.kolacja }}</td>
+                                        </tr>
+                                </table>
+
+                                <table class="table table-bordered">
+                                        <tr>
+                                          <td colspan="4" style="background-color: #dfffdf;font-weight: bold;">KALKULACJA DIETY</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:15%; font-weight:bold;">Dieta krajowa</td>
+                                            <td colspan="3" style="text-align:right;">{{ delegacja.dieta_kr }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight:bold;">Dieta zagraniczna</td>
+                                            <td {% if fwartosc %} style="color:white;text-align:right;" {% else %} style="color:#333;text-align:right;" {% endif %}>
+                                                <strong>{{ delegacja.dieta_za_euro }}</strong> [{{ delegacja.dieta_za.currency }} &#8658; {{ delegacja.dieta_za_efd }}: {{ delegacja.dieta_za_not }}]
+                                            </td>
+                                            <td {% if fkraj %} style="color:white;text-align:right;width:15%;" {% else %} style="color:#333;text-align:right;width:15%;" {% endif %}>
+                                                {{ delegacja.dieta_za }}
+                                            </td>
+                                            <td {% if fkraj %} style="color:white;text-align:right;width:15%;" {% else %} style="color:#333;text-align:right;width:15%;" {% endif %}>
+                                                {{ delegacja.dieta_za_zl }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight:bold;">Diety razem</td>
+                                            <td colspan="3" style="text-align:right;width:15%;font-weight:bold;font-style: oblique;">{{ delegacja.dieta_razem }}</td>
+                                        </tr>
+                                </table>
+
+                                <table class="table table-bordered">
+                                        <tr>
+                                          <td colspan="5" style="background-color: #ffffdf;font-weight: bold;">
+                                              <table width="100%">
+                                                  <tr>
+                                                      <td style="width:200px;">POZYCJE WYDATKÓW</td>
+                                                      <td style="text-align:center;color:#787878;"><font style="font-size:16px;"></font></td>
+                                                  </tr>
+                                              </table>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:20%;font-size:16px;text-align:center;color:#787878;font-weight:bold;border-bottom: 1pt solid #ffffff;">PLN</td>
+                                            <td style="width:20%;font-size:16px;text-align:center;color:#787878;font-weight:bold;border-bottom: 1pt solid #ffffff;">EUR</td>
+                                            <td style="width:20%;font-size:16px;text-align:center;color:#787878;font-weight:bold;border-bottom: 1pt solid #ffffff;">GBP</td>
+                                            <td style="width:20%;font-size:16px;text-align:center;color:#787878;font-weight:bold;border-bottom: 1pt solid #ffffff;">USD</td>
+                                            <td style="width:20%;font-size:16px;text-align:center;color:#787878;font-weight:bold;border-bottom: 1pt solid #ffffff;">CHF</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center;color:#787878;font-style: italic;border-bottom: 1pt solid #ffffff;background-color: #F5F5F5;">{{ delegacja.sum_wydatki1.amount }}</td>
+                                            <td style="text-align:center;color:#787878;font-style: italic;border-bottom: 1pt solid #ffffff;background-color: #F5F5F5;">{{ delegacja.sum_wydatki2.amount }}</td>
+                                            <td style="text-align:center;color:#787878;font-style: italic;border-bottom: 1pt solid #ffffff;background-color: #F5F5F5;">{{ delegacja.sum_wydatki3.amount }}</td>
+                                            <td style="text-align:center;color:#787878;font-style: italic;border-bottom: 1pt solid #ffffff;background-color: #F5F5F5;">{{ delegacja.sum_wydatki4.amount }}</td>
+                                            <td style="text-align:center;color:#787878;font-style: italic;border-bottom: 1pt solid #ffffff;background-color: #F5F5F5;">{{ delegacja.sum_wydatki5.amount }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center;">
+                                                <a href="{% url 'rdelegacja_list_poz' pk=delegacja.pk wal='PLN' %}" class=" btn btn-danger btn-sm" style="color:white;">
+                                                    &nbsp;<strong>Modyfikacja</strong>
+                                                </a>
+                                            </td>
+                                            <td style="text-align:center;">
+                                                <a href="{% url 'rdelegacja_list_poz' pk=delegacja.pk wal='EUR' %}" class=" btn btn-danger btn-sm" style="color:white;">
+                                                    &nbsp;<strong>Modyfikacja</strong>
+                                                </a>
+                                            </td>
+                                            <td style="text-align:center;">
+                                                <a href="{% url 'rdelegacja_list_poz' pk=delegacja.pk wal='GBP' %}" class=" btn btn-danger btn-sm" style="color:white;">
+                                                    &nbsp;<strong>Modyfikacja</strong>
+                                                </a>
+                                            </td>
+                                            <td style="text-align:center;">
+                                                <a href="{% url 'rdelegacja_list_poz' pk=delegacja.pk wal='USD' %}" class=" btn btn-danger btn-sm" style="color:white;">
+                                                    &nbsp;<strong>Modyfikacja</strong>
+                                                </a>
+                                            </td>
+                                            <td style="text-align:center;">
+                                                <a href="{% url 'rdelegacja_list_poz' pk=delegacja.pk wal='CHF' %}" class=" btn btn-danger btn-sm" style="color:white;">
+                                                    &nbsp;<strong>Modyfikacja</strong>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                </table>
+
+
+                                <table class="table table-bordered">
+                                    <tr>
+                                      <td colspan="7" style="background-color: #ffdfdf;font-weight: bold;">ZESTAWIENIE</td>
+                                    </tr>
+                                    <tr style="text-align:center;font-weight: bold;">
+                                        <td colspan="2">Pozycja</td>
+                                        <td style="width:10%">PLN</td>
+                                        <td style="width:10%">EUR</td>
+                                        <td style="width:10%">GBP</td>
+                                        <td style="width:10%">USD</td>
+                                        <td style="width:10%">CHF</td>
+                                    </tr>
+                                    <tr style="text-align:right;">
+                                      <td style="text-align:left;" colspan="2">Pobrane zaliczki</td>
+                                        <td>{{ delegacja.kasa_pln }}</td>
+                                        <td>{{ delegacja.kasa_euro }}</td>
+                                        <td>{{ delegacja.kasa_funt }}</td>
+                                        <td>{{ delegacja.kasa_dolar }}</td>
+                                        <td>{{ delegacja.kasa_inna }}</td>
+                                    </tr>
+                                    <tr style="text-align:right;">
+                                        <td style="text-align:left;" colspan="2">Dieta</td>
+                                        <td>{{ delegacja.dieta_kr.amount }}</td>
+                                        <td>{{ delegacja.dieta_za_2.amount }}</td>
+                                        <td>{{ delegacja.dieta_za_3.amount }}</td>
+                                        <td>{{ delegacja.dieta_za_4.amount }}</td>
+                                        <td>{{ delegacja.dieta_za_5.amount }}</td>
+                                    </tr>
+                                    <tr style="text-align:right;">
+                                        <td style="text-align:left;" colspan="2">Wydatki</td>
+                                        <td>{{ delegacja.sum_wydatki1.amount }}</td>
+                                        <td>{{ delegacja.sum_wydatki2.amount }}</td>
+                                        <td>{{ delegacja.sum_wydatki3.amount }}</td>
+                                        <td>{{ delegacja.sum_wydatki4.amount }}</td>
+                                        <td>{{ delegacja.sum_wydatki5.amount }}</td>
+                                    </tr>
+                                    <tr style="text-align:right;background-color:#FDF2E9;font-weight:bold;">
+                                        <td style="text-align:left;color:brown;" colspan="2">PODSUMOWANIE</td>
+                                        <td>{{ delegacja.podsumowanie1.amount }}</td>
+                                        <td>{{ delegacja.podsumowanie2.amount }}</td>
+                                        <td>{{ delegacja.podsumowanie3.amount }}</td>
+                                        <td>{{ delegacja.podsumowanie4.amount }}</td>
+                                        <td>{{ delegacja.podsumowanie5.amount }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="7"></td>
+                                    </tr>
+<!--                                    <tr style="text-align:right;background-color:#FEF9E7;">-->
+<!--                                        <td style="text-align:left;color:brown;font-weight:bold;">PODSUMOWANIE W PLN</td>-->
+<!--                                        <td></td>-->
+<!--                                        <td>{{ delegacja.podsumowanie_pl2.amount }}</td>-->
+<!--                                        <td>{{ delegacja.podsumowanie_pl3.amount }}</td>-->
+<!--                                        <td>{{ delegacja.podsumowanie_pl4.amount }}</td>-->
+<!--                                        <td>{{ delegacja.podsumowanie_pl5.amount }}</td>-->
+<!--                                    </tr>-->
+                                    <tr style="text-align:right;"> <!-- background-color:#FEF9E7; -->
+                                        <td style="text-align:left;">Kursy walut z notowania poprzedzającego dzień pobrania zaliczki.</td>
+                                        <td align="center">{{ delegacja.kurs_dataz|date:'Y-m-d' }}</td>
+                                        <td></td>
+                                        <td {% if fkraj %} style="color:white;text-align:right;" {% else %} style="color:#333;text-align:right;" {% endif %}>{{ delegacja.kursz2.amount }}</td>
+                                        <td {% if fkraj %} style="color:white;text-align:right;" {% else %} style="color:#333;text-align:right;" {% endif %}>{{ delegacja.kursz3.amount }}</td>
+                                        <td {% if fkraj %} style="color:white;text-align:right;" {% else %} style="color:#333;text-align:right;" {% endif %}>{{ delegacja.kursz4.amount }}</td>
+                                        <td {% if fkraj %} style="color:white;text-align:right;" {% else %} style="color:#333;text-align:right;" {% endif %}>{{ delegacja.kursz5.amount }}</td>
+                                    </tr>
+                                    <tr style="text-align:right;">
+                                        <td style="text-align:left;">Kursy walut z notowania poprzedzającego dzień rozliczenie zaliczki.</td>
+                                        <td align="center">{{ delegacja.kurs_data|date:'Y-m-d' }}</td>
+                                        <td></td>
+                                        <td {% if fkraj %} style="color:white;text-align:right;" {% else %} style="color:#333;text-align:right;" {% endif %}>{{ delegacja.kurs2.amount }}</td>
+                                        <td {% if fkraj %} style="color:white;text-align:right;" {% else %} style="color:#333;text-align:right;" {% endif %}>{{ delegacja.kurs3.amount }}</td>
+                                        <td {% if fkraj %} style="color:white;text-align:right;" {% else %} style="color:#333;text-align:right;" {% endif %}>{{ delegacja.kurs4.amount }}</td>
+                                        <td {% if fkraj %} style="color:white;text-align:right;" {% else %} style="color:#333;text-align:right;" {% endif %}>{{ delegacja.kurs5.amount }}</td>
+                                    </tr>
+                                    <tr style="text-align:right;">
+                                        <td style="text-align:left;" colspan="2">Zaliczki [PLN]</td>
+                                        <td>{{ delegacja.zaliczka1.amount }}</td>
+                                        <td>{{ delegacja.zaliczka2.amount }}</td>
+                                        <td>{{ delegacja.zaliczka3.amount }}</td>
+                                        <td>{{ delegacja.zaliczka4.amount }}</td>
+                                        <td>{{ delegacja.zaliczka5.amount }}</td>
+                                    </tr>
+                                    <tr style="text-align:right;">
+                                        <td style="text-align:left;" colspan="2">Wydatki + Diety [PLN]</td>
+                                        <td>{{ delegacja.wd1.amount }}</td>
+                                        <td>{{ delegacja.wd2.amount }}</td>
+                                        <td>{{ delegacja.wd3.amount }}</td>
+                                        <td>{{ delegacja.wd4.amount }}</td>
+                                        <td>{{ delegacja.wd5.amount }}</td>
+                                    </tr>
+                                    <tr style="text-align:right;background-color:#FDF2E9;font-weight:bold;">
+                                        <td style="text-align:left;color:brown;">SUMA [PLN]</td>
+                                        <td style="background-color:#D35400;color:white;">{{ delegacja.suma0.amount }}</td>
+                                        <td>{{ delegacja.suma1.amount }}</td>
+                                        <td>{{ delegacja.suma2.amount }}</td>
+                                        <td>{{ delegacja.suma3.amount }}</td>
+                                        <td>{{ delegacja.suma4.amount }}</td>
+                                        <td>{{ delegacja.suma5.amount }}</td>
+                                    </tr>
+                                </table>
+
+                                <br><br>
+                                {% if fkraj %}{% else %}{% endif %}
+                                <table class="table">
+                                    <tr>
+                                        <td align="center"><strong>Czysta dieta</strong></td>
+                                        <td align="center"><strong>Różnica</strong></td>
+                                        <td align="center"><strong>Różnica [PLN]</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">{{ delegacja.czysta_dieta }}</td>
+                                        <td align="center">{{ delegacja.roznica_diet }}</td>
+                                        <td align="center">{{ delegacja.roznica_diet_pl }}</td>
+                                    </tr>
+                                </table>
+
+
+
+                                <br><br>
+
+                                <table width="100%">
+                                    <tr>
+                                        <td style="text-align:right;">
+                                            {% if flaga_rozli %}
+                                                <a href="{% url 'delegacja_rz_out' pk=delegacja.pk %}" class=" btn btn-info btn-lg" style="color:white;">
+                                                    &nbsp;<strong>Export do pdf i drukowanie</strong>
+                                                </a>
+                                            {% else %}
+                                                    <div class="panel panel-danger" id="ALAM_PANEL">
+                                                        <div class="panel-heading" style="text-align:center;">
+                                                            <br><strong>Dane niekompletne!</strong><br>
+                                                            Wróć do powyższych tabel i uzupełnij je we właściwy sposób.<br><br>
+                                                            W razie potrzeby skorzystaj z instrukcji!<br>
+                                                            <small>(przycisk w górnej części okna)</small><br><br>
+                                                        </div>
+                                                    </div>
+                                                <a href="#" class=" btn btn-info btn-lg" style="color:white;background-color: #c0c0c0;border-color:#c0c0c0;" disabled>
+                                                    &nbsp;<strong>Export do pdf i drukowanie</strong>
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+
+
+
+                            <div class="modal fade" id="HELP_HELP" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                 <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                         <div class="modal-header">
+                                             <span class="modal-title" id="exampleModalLongTitle3"><strong>Instrukcja prawidłowego wypełnienia rozliczenia</strong></span>
+                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                             </button>
+                                         </div>
+                                         <div class="modal-body">
+                                             <h4><strong>Trzy kroki:</strong></h4>
+                                             <table width="100%"><tr><td align="center"><h5><strong>Pierwszy krok</strong></h5></td></tr></table>
+                                             <p style="text-align:justify;">
+                                                 Po wejściu do "Rozliczenia wyjazdu służbowego" w pierwszej kolejności <strong>należy zwrócić uwagę na zawartość szarych tabel</strong>.
+                                                 Jeśli jest to pierwsze wejście to ta sekcja nie jest kompletna.<br>Dane do niej pobierane są z "Polecenia wyjazdu" a tam brakuje kilku kluczowych informacji.
+                                                 Należy je uzupełnić poprzez edycję danych (przycisk edycja).<br><br>
+                                                 Kluczowe dane to:
+                                                 <ul>
+                                                    <li>Data pobrania - jeśli konieczne (jest ustawiana automatycznie przy zgłoszeniu "Polecenia wyjazdu"),</li>
+                                                    <li>Data rozliczenia (należy ustawić datę rozliczenia zaliczki u Księgowej),</li>
+                                                    <li>Dokładne czasy wyjazdu i powrotu z delgacji (komponent daty poprzez wielokrotne "klikanie" ustawienie potrzebnych parametrów),</li>
+                                                    <li>Środek lokomocji - jesli konieczne (jest ustawiany automatycznie przy zgłoszeniu "Polecenia wyjazdu"),</li>
+                                                    <li>Śniadania/Obiady/Kolacje - jeśli były, w przeciwnym przypadku zostawiamy zera,</li>
+                                                    <li>Kody SDE Targów.</li>
+                                                 </ul>
+                                                 Po tej operacji będzie można zobaczyć aktualną kalkulację diety.
+                                             </p>
+                                             <br>
+                                             <table width="100%"><tr><td align="center"><h5><strong>Drugi krok</strong></h5></td></tr></table>
+                                             <p style="text-align:justify;">
+                                                 Jeśli w trakcie podróży ponieśliśmy jakieś wydatki to w sekcji źółtych tabel należy je uwzględnić z podziałem na walutę.
+                                                 Wszelkie przeliczenia wykonywane są w tle i zaktualizowane dane można zaobserwowac w nagłówkach odpowiednich tabel (Wydatki) i w tabeli "Zestawienie"
+                                             </p>
+                                             <br>
+                                             <table width="100%"><tr><td align="center"><h5><strong>Trzeci krok</strong></h5></td></tr></table>
+                                             <p style="text-align:justify;">
+                                                 Generowanie dokumentów. Poprzez przycisk umieszczone w dolnej części okna generujemy dokumenty w formie pdf (w ramach używanej przegladarki).
+                                                 Możemy je wtedy wydrukować i/lub zapisać na dysk.
+                                             </p>
+<!--                                             <p style="text-align:justify;">-->
+<!--                                                 Funkcje przycisków:-->
+<!--                                                 <ul>-->
+<!--                                                    <li>"Export do pdf" - generuje jedno lub wielostronicowy dokument pdf i go wyświetla w oknie przeglądarki.</li>-->
+<!--                                                    <li>"Zatwierdzenie i export do pdf" - funkcja j.w. lecz dodatkowo ustawia znacznik rozliczenia delegacji (w tabeli "Lista poleceń wyjazdu" wiersz delegacji przestanie być wyrózniony na czerwono).</li>-->
+<!--                                                 </ul>-->
+<!--                                             </p>-->
+
+                                         </div>
+                                         <div class="modal-footer" style="background-color: #eeeeee;">
+                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                         </div>
+                                    </div>
+                                 </div>
+                             </div>
+
+
+                </div>
+
+{% endblock %}
+
+
+{% block script %}
+{% endblock %}
+
+
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

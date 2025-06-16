@@ -1,0 +1,392 @@
+{% extends "timber_dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+<ul class="nav nav-pills">
+
+    {% if m_wew %}
+        <li {% if mag1 %} class="active" {% endif %}><a href="{% url 'timber_list' mag='mag1' fl=fl %}">MAGAZYN SZPARAGOWA</a></li>
+        <li {% if mag2 %} class="active" {% endif %}><a href="{% url 'timber_list' mag='mag2' fl=fl %}">MAGAZYN PROFILI</a></li>
+        <li {% if mag3 %} class="active" {% endif %}><a href="{% url 'timber_list' mag='mag3' fl=fl %}">MAGAZYN CHEMII</a></li>
+        <li {% if mag4 %} class="active" {% endif %}><a href="{% url 'timber_list' mag='mag4' fl=fl %}">MAGAZYN SZKŁA</a></li>
+        <li {% if mag5 %} class="active" {% endif %}><a href="{% url 'timber_list' mag='mag5' fl=fl %}">MAGAZYN STALI</a></li>
+    {% else %}
+        <li {% if mag1 %} class="active" {% endif %}><a href="{% url 'timber_list' mag='mag1' fl=fl %}">MAGAZYN SZPARAGOWA</a></li>
+        <li {% if mag2 %} class="active" {% endif %}><a href="{% url 'timber_list' mag='mag2' fl=fl %}">MAGAZYN PODOLANY</a></li>
+        <li {% if mag3 %} class="active" {% endif %}><a href="{% url 'timber_list' mag='mag3' fl=fl %}">MAGAZYN U DOSTAWCY</a></li>
+    {% endif %}
+</ul>
+{% endblock %}
+
+
+{% block retbutton %}
+{% if fls %}
+
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="adt1">
+                    <i class="fa fa-money fa-fw"></i>
+                    Ksiegowość
+                    <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li>
+                        <a href="{% url 'timber_sda' rk=2023 mag=mag fl=fl %}"><font color="brown"><i class="fa fa-pie-chart fa-fw"></i></font> SDA wyszukiwanie</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="{% url 'timber_stat' rk=2023  mag=mag fl=fl %}"><font color="brown"><i class="fa fa-line-chart fa-fw"></i></font> SDA Statystyka</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="{% url 'timber_inwentura' rk=2024  mag=mag fl=fl %}"><font color="brown"><i class="fa fa-area-chart fa-fw"></i></font> [<font color="blue"><strong>{{ idata }}</strong></font>] Inwentura </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'inw_pdf_data' rk=2023 mag='mag1' fl='dre' dt='2023-06-30' %}"><font color="brown"><i class="fa fa-area-chart fa-fw"></i></font> [<font color="blue"><strong>2023-06-30</strong></font>] Inwentura Szparagowa</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'inw_pdf_data' rk=2023 mag='mag2' fl='dre' dt='2023-06-30' %}"><font color="brown"><i class="fa fa-area-chart fa-fw"></i></font> [<font color="blue"><strong>2023-06-30</strong></font>] Inwentura Podolany</a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+
+{% endif %}
+<li>
+    <a href="{% static 'DOCUMENTATION/modul_magazyn.pdf' %}" class=" btn btn-primary" target="_blank" style="color:white;">
+                                            <i class="fa fa-exclamation-triangle" style="color:yellow;"></i>
+                                            <strong>  Instrukcja</strong>
+                                        </a>
+</li>
+<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+<li>
+    <a class="btn btn-primary" href="{% url 'desktop' %}" id="pulpit"><font color="white"><i class="fa fa-dashboard fa-fw"></i> Pulpit</font></a>
+</li>
+{% endblock %}
+
+{% block userlog %}
+                {{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+<br><br>
+{% endblock %}
+
+{% block logo %}
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+{% block style %}
+            a:link.dt, a:visited.dt {
+                     text-decoration: none;
+            }
+            a:hover.dt, a:active.dt {
+                     text-decoration: none;
+                     display: inline-block;
+            }
+
+
+            #wpz {
+                color: brown;
+                font-weight: bold;
+            }
+            #wrz {
+                color: #a9a9a9;
+            }
+
+            .verticalText{
+                text-align: center;
+                vertical-align: middle;
+                -webkit-transform: rotate(90deg);
+                -moz-transform: rotate(90deg);
+            }
+
+            #panel_glowny {
+<!--                    border-color: #5cb85c;-->
+<!--                    color: white;-->
+<!--                    background-color: #8cf88c;-->
+            }
+            #panel_naglowek {
+                background-color: #6cd86c;
+            }
+
+
+            .nav-pills>li.active>a, .nav-pills>li.active>a:focus {
+                color: #fff;
+                background-color: #d43f3a;
+            }
+            .nav-pills>li.active>a:hover {
+                color: #fff;
+                background-color: #595959;
+                border-color: #595959;
+            }
+
+            .nav-pills>li>a {
+                color: #fff;
+                background-color: #a5a5a5;
+            }
+            .nav-pills>li>a:hover {
+                color: #fff;
+                background-color: #595959;
+                border-color: #595959;
+            }
+
+            #l_zest:link, #l_zest:visited {
+                 color: brown;
+            }
+            #l_zest:hover {
+                 color: red;
+            }
+
+            #l_ed:link, #l_ed:visited {
+                 color: #6C3483;
+            }
+            #l_ed:hover {
+                 color: #4A235A;
+            }
+            .table > tbody > tr:hover {
+                        background-color: #f5f5f5;
+            }
+            #pulpit:hover {
+                 background-color: gray;
+            }
+
+            #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(2) > a:hover {
+                color: #fff;
+                background-color: #595959;
+                border-color: #595959;
+            }
+
+            #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(3) > a:hover {
+                color: #fff;
+                background-color: #595959;
+                border-color: #595959;
+            }
+
+<!--            #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a {-->
+<!--                color: #fff;-->
+<!--                background-color: #BA5555;-->
+<!--                border-color: #BA5555;-->
+<!--            }-->
+
+<!--            #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {-->
+<!--                color: #fff;-->
+<!--                background-color: #595959;-->
+<!--                border-color: #595959;-->
+<!--            }-->
+
+{% endblock %}
+
+
+{% block content %}
+
+
+                <div class="col-lg-12">
+                    <div class="panel panel-green" id="panel_glowny">
+                        <div class="panel-heading">
+                            <table width="100%">
+                                <tr>
+                                    <td width="250px" style="background-color: #5cb85c; border-right:1pt solid #F3F3F3;">
+                                        <form metod="GET" action="{% url 'timber_list' mag=mag fl=fl %}">
+                                            {% csrf_token %}
+                                            <div class="input-group custom-search-form">
+                                                <input type="text" name="SZUKAJ" class="form-control" placeholder="Szukaj...">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                                                </span>
+                                            </div>
+                                        </form>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        {% if sw %}
+                                            <font style="font-size:18px;"><strong>{{ title }}</strong></font>
+                                             [ <font style="font-size:12px;"><strong>{{ opis }}</strong></font> ]
+                                        {% else %}
+                                            <font style="font-size:18px;"><strong>{{ title }}</strong></font>
+                                        {% endif %}
+                                    </td>
+                                    <td style="text-align:right;width:100px;">
+                                        <a href="{% url 'timber_pz_add' mag=mag fl=fl %}" class=" btn btn-warning"style="color:white;" disabled>
+                                            <strong><i class="fa fa-file-text-o"></i> Dodaj PZ</strong>
+                                        </a>
+                                    </td>
+                                    <td width="10px"></td>
+                                    <td style="text-align:right;width:100px;">
+                                        <a href="#" class=" btn btn-warning" style="color:white;" disabled>
+                                            <strong><i class="fa fa-file-text-o"></i> Dodaj WZ</strong>
+                                        </a>
+                                    </td>
+
+                                        {% if fmag %}
+                                          {% if rw %}
+                                            <td width="10px">&nbsp;</td>
+                                             <td width="100px">
+                                               <a href="{% url 'timber_add' mag=mag fl=fl %}" class="primary btn btn-default">&nbsp;<strong>Dodawanie nowego towaru</strong> </a>
+                                             </td>
+                                          {% endif %}
+                                        {% endif %}
+
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body">
+
+                            <table width="100%" class="table  table-bordered table-condensed">
+                                <thead>
+                                <tr height="70px">
+                                    <th style="background-color: #4682B4; vertical-align:middle; text-align:center;"><font color="#ffff00">ID</font></th>
+                                    <th style="background-color: #4682B4; vertical-align:middle; text-align:center;"><font color="#ffff00">Nazwa</font></th>
+                                    <th style="background-color: #BA55D3; vertical-align:middle; text-align:center;"><font color="#ffff00">Opis</font></th>
+                                    <th style="background-color: #5F9EA0; vertical-align:middle; text-align:center;" colspan="2"><font color="#ffff00">Stan</font></th>
+                                    <th style="background-color: #BA5555; vertical-align:middle; text-align:center;" colspan="2"><font color="#ffff00">Operacje</font></th>
+<!--                                    <th style="background-color: #BA55D3; vertical-align:middle; text-align:center;"><font color="#ffff00">Opis</font></th> -->
+<!--                                    <th style="background-color: #BA5555; vertical-align:middle; text-align:center;" colspan="2"><font color="#ffff00">Operacje</font></th>-->
+                                    <th style="background-color: #C0C0C0; vertical-align:middle; text-align:center;" width="20">
+                                        <div class="verticalText">Historia</div>
+                                    </th>
+                                    <th style="background-color: #B0B090; vertical-align:middle; text-align:center;" width="20">
+                                        <div class="verticalText">Edycja</div>
+                                    </th>
+                                </tr>
+
+                                </thead>
+
+                                  <tbody>
+                                     {% for t in timber %}
+                                     <tr>
+                                         <td style="vertical-align:middle; text-align:center; font-weight: bold;width:40px;color:grey;">{{ t.prod_id }}</td>
+                                         <td style="vertical-align:middle; text-align:center; font-weight: bold; width:20%;">{{ t.nazwa }}</td>
+                                         <td style="vertical-align:middle; text-align:center;">{{ t.opis }}</td>
+                                         {% if t.stan > t.limit %}
+                                            <td style="vertical-align:middle; text-align:center; width:5%;">
+                                         {% elif t.stan > zero %}
+                                            <td style="vertical-align:middle; text-align:center; width:5%; color:white; font-weight:bold; background-color: #FFA500;">
+                                         {% elif t.stan == zero %}
+                                            <td style="vertical-align:middle; text-align:center; width:5%; color:white; font-weight:bold; background-color: #FFA500;">
+                                         {% elif t.stan < zero %}
+                                            <td style="vertical-align:middle; text-align:center; width:5%; color:white; font-weight:bold; background-color: #FF4500;">
+                                         {% endif %}
+                                            {{ t.stan }}</td>
+
+                                         <td style="vertical-align:middle; text-align:center; width:40px;">{{ t.jm }}</td>
+                                         <td style="vertical-align:middle; text-align:center;"  width="30">
+                                             <a href="{% url 'rozchod_list' pk=t.id mag=mag fl=fl %}" data-toggle="tooltip" data-html="true" title="Rozchód towaru...">
+                                                 <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
+                                             </a>
+                                         </td>
+                                         <td style="vertical-align:middle; text-align:center;" width="30">
+                                             <a href="{% url 'przychod_list' pk=t.id mag=mag fl=fl %}" data-toggle="tooltip" data-html="true" title="Przyjęcie towaru...">
+                                                 <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                                             </a>
+                                         </td>
+                                         <!--<td style="vertical-align:middle; text-align:center;" width="30">
+                                             <a href="{% url 'zwrot_list' pk=t.id mag=mag fl=fl %}" data-toggle="tooltip" data-html="true" title="Zwroty towaru...">
+                                                 <span class="glyphicon glyphicon-import" aria-hidden="true"></span>
+                                             </a>
+                                         </td>-->
+                                         <!-- <td style="vertical-align:middle; text-align:center;">{{ t.opis }}</td> -->
+                                         <td style="vertical-align:middle; text-align:center;">
+                                             <a id="l_zest" href="{% url 'zestawienie' pk=t.id mag=mag fl=fl sel='ze' %}">
+                                                 <i class="fa fa-object-ungroup fa-fw"></i> <!-- fa fa-pie-chart  -->
+                                             </a>
+                                         </td>
+                                         <td style="vertical-align:middle; text-align:center;">
+                                             {% if fmag %}
+                                               {% if rw %}
+                                                 <a id="l_ed" href="{% url 'timber_edit' pk=t.id mag=mag fl=fl %}">
+                                                     <i class="fa fa-pencil-square-o fa-fw"></i>
+                                                 </a>
+                                               {% endif %}
+                                             {% endif %}
+                                         </td>
+                                     </tr>
+                                     {% endfor %}
+                                  </tbody>
+
+
+                            </table>
+
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+
+
+                             <div class="modal fade" id="HELP_HELP" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                 <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                         <div class="modal-header">
+                                             <span class="modal-title" id="exampleModalLongTitle3"><strong>Instrukcja postępowania w module magazynu.</strong></span>
+                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                             </button>
+                                         </div>
+                                         <div class="modal-body">
+                                             <p style="text-align:justify;">
+                                                 W zależnosci od aktualnej potrzeby praca z magazynem sprowadza się do maksymalnie trzech kroków.
+                                             </p>
+
+
+                                             <table width="100%"><tr><td align="center"><h5><strong>Pierwszy krok - dodanie nowego towaru</strong></h5></td></tr></table>
+                                             <p style="text-align:justify;">
+                                                 Jeżeli chcesz dodać nową pozycję towaru w bazie wybierać musisz przycisk "Dodawanie nowego towaru". Wygenerownie pozycji sprowadza się do wybrania magazynu, podania nazwy i opcjonalnego opisu towaru.
+                                                 Po zaakceptowaniu wpisu w oknie głównym wybranego magazynu pojawi sie nowa pozycja towarowa z domyślnie ustawionymi wartościami ilości i ceny na zero.
+                                                 Pola te są wyliczane automatycznie w trakcie pracy w module magazynu.
+                                             </p>
+                                             <br>
+                                             <table width="100%"><tr><td align="center"><h5><strong>Drugi krok - przyjęcie towaru na stan.</strong></h5></td></tr></table>
+                                             <p style="text-align:justify;">
+                                                 Do wcześnie zadeklarowanej pozycji towaru można dodać stan początkowy lub zakupy. Realizuje sie to poprzez dodanie pozycji do listy wypełniając odpowiednie pola formularza.
+                                                 Każdą pozycję z listy można edytowac lub skasować. Po zakończeniu dodawania i przejściu do okna głównego w odpowiedniej pozycji pojawi się zaktualizowana ilość towary oraz uśredniona cena z trzech ostatnich wpisów.
+                                             </p>
+                                             <br>
+                                             <table width="100%"><tr><td align="center"><h5><strong>Trzeci krok - rozchód towaru ze stanu.</strong></h5></td></tr></table>
+                                             <p style="text-align:justify;">
+                                                 Z wcześnie zadeklarowanej pozycji towaru można zdjąć dowolną wartość. Realizuje sie to poprzez dodanie pozycji do listy wypełniając odpowiednie pola formularza z uwzglednieniem Nr SDE.
+                                                 Każdą pozycję z listy można edytowac lub skasować a także wygenerować raport w pdf do zapisu na dysk lub do wydruku. Po zakończeniu dodawania i przejściu do okna głównego w odpowiedniej pozycji pojawi się zaktualizowana ilość towary oraz uśredniona cena z trzech ostatnich wpisów.
+                                             </p>
+                                         </div>
+                                         <div class="modal-footer" style="background-color: #eeeeee;">
+                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                         </div>
+                                    </div>
+                                 </div>
+                             </div>
+
+
+
+
+                </div>
+
+{% endblock %}
+
+
+{% block script %}
+{% endblock %}
+
+
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

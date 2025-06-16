@@ -1,0 +1,210 @@
+{% extends "dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+                {% if mag %}
+                    <li>
+                        <a href="{% url 'phone_start' %}" >
+                            <i class="fa  fa fa-asterisk fa-fw"></i>
+                            <strong>Lista telefonów</strong>
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{% url 'phone_mag' %}" style="color:#238700;">
+                            <i class="fa  fa fa-columns fa-fw"></i>
+                            <strong>Magazyn</strong>
+                        </a>
+                    </li>
+                {% endif %}
+{% endblock %}
+<!-- https://www.youtube.com/watch?v=B7EIK9yVtGY -->
+<!-- https://www.codingforentrepreneurs.com/blog/html-template-to-pdf-in-django/ -->
+
+{% block retbutton %}
+                        <li>
+                            <a href="{% url 'desktop' %}"><i class="fa fa-dashboard fa-fw"></i> Pulpit</a>
+                        </li>
+{% endblock %}
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+<table width="100%" height="80px"><tr><td style="width:120px;"><img src="{% static 'img/iconfinder_Mobile_58678.png' %}" width="80px"></td><td>Telefony</td></tr></table>
+
+{% endblock %}
+
+{% block logo %}
+                   <!-- <table width="100%" height="200" border="0"><tr><td align="center" valign="middle"><img src="{% static 'img/iconfinder_Mobile_58678.png' %}" width="128"></td></tr></table>-->
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+{% block content %}
+
+                <style>
+                   .verticalText{
+                          text-align: center;
+                          vertical-align: middle;
+                          -webkit-transform: rotate(90deg);
+                          -moz-transform: rotate(90deg);
+                   }
+                </style>
+
+                <div class="col-lg-12">
+
+                    <div class="panel panel-green" id="panel_glowny">
+                        <div class="panel-heading">
+                            <table width="100%">
+                                <tr>
+                                    <td><strong><font size="+1">{{ naglowek }}</font></strong></td>
+                                    <td align="right">
+                                        <a href="{% url 'phone_add' %}" class="primary btn btn-danger"><font color="#ffffff"> &nbsp;Nowy wpis </font></a>
+                                    </td>
+                                    <td align="right" width="120">
+                                        <a href="{% url 'phone_export' %}" class="primary btn btn-info">
+                                            <font color="#ffffff"> Export do xls</font>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body">
+                                     <table width="100%" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr height="80px">
+                                                <th style="background-color: #4682A4; vertical-align:middle; text-align:center; color:#ffff00;">Użytkownik</th>
+                                                <th style="background-color: #2E8B57; vertical-align:middle; text-align:center; color:#ffff00;">Typ</th>
+                                                <th style="background-color: #2E8B57; vertical-align:middle; text-align:center; color:#ffff00;">IMEI</th>
+                                                <th style="background-color: #2E8B57; vertical-align:middle; text-align:center; color:#ffff00;">MSISDN</th>
+                                                <th style="background-color: #B39A35; vertical-align:middle; text-align:center; color:#ffff00;">Kod Blokady</th>
+                                                <th style="background-color: #B39A35; vertical-align:middle; text-align:center; color:#ffff00;">Konto</th>
+                                                <th style="background-color: #B39A35; vertical-align:middle; text-align:center; color:#ffff00;">Hasło</th>
+                                                <th style="background-color: #C0C0C0; vertical-align:middle; text-align:center;"><div class="verticalText">Uwagi</div></th>
+                                                <th style="background-color: #C0C0C0; vertical-align:middle; text-align:center;"><div class="verticalText">Edycja</div></th>
+                                                <th style="background-color: #9A35B3; vertical-align:middle; text-align:center; color:#ffff00;">P.P.</th>
+                                                <th style="background-color: #9A35B3; vertical-align:middle; text-align:center; color:#ffff00;">P.Z.</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                     {% for tel in telefony %}
+                                     <tr>
+                                         <td style="text-align:center;vertical-align: middle; font-weight:bold; color:brown;">
+                                             {{ tel.usr }}
+                                         </td>
+                                         <td style="text-align:center;vertical-align: middle;">
+                                             {{ tel.model }}
+                                         </td>
+                                         <td style="text-align:center;vertical-align: middle; width:170px;">
+                                             {{ tel.imei }}
+                                         </td>
+                                         <td style="text-align:center;vertical-align: middle; width:130px; color:purple;">
+                                             {{ tel.msisdn }}
+                                         </td>
+                                         <td style="text-align:center;vertical-align: middle;">
+                                             {% if tel.kod == '' %}
+                                                {% if tel.bkod %}
+                                                   Nie ustawiono blokady.
+                                                {% endif %}
+                                             {% else %}
+                                                <input value="{{ tel.kod }}" type="password" id="password1" name="password" class="form-control" data-toggle="password">
+                                             {% endif %}
+<!--                                             <input value="{{ tel.kod }}" type="password" id="password" name="password" class="form-control" data-toggle="password">-->
+                                         </td>
+                                         <td style="text-align:center;vertical-align: middle;">
+                                             {{ tel.konto }}
+                                         </td>
+                                         <td style="text-align:center;vertical-align: middle;">
+                                             {% if tel.haslo == '' %}
+                                             {% else %}
+                                                <input value="{{ tel.haslo }}" type="password" id="password2" name="password" class="form-control" data-toggle="password">
+                                             {% endif %}
+<!--                                             <input value="{{ tel.haslo }}" type="password" id="password" name="password" class="form-control" data-toggle="password">-->
+                                         </td>
+
+                                         <td style="text-align:center; width:20px;" >
+                                             {% if tel.uwagi != "" %}
+                                                <a href="#" data-toggle="modal" data-target="#EMC{{ tel.id }}"><i class="fa fa-comment-o fa-fw"></i></a>
+                                             {% endif %}
+                                             <div class="modal fade" id="EMC{{ tel.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                 <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                         <div class="modal-header">
+                                                             <span class="modal-title" id="exampleModalLongTitle">Komentarz do sprzętu</span>
+                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                             </button>
+                                                         </div>
+                                                         <div class="modal-body">
+                                                             <table width="100%">
+                                                                 <tr><td width="60" align="left">UŻYTKOWNIK</td><td width="10">:</td><td>{{ tel.usr }}</td></tr>
+                                                                 <tr><td align="left">MODEL</td><td>:</td><td>{{ tel.model }}</td></tr>
+                                                                 <tr><td align="left">NR TEL.</td><td>:</td><td>{{ tel.msisdn }}</td></tr>
+                                                                 <tr><td align="left">UWAGI</td><td>:</td><td>{{ tel.uwagi|linebreaks }}</td></tr>
+                                                             </table>
+                                                         </div>
+                                                         <div class="modal-footer">
+                                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                         </div>
+                                                    </div>
+                                                 </div>
+                                             </div>
+                                         </td>
+
+                                         <td style="text-align:center;vertical-align: middle; width:20px;">
+                                             <a href="{% url 'phone_edit' pk=tel.pk %}">
+                                                <font style="color:#006400;"><i class="fa fa-pencil-square-o fa-fw"></i></font>
+                                             </a>
+                                         </td>
+                                         <td style="text-align:center; vertical-align: middle;" >
+                                             {% if tel.doc == "" %}
+                                                         <a href="{% url 'phone_pp' pk=tel.id %}"><i class="fa fa-asterisk fa-fw"></i>
+                                             {% else %}
+                                                         <a href="{{ tel.doc.url }}"><i class="fa fa-file-pdf-o  fa-fw"></i></a>
+                                             {% endif %}
+                                         </td>
+                                         <td style="text-align:center; vertical-align: middle;">
+                                             {% if tel.docz == "" %}
+                                                         <a href="{% url 'phone_pz' pk=tel.id %}"><i class="fa fa-asterisk fa-fw"></i>
+                                             {% else %}
+                                                         <a href="{{ tel.docz.url }}"><i class="fa fa-file-pdf-o  fa-fw"></i></a>
+                                             {% endif %}
+                                         </td>
+
+                                     </tr>
+                                     {% endfor %}
+                                        </tbody>
+                                    </table>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                </div>
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

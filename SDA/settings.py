@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-from SDA.pass_file import DB, CEDU, CSDU, IEDU, ISDU, DEDU, DSDU, SEDU, SSDU, SDE_ORD_PM, DEL_INV_OPER
+from SDA.pass_file import DB, CEDU, CSDU, IEDU, ISDU, DEDU, DSDU, SEDU, SSDU, SDE_ORD_PM, DEL_INV_OPER, UEDU, USDU, TEDU, TSDU, CREDU, CRSDU
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,12 +26,14 @@ SECRET_KEY = 'ojw$3b5u&f^l9-y@yov)#-qix*&09&rd%*+%sf9)p5@28(9mjm'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0','192.168.0.230','192.168.0.240','77.65.12.246']
+ALLOWED_HOSTS = ['0.0.0.0', '192.168.0.230', '192.168.0.240', '77.65.12.246', 'sda.sde']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    # 'admin_interface',
+    # 'colorfield',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,7 +47,6 @@ INSTALLED_APPS = [
     'DELEGATIONS',
     'ID_CARDS',
     'CARS',
-    'RK',
     'HIP',
     'INVOICES',
     'INSURANCE',
@@ -54,6 +55,10 @@ INSTALLED_APPS = [
     'LOG',
     'CASH_ADVANCES',
     'WORKER',
+    'TIMBER_WH',
+    'LAN_MAP',
+    'COMP_REPO',
+    'COMP_REPO_NEW',
     'django_crontab',
 ]
 
@@ -72,7 +77,7 @@ ROOT_URLCONF = 'SDA.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "templates"),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -103,7 +108,7 @@ DATABASES = {
     }
 }
 
-
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -147,31 +152,37 @@ STATICFILES_DIRS = (
 )
 
 LOGIN_REDIRECT_URL = 'desktop'
+LOGOUT_REDIRECT_URL = 'login'
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'public', 'media')
 MEDIA_URL = '/media/'
 
 
-# 1- SKYPE, 2- EMAIL
+# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DELEGATIONS_TO_TARGET = 1
+'''
+SYSTEM POWIADOMIEŃ
+'''
+# 1- SKYPE, 2- EMAIL
+DELEGATIONS_TO_TARGET = 2
 DEL_EMAIL_DO_USERS = DEDU
 DEL_SKYPE_DO_USERS = DSDU
 
-# 1- SKYPE, 2- EMAIL
 
-INVOICES_TO_TARGET = 1
+# 1- SKYPE, 2- EMAIL
+INVOICES_TO_TARGET = 2
 INV_EMAIL_DO_USERS = IEDU
 INV_SKYPE_DO_USERS = ISDU
 
-# 1- SKYPE, 2- EMAIL
 
+# 1- SKYPE, 2- EMAIL
 CARS_DATE_SHIFT = 30
 CARS_LEASING_SHIFT = 60
 CARS_TO_TARGET = 2
 CARS_EMAIL_DO_USERS = CEDU
 CARS_SKYPE_DO_USERS = CSDU
+
 
 # 1- SKYPE, 2- EMAIL
 SERVICES_DATA_SHIFT = 30
@@ -180,22 +191,54 @@ SERVICES_EMAIL_DO_USERS = SEDU
 SERVICES_SKYPE_DO_USERS = SSDU
 
 
+# 1- SKYPE, 2- EMAIL
+INSURANCE_DATA_SHIFT = 30
+INSURANCE_TO_TARGET = 2
+INSURANCE_EMAIL_DO_USERS = UEDU
+INSURANCE_SKYPE_DO_USERS = USDU
+
+# 1- SKYPE, 2- EMAIL
+TIMBER_DATA_SHIFT = 30
+TIMBER_TO_TARGET = 2
+TIMBER_EMAIL_DO_USERS = TEDU
+TIMBER_SKYPE_DO_USERS = TSDU
+
+# 1- SKYPE, 2- EMAIL
+CR_DATA_SHIFT = 30
+CR_TO_TARGET = 1
+CR_EMAIL_DO_USERS = CREDU
+CR_SKYPE_DO_USERS = CRSDU
+
+
+'''
+KONIEC SYSTEMU POWIADOMIEŃ
+'''
+
 # Wyświetlanie
 PAGIN_PAGE = 40
 SIMPLE_VIEW = True
 
-# MANEY
-GET_NBP = ('EUR', 'GBP', 'USD', 'CHF')
+
+# MONEY
+GET_NBP = ('EUR', 'GBP', 'USD', 'CHF', 'NOK', 'JPY', 'DKK')
 HIS_NBP = 60
-CURRENCIES = ('PLN', 'EUR', 'GBP', 'USD', 'CHF')
-CURRENCY_CHOICES = [('PLN', 'PLN'), ('EUR', 'EUR'), ('GBP', 'GBP'), ('USD', 'USD'), ('CHF', 'CHF'), ]
+CURRENCIES = ('PLN', 'EUR', 'GBP', 'USD', 'CHF', 'DKK')
+CURRENCY_CHOICES = [('PLN', 'PLN'), ('EUR', 'EUR'), ('GBP', 'GBP'), ('USD', 'USD'), ('CHF', 'CHF'), ('DKK', 'DKK')]
 
 CRONJOBS = [
-    ('00 05 * * 01,02,03,04,05', 'TaskAPI.cron.test_Cars'),
-    ('50 04 * * *',              'TaskAPI.cron.select_Cars'),
+    ('00 03 * * *',              'TaskAPI.cron.select_Cars'),        # Testowanie dat
+    ('10 03 * * 01,02,03,04,05', 'TaskAPI.cron.test_Cars'),          # wysyłanie
+    ('20 03 * * *',              'TaskAPI.cron.ServiceDataTest'),    # Testowanie dat
+    ('30 03 * * 01,02,03,04,05', 'TaskAPI.cron.ServiceSendMsg'),     # wysyłanie
+    ('40 03 * * *',              'TaskAPI.cron.InsuranceDataTest'),  # Testowanie dat
+    ('50 03 * * 01,02,03,04,05', 'TaskAPI.cron.InsuranceSendMsg'),   # wysyłanie
+    ('00 04 * * *',              'TaskAPI.cron.TimberDataTest'),     # Testowanie dat
+    ('10 04 * * 01,02,03,04,05', 'TaskAPI.cron.TimberSendMsg'),      # wysyłanie
+    ('20 04 * * 01,02,03,04,05', 'TaskAPI.cron.TimberStat'),         # Tworzenie statystyki
     ('* * * * *',                'TaskAPI.cron.AllUpdate'),
     ('15 12 * * *',              'TaskAPI.cron.GetNBP'),
     ('*/30 * * * *',             'LOG.logs.LogToFile'),
+    ('10 01 01 * *',              'TaskAPI.cron.gen_new_mc'),
 ]
 
 #  Aby zadziałało w cli wydać trzeba polecenie: ./manage.py crontab add
@@ -204,8 +247,8 @@ CRONJOBS = [
 
 INFO_PROGRAM = [
     {
-        'WERSJA'     : '4.92g',
-        'MODYFIKACJA': '16.02.2022r.',
+        'WERSJA'     : '5.60.0g',
+        'MODYFIKACJA': '01.06.2025r.',
         'FIRMA'      : 'EDATABIT',
         'AUTOR'      : 'Jarosław Stróżyk',
         'EMAIL'      : 'mailto:biuro@edatabit.pl',
@@ -227,12 +270,37 @@ GOOGLE_DOCS_2022 = [
     ('Realizacja 2022', '11ajMbpwXTSrEXMtAPNTtB7v54GvlHNHP0YPWdC7BACc', 'SDA [Kody SDE]', 'SDA [Kody SDE] ⇨ Realizacja 2022'),
     ('Realizacja 2022', '11ajMbpwXTSrEXMtAPNTtB7v54GvlHNHP0YPWdC7BACc', 'SDA [Koszty produkcji]', 'SDA [Koszty produkcji] ⇨ Realizacja 2022'),
     ('Realizacja 2022', '11ajMbpwXTSrEXMtAPNTtB7v54GvlHNHP0YPWdC7BACc', 'SDA [Koszty stałe]', 'SDA [Koszty stałe] ⇨ Realizacja 2022'),
-    ('Nr zleceń SmartDesignExpo 2019, 2020, 2021 i 2022', '1Ev5MQW6GAg3XXsqads58orF_3WrMA35XCgKCYPFrB70', '2022', '')
+    ('Nr zleceń SmartDesignExpo 2019, 2020, 2021 i 2022', '1Ev5MQW6GAg3XXsqads58orF_3WrMA35XCgKCYPFrB70', '2022', ''),
+    ('Realizacja 2022', '11ajMbpwXTSrEXMtAPNTtB7v54GvlHNHP0YPWdC7BACc', 'REALIZACJA','REALIZACJA [Podsumowanie] ⇨ Realizacja 2022'),
+    ('Realizacja 2022', '11ajMbpwXTSrEXMtAPNTtB7v54GvlHNHP0YPWdC7BACc', '', '')
 ]
+
+GOOGLE_DOCS_2023 = [
+    ('Realizacja 2023', '1U_d-Xc_YiYrCklnRIfjlfb3hSaoqD634F9sOzhUhQv0', 'SDA [Kody SDE]', 'SDA [Kody SDE] ⇨ Realizacja 2023'),
+    ('Realizacja 2023', '1U_d-Xc_YiYrCklnRIfjlfb3hSaoqD634F9sOzhUhQv0', 'SDA [Koszty produkcji]', 'SDA [Koszty produkcji] ⇨ Realizacja 2023'),
+    ('Realizacja 2023', '1U_d-Xc_YiYrCklnRIfjlfb3hSaoqD634F9sOzhUhQv0', 'SDA [Koszty stałe]', 'SDA [Koszty stałe] ⇨ Realizacja 2023'),
+    ('Nr zleceń SmartDesignExpo 2019, 2020, 2021, 2022 i 2023', '1Ev5MQW6GAg3XXsqads58orF_3WrMA35XCgKCYPFrB70', '2023', ''),
+    ('Realizacja 2023', '1U_d-Xc_YiYrCklnRIfjlfb3hSaoqD634F9sOzhUhQv0', 'REALIZACJA','REALIZACJA [Podsumowanie] ⇨ Realizacja 2023'),
+    ('Realizacja 2023', '1U_d-Xc_YiYrCklnRIfjlfb3hSaoqD634F9sOzhUhQv0', 'SDA [Pensje]', 'SDA [Pensje] ⇨ Realizacja 2023')
+]
+
+GOOGLE_DOCS_2024 = [
+    ('Realizacja 2024', '1nglYrebiHMDQWeshE6jzWXzfbDa2h-jjFwNFUhESXPA', 'SDA [Kody SDE]', 'SDA [Kody SDE] ⇨ Realizacja 2024'),
+    ('Realizacja 2024', '1nglYrebiHMDQWeshE6jzWXzfbDa2h-jjFwNFUhESXPA', 'SDA [Koszty produkcji]', 'SDA [Koszty produkcji] ⇨ Realizacja 2024'),
+    ('Realizacja 2024', '1nglYrebiHMDQWeshE6jzWXzfbDa2h-jjFwNFUhESXPA', 'SDA [Koszty stałe]', 'SDA [Koszty stałe] ⇨ Realizacja 2024'),
+    ('', '', '2024', ''),
+    ('Realizacja 2024', '1nglYrebiHMDQWeshE6jzWXzfbDa2h-jjFwNFUhESXPA', 'REALIZACJA','REALIZACJA [Podsumowanie] ⇨ Realizacja 2024'),
+    ('Realizacja 2024', '1nglYrebiHMDQWeshE6jzWXzfbDa2h-jjFwNFUhESXPA', 'SDA [Pensje]', 'SDA [Pensje] ⇨ Realizacja 2024')
+]
+
+GOOGLE_DOCS_2025 = [
+    ('Realizacja 2025', '1Dhv-v94sA_-Q7MgMem6Dd8lTIe6sJJUUMhVk-7Wqy-4', 'SDA [Kody SDE]', 'SDA [Kody SDE] ⇨ Realizacja 2025')
+]
+
 
 # Pamiętaj! Po zmianie LOG_LOOP trzeba ręcznie wykonać LOG.logs.InitLog()
 LOG_LOOP = 200
-LOG_FILE = BASE_DIR+'/LOG_FILE/'
+LOG_FILE = BASE_DIR+'/LOG/LOG_FILE/'
 
 #
 
@@ -242,3 +310,13 @@ DEL_INV_OP = DEL_INV_OPER
 #
 
 WORKER_KM = '4.50'
+COMP_REPO_ST = '0.00'
+
+# Lista indeksów kont MPK przeznaczonych tylko dla SDA
+LST_MPK_SDE = [210, 211, 240, 241, 242, 243, 244, 245, 246]
+
+
+# SESSION_COOKIE_SECURE = True
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+

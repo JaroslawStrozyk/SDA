@@ -1,0 +1,168 @@
+{% extends "worker_dashboard.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block leftbutton %}
+{% endblock %} 
+
+
+{% block retbutton %}
+
+{% endblock %}
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+
+{% block content %}
+                <style>
+                   #tabela {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   #id_data_zat, #id_wymiar, #id_staz {
+                        text-align: center;
+                   }
+
+        #id_form-0-dodatek_0, #id_form-1-dodatek_0, #id_form-2-dodatek_0, #id_form-3-dodatek_0, #id_form-4-dodatek_0,
+        #id_form-5-dodatek_0, #id_form-6-dodatek_0, #id_form-7-dodatek_0, #id_form-8-dodatek_0, #id_form-9-dodatek_0,
+        #id_form-10-dodatek_0, #id_form-11-dodatek_0, #id_form-12-dodatek_0, #id_form-13-dodatek_0, #id_form-14-dodatek_0,
+        #id_form-15-dodatek_0, #id_form-16-dodatek_0, #id_form-17-dodatek_0, #id_form-18-dodatek_0, #id_form-19-dodatek_0,
+        #id_form-20-dodatek_0, #id_form-21-dodatek_0, #id_form-22-dodatek_0, #id_form-23-dodatek_0, #id_form-24-dodatek_0,
+        #id_form-25-dodatek_0, #id_form-26-dodatek_0, #id_form-27-dodatek_0, #id_form-28-dodatek_0, #id_form-29-dodatek_0,
+        #id_form-30-dodatek_0, #id_form-31-dodatek_0, #id_form-32-dodatek_0, #id_form-33-dodatek_0, #id_form-34-dodatek_0,
+        #id_form-35-dodatek_0, #id_form-36-dodatek_0, #id_form-37-dodatek_0, #id_form-38-dodatek_0, #id_form-39-dodatek_0,
+
+        #id_form-0-premia_0, #id_form-1-premia_0, #id_form-2-premia_0, #id_form-3-premia_0, #id_form-4-premia_0,
+        #id_form-5-premia_0, #id_form-6-premia_0, #id_form-7-premia_0, #id_form-8-premia_0, #id_form-9-premia_0,
+        #id_form-10-premia_0, #id_form-11-premia_0, #id_form-12-premia_0, #id_form-13-premia_0, #id_form-14-premia_0,
+        #id_form-15-premia_0, #id_form-16-premia_0, #id_form-17-premia_0, #id_form-18-premia_0, #id_form-19-premia_0,
+        #id_form-20-premia_0, #id_form-21-premia_0, #id_form-22-premia_0, #id_form-23-premia_0, #id_form-24-premia_0,
+        #id_form-25-premia_0, #id_form-26-premia_0, #id_form-27-premia_0, #id_form-28-premia_0, #id_form-29-premia_0,
+        #id_form-30-premia_0, #id_form-31-premia_0, #id_form-32-premia_0, #id_form-33-premia_0, #id_form-34-premia_0,
+        #id_form-35-premia_0, #id_form-36-premia_0, #id_form-37-premia_0, #id_form-38-premia_0, #id_form-39-premia_0
+        {
+                        width: 100%;
+                        height: 34px;
+                        text-align: right;
+                        font-size: 14px;
+                        border-radius: 4px;
+                        border-width: 1px;
+                        border: 1px solid #ccc;
+                        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                        color: #555;
+                        background-color: #fff;
+        }
+
+        #id_form-0-dodatek_1, #id_form-1-dodatek_1, #id_form-2-dodatek_1, #id_form-3-dodatek_1, #id_form-4-dodatek_1,
+        #id_form-5-dodatek_1, #id_form-6-dodatek_1, #id_form-7-dodatek_1, #id_form-8-dodatek_1, #id_form-9-dodatek_1,
+        #id_form-10-dodatek_1, #id_form-11-dodatek_1, #id_form-12-dodatek_1, #id_form-13-dodatek_1, #id_form-14-dodatek_1,
+        #id_form-15-dodatek_1, #id_form-16-dodatek_1, #id_form-17-dodatek_1, #id_form-18-dodatek_1, #id_form-19-dodatek_1,
+        #id_form-20-dodatek_1, #id_form-21-dodatek_1, #id_form-22-dodatek_1, #id_form-23-dodatek_1, #id_form-24-dodatek_1,
+        #id_form-25-dodatek_1, #id_form-26-dodatek_1, #id_form-27-dodatek_1, #id_form-28-dodatek_1, #id_form-29-dodatek_1,
+        #id_form-30-dodatek_1, #id_form-31-dodatek_1, #id_form-32-dodatek_1, #id_form-33-dodatek_1, #id_form-34-dodatek_1,
+        #id_form-35-dodatek_1, #id_form-36-dodatek_1, #id_form-37-dodatek_1, #id_form-38-dodatek_1, #id_form-39-dodatek_1,
+
+        #id_form-0-premia_1, #id_form-1-premia_1, #id_form-2-premia_1, #id_form-3-premia_1, #id_form-4-premia_1,
+        #id_form-5-premia_1, #id_form-6-premia_1, #id_form-7-premia_1, #id_form-8-premia_1, #id_form-9-premia_1,
+        #id_form-10-premia_1, #id_form-11-premia_1, #id_form-12-premia_1, #id_form-13-premia_1, #id_form-14-premia_1,
+        #id_form-15-premia_1, #id_form-16-premia_1, #id_form-17-premia_1, #id_form-18-premia_1, #id_form-19-premia_1,
+        #id_form-20-premia_1, #id_form-21-premia_1, #id_form-22-premia_1, #id_form-23-premia_1, #id_form-24-premia_1,
+        #id_form-25-premia_1, #id_form-26-premia_1, #id_form-27-premia_1, #id_form-28-premia_1, #id_form-29-premia_1,
+        #id_form-30-premia_1, #id_form-31-premia_1, #id_form-32-premia_1, #id_form-33-premia_1, #id_form-34-premia_1,
+        #id_form-35-premia_1, #id_form-36-premia_1, #id_form-37-premia_1, #id_form-38-premia_1, #id_form-39-premia_1
+        {
+                        display: none;
+        }
+
+        #id_zaliczka_0, #id_komornik_0,  #id_obciazenie_0 {
+                        background-color: #FFB6C1;
+        }
+
+        #id_przelew_0, #id_premia_0  {
+                        background-color: #98FB98;
+        }
+
+        #id_km_ilosc, #id_ppk_0 {
+                        background-color: #FFFACD;
+        }
+
+        #id_form-0-pracownik {
+
+                        }
+        #div_id_form-0-pracownik > div {
+                        background-color: #98FB98;
+        }
+
+
+
+                </style>
+<!--                <div class="col-lg-1"> &nbsp;</div>-->
+                <div class="col-lg-12">
+                    <br><br>
+                    <div class="panel panel-green" id="tabela">
+                        <div class="panel-heading" align="center">
+                            <strong><font size="+3">{{ tytul }}</font></strong>
+                        </div>
+
+                        <form method="POST"  class="post-form" enctype="multipart/form-data">
+                                {% csrf_token %}
+                            <div class="panel-body">
+                                {{ formset.management_form }}
+                                {% for f in formset %}
+
+                                    <div class="form-row">  {{ f.id }}
+                                                      <div class="form-group col-md-2 mb-0">
+                                                           {{ f.osoba|as_crispy_field }}
+                                                      </div>
+                                                      <div class="form-group col-md-2 mb-0">
+                                                            {{ f.dodatek|as_crispy_field  }}
+                                                      </div>
+                                                      <div class="form-group col-md-8 mb-0">
+                                                            {{ f.dodatek_opis|as_crispy_field  }}
+                                                      </div>
+                                    </div>
+
+
+                                {% endfor %}
+                            </div>
+                            <div class="panel-footer">
+                                <table width="100%" border="0">
+                                        <tr>
+                                            <td align="center">
+                                                <button type="submit" class="save btn btn-success">Zapisz</button>
+                                                <a href="{% url 'worker_mc' %}" class="primary btn btn-danger">Anuluj</a>
+                                            </td>
+                                        </tr>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+<!--                <div class="col-lg-1"> &nbsp;</div>-->
+
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

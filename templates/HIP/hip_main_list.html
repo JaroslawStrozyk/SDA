@@ -1,0 +1,309 @@
+{% extends "dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false" id="sel_sprzet">
+                            <i class="fa fa-users fa-fw"></i> &nbsp;Listy kont  <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <a href="{% url 'hip_lista' pk=1 %}" style="color:gray;">
+                                    <i class="fa fa-certificate fa-fw"></i>Konta SDA</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'hip_lista' pk=2 %}" style="color:gray;">
+                                    <i class="fa fa-certificate fa-fw"></i>Konta GOOGLE</a>
+                            </li>
+                            <li>
+                                <hr>
+                            </li>
+                            <li>
+                                <a href="{% url 'hip_lista' pk=3 %}" style="color:gray;">
+                                    <i class="fa fa-certificate fa-fw"></i>Macierz uprawnień SDA</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+
+{% endblock %} 
+
+
+{% block retbutton %}
+                        <li>
+                            <a href="{% url 'desktop' %}" id="pulpit"><i class="fa fa-dashboard fa-fw"></i> Pulpit</a>
+                        </li>
+{% endblock %}
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+
+{% block logo %}
+                    <!--<table width="100%" height="200" border="0">
+                        <tr>
+                            <td align="center" valign="middle">
+                                <img src="{% static 'img/iconfinder_Keys_58675.png' %}" width="128">
+                            </td>
+                        </tr>
+                    </table>-->
+{% endblock %}
+
+
+
+{% block title %}
+<!--<table width="100%" height="80px"><tr><td style="width:120px;"><img src="{% static 'img/iconfinder_Keys_58675.png' %}" width="80px"></td><td>Hasła i profile</td></tr></table>-->
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+{% block content %}
+                <style>
+                    .custom-modal {
+                        width: 60%; /* lub inna wartość */
+                    }
+                    #opis_nag1, #opis_nag2, #opis_nag3, #opis_nag4, #opis_nag5, #opis_nag6, #opis_nag7 {
+                        width:140px;
+                        text-align: right;
+                        color: gray;
+                        vertical-align: middle;
+                        font-weight: bold;
+                    }
+
+                    #opis1, #opis2, #opis3, #opis4 {
+                        text-align: center;
+                        color: gray;
+                        vertical-align: middle;
+                    }
+                    #opis5 {
+                        text-align: center;
+                        font-weight: bold;
+                        color: gray;
+                        vertical-align: middle;
+                    }
+
+                    #opis6, #opis7 {
+                        text-align: left;
+                        color: gray;
+                        vertical-align: middle;
+                    }
+
+                     #sel_sprzet {color: #FFFACD;background-color: #6b9bb6;}
+                     #sel_sprzet:hover {color: #FFFACD;background-color: #4b7b96;}
+                     #sel_sprzet:visited {color: #FFFACD;background-color: #6b9bb6;}
+
+                     #sel_uzytkownik {color: #FFFACD;background-color: #57a278;}
+                     #sel_uzytkownik:hover {color: #FFFACD;background-color: #378258;}
+                     #sel_uzytkownik:visited {color: #FFFACD;background-color: #57a278;}
+
+                     #pulpit {color: #FFFACD;background-color:#70665c;}
+                     #pulpit:hover {color: #FFFACD;background-color:#50443a;}
+                     #pulpit:visited {color: #FFFACD;background-color:#70665c;}
+
+                     #stan4 {color: black;background-color:#00ff69;}
+                     #stan4:hover {color: white;background-color:#00cc49;}
+                     #stan4:visited {color: white;background-color:#00ff69;}
+
+                     #stan3 {color: black;background-color:#00dd00;}
+                     #stan3:hover {color: white;background-color:#00bb00;}
+                     #stan3:visited {color: white;background-color:#00dd00;}
+
+                     #stan2 {color: black;background-color:#ffff7d;}
+                     #stan2:hover {color: white;background-color:#cccc7d;}
+                     #stan2:visited {color: white;background-color:#ffff7d;}
+
+                     #stan1 {color: black;background-color:#5ec1f7;}
+                     #stan1:hover {color: white;background-color:#5ea1d7;}
+                     #stan1:visited {color: white;background-color:#5ec1f7;}
+
+                     #stan0 {color: black;background-color:#ff3600;}
+                     #stan0:hover {color: white;background-color:#dd1600;}
+                     #stan0:visited {color: white;background-color:#ff3600;}
+
+                     #serwis {color: yellow;background-color:#ad845b;}
+                     #serwis:hover {color: yellow;background-color:#70665c;}
+                     #serwis:visited {color: yellow;background-color:#ad845b;}
+
+                     #info {color: white;background-color: #f0ad4e;border-color: #eea236;}
+                     #info:hover {color: yellow;background-color: #eea236;border-color: #f0ad4e;}
+                     #info:visited {color: white;background-color: #f0ad4e;border-color: #eea236;}
+
+                     #pp1, #pz1 {color: white;background-color: #aaaaaa;border-color: #999999;}
+                     #pp1:hover, #pz1:hover {color: white;background-color: #999999;border-color: #888888;}
+                     #pp1:visited, #pz1:visited {color: white;background-color: #aaaaaa;border-color: #999999;}
+
+                     #pp2, #pz2 {color: white;background-color: #00aa00;border-color: #009900;}
+                     #pp2:hover, #pz2:hover {color: white;background-color: #009900;border-color: #008800;}
+                     #pp2:visited, #pz2:visited {color: white;background-color: #00aa00;border-color: #009900;}
+
+                     #ed1 {color: white;background-color: #1E90FF;border-color: #4169E1;}
+                     #ed1:hover {color: white;background-color: #6495ED;border-color: #4169E1;}
+                     #ed1:visited {color: white;background-color: #1E90FF;border-color: #4169E1;}
+
+                </style>
+
+                <div class="col-lg-12">
+                    <div class="panel panel-green" id="panel_glowny">
+                        <div class="panel-heading">
+                                    <table width="100%">
+                                        <tr>
+                                            <td align="center">
+                                                <font size="+1"><strong>{{ tytul_tabeli }}</strong></font>
+                                            </td>
+                                        </tr>
+                                    </table>
+                        </div>
+                        <div class="panel-body">
+                            {% if sw_pr %}
+                                     <table width="100%" class="table table-striped table-condensed table-bordered">
+                                        <thead>
+                                        <tr height="60px">
+                                            <th style="background-color: #6b9bb6; vertical-align:middle; text-align:center; color:#FFFACD;width:20%;">Użytkownik</th>
+                                            <th style="background-color: #57a278; vertical-align:middle; text-align:center; color:#FFFACD;width:20%;">Konto</th>
+                                            <th style="background-color: #ad845b; vertical-align:middle; text-align:center; color:#FFFACD;width:20%;">Hasło</th>
+                                            <th style="background-color: #8c847c; vertical-align:middle; text-align:center; color:#FFFACD;">Uwagi</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                     {% for pr in profil %}
+                                     <tr>
+                                         <td style="vertical-align:middle; font-weight:bold;">{{ pr.sprzet.usr }}</td>
+                                         <td style="vertical-align:middle; text-align:center;color:gray;">{{ pr.konto }}</td>
+                                         <td style="vertical-align:middle; text-align:center;color:gray;">
+                                             <input value="{{ pr.haslo }}" type="password" id="password" name="password" class="form-control" data-toggle="password" style="background-color: transparent;">
+                                         </td>
+                                         <td style="vertical-align:middle; text-align:center;color:gray;">{{ pr.uwagi }}</td>
+                                     </tr>
+                                     {% endfor %}
+                                        </tbody>
+                                    </table>
+                            {% else %}
+
+
+                                        <table width="100%" class="table  table-bordered table-condensed">
+                                            <tr style=" height:60px;font-weight: bold;">
+                                                <td style="background-color: #6b9bb6; vertical-align:middle; text-align:center; color:#FFFACD;">&#8659; Moduł \ Grupa &#8658;</td>
+                                                <td style="background-color: #ad845b; vertical-align:middle; text-align:center; color:#FFFACD;width:6%;">administrator</td>
+                                                <td style="background-color: #ad845b; vertical-align:middle; text-align:center; color:#FFFACD;width:6%;">biuro</td>
+                                                <td style="background-color: #ad845b; vertical-align:middle; text-align:center; color:#FFFACD;width:6%;">ksiegowość</td>
+                                                <td style="background-color: #ad845b; vertical-align:middle; text-align:center; color:#FFFACD;width:6%;">ksiegowość1</td>
+                                                <td style="background-color: #ad845b; vertical-align:middle; text-align:center; color:#FFFACD;width:6%;">spedycja</td>
+                                                <td style="background-color: #ad845b; vertical-align:middle; text-align:center; color:#FFFACD;width:6%;">stolarnia</td>
+                                                <td style="background-color: #ad845b; vertical-align:middle; text-align:center; color:#FFFACD;width:6%;">kierownik</td>
+                                                <td style="background-color: #ad845b; vertical-align:middle; text-align:center; color:#FFFACD;width:6%;">produkcja</td>
+                                                <td style="background-color: #ad845b; vertical-align:middle; text-align:center; color:#FFFACD;width:6%;">kontrola</td>
+                                                <td style="background-color: #ad845b; vertical-align:middle; text-align:center; color:#FFFACD;width:6%;">magazyn</td>
+                                                <td style="background-color: #ad845b; vertical-align:middle; text-align:center; color:#FFFACD;width:6%;">magazyn1</td>
+                                                <td style="background-color: #ad845b; vertical-align:middle; text-align:center; color:#FFFACD;width:6%;">magazyn2</td>
+                                                <td style="background-color: #ad845b; vertical-align:middle; text-align:center; color:#FFFACD;width:6%;">skład</td>
+                                            </tr>
+                                            {% for tu in tab_usl %}
+                                                <tr align="center">
+                                                {% for t in tu %}
+                                                   <td>{{ t }}</td>
+                                                {% endfor %}
+                                                </tr>
+                                            {% endfor %}
+
+                                        </table>
+                                        <br>
+                                        <br>
+                                        <table width="100%" class="table  table-bordered table-condensed">
+                                            <tr style="height:60px;font-weight: bold;">
+                                                <td style="background-color: #6b9bb6; vertical-align:middle; text-align:center; color:#FFFACD;">Grupa</td>
+                                                <td style="background-color: #6b9bb6; vertical-align:middle; text-align:center; color:#FFFACD;">Użytkownicy</td>
+                                            </tr>
+                                            {% for u in us %}
+                                                <tr align="center">
+                                                      <td style="background-color: #ad845b; vertical-align:middle; text-align:center; color:#FFFACD;width:6%;font-weight: bold;">{{ u.0 }}</td>
+                                                      <td style="vertical-align:middle; text-align:center; color:#008000;">{{ u.1 }}</td>
+                                                </tr>
+                                            {% endfor %}
+
+                                        </table>
+
+
+
+
+
+
+
+
+
+
+
+                            {% endif %}
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                </div>
+
+<script>
+
+var sortDirection = 1; // 1 dla A do Z, -1 dla Z do A
+
+function sortTable(column) {
+    var table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("myTable");
+    switching = true;
+    while (switching) {
+        switching = false;
+        rows = table.rows;
+        for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[column];
+            y = rows[i + 1].getElementsByTagName("TD")[column];
+            if (sortDirection == 1) {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            } else if (sortDirection == -1) {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+        }
+        if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
+    // Zmiana kierunku sortowania dla następnego kliknięcia
+    sortDirection *= -1;
+}
+
+
+
+</script>
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

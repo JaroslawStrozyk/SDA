@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from reportlab.lib.colors import HexColor
+from django.shortcuts import redirect
 
 from reportlab.lib import colors
 from reportlab.pdfgen import canvas
@@ -450,6 +450,7 @@ def StrConwert(str, linia):
 
 def out_pdf_ord(request, zamowienia, tytul, suma, suma_c, fsc, opis_tab, adata):
 
+
     # PDF setup
     response = HttpResponse(content_type='application/pdf')
     titlefile = tytul + '.pdf'
@@ -491,4 +492,5 @@ def out_pdf_ord(request, zamowienia, tytul, suma, suma_c, fsc, opis_tab, adata):
             NextPage(p, height, DATA_ROW, k[2], k[3], tytul,  k[1], k[4])
 
     p.save()
+
     return response

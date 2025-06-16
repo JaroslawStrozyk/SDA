@@ -1,0 +1,307 @@
+{% extends "main.html" %}
+{% load static %}
+                                                        {% block leftbutton %}
+
+                                                        {% endblock %}
+{% block retbutton %}
+<!--<li><a href="#" data-toggle="modal" data-target="#exampleModalCenter1"><i class="fa fa-cogs" aria-hidden="true"></i>  Setup</a></li>-->
+{% endblock %}
+
+{% block setup %}
+                  <table class="table table-striped">
+                                <tr><th>Moduł</th><th>Medium</th><th>Email</th><th>Skype</th><th>Interwał<br>[dni]</th><th>Wcześniej<br>[dni]</th></tr>
+                         {% for i in set %}
+                                <tr><td>{{ i.co }}</td><td>{{ i.medium }}</td><td>{{ i.email }}</td><td>{{ i.skype }}</td><td>{{ i.dshift }}</td><td>{{ i.tshift }}</td></tr>
+                         {% endfor %}
+                  </table>
+{% endblock %}
+
+
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+
+{% block content %}
+        <style>
+                   #wrapper > nav {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+                   .box {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+                   .setting {
+                        cursor: default;
+                   }
+        </style>
+
+        {% if lan %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/lan1.png' %}">
+            <a class="config-name" href="{% url 'lan_start' %}">
+                Adresy IP
+            </a>
+            <p>Mapa Adresów IP LAN wraz z opisami.</p>
+        </div>
+        {% endif %}
+
+        {% if hip %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/hip1.png' %}">
+            <a class="config-name" href="{% url 'hip_start' %}">
+                Hasła i profile
+            </a>
+            <p>Baza sprzętu informatycznego wraz z profilami dostępu.</p>
+        </div>
+        {% endif %}
+        {% if hip1 %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/logo_t1.png' %}">
+            <a class="config-name" href="{% url 'hip_lista' pk=1 %}">
+                Lista profili
+            </a>
+            <p>Konta SDA i Google z HIP, macierz uprawnień.</p>
+        </div>
+        {% endif %}
+        {% if usl %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/ser2.png' %}">
+            <a class="config-name" href="{% url 'ser_start' %}">
+                Usługi
+            </a>
+            <p>Baza usług związanych z działaniem firmy i ich terminy.</p>
+        </div>
+        {% endif %}
+        {% if mgz %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/warehouse1.png' %}">
+            <a class="config-name" href="{% url 'hip_mag' %}">
+                Magazyn sprzętu
+            </a>
+            <p>Baza sprzętu znajdującego się w magazynie.</p>
+        </div>
+        {% endif %}
+        {% if tel %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/iconfinder_Mobile_58678.png' %}">
+            <a class="config-name" href="{% url 'phone_start' %}">
+                Telefony
+            </a>
+            <p>Informacje na temat używanych telefonów.</p>
+        </div>
+        {% endif %}
+        {% if fak %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/ico_twoje_faktury.png' %}">
+            <a class="config-name" href="{% url 'faktura_start' %}">
+                Faktury
+            </a>
+            <p>Baza bieżących zamówień na faktury.</p>
+        </div>
+        {% endif %}
+        {% if ube %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/iconfinder_Document_Plain_58663.png' %}">
+            <a class="config-name" href="{% url 'ub_start' %}">
+                Ubezpieczenia i Terminy
+            </a>
+            <p>Baza różnych polis ubezpieczeniowych i innych cyklicznych terminów.</p>
+        </div>
+        {% endif %}
+        {% if dlg %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/ico_twoje_konta.png' %}">
+            <a class="config-name" href="{% url 'delegacja_lista' %}">
+                Delegacje
+            </a>
+            <p>Baza bieżących zamówień na gotówkę związaną z delegacjami.</p>
+        </div>
+        {% endif %}
+        {% if dow %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/ico_twoje_dane.png' %}">
+            <a class="config-name" href="{% url 'dowod_start' %}">
+                Dowody osobiste
+            </a>
+            <p>Baza skanów dowodów osobistych i paszportów pracowników firmy.</p>
+        </div>
+        {% endif %}
+        {% if sam %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/iconfinder_Refresh_58683.png' %}">
+            <a class="config-name" href="{% url 'auta_start' %}">
+                Samochody & Wózki
+            </a>
+            <p>Baza skanów papierów związanych z pojadami używanymi w firmie.</p>
+        </div>
+        {% endif %}
+        {% if kod %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/iconfinder_Chart_Bar_58655.png' %}">
+            <a class="config-name" href="{% url 'sde_start' %}">
+                Kody SDE
+            </a>
+            <p>Baza kodów SDE</p>
+        </div>
+        {% endif %}
+        {% if zam %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/iconfinder_Tag_58692.png' %}">
+            <a class="config-name" href="{% url 'order_start' %}">
+                Zamówienia
+            </a>
+            <p>Baza zamówień komponentów potrzebnych do działania firmy</p>
+        </div>
+        {% endif %}
+        {% if zal %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/ico_pp.png' %}">
+            <a class="config-name" href="{% url 'cash_start_r' %}">
+                Zaliczki
+            </a>
+            <p>Baza pobranych zaliczek</p>
+        </div>
+        {% endif %}
+        {% if emp %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/kris.png' %}">
+            <a class="config-name" href="{% url 'worker_start' %}">
+                Pracownicy
+            </a>
+            <p>Sprawy pracownicze.</p>
+        </div>
+        {% endif %}
+        {% if emp1 %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/kris.png' %}">
+            <a class="config-name" href="{% url 'red_worker_mc' b_mc=bmc b_rk=brok fl='t' %}">
+                Wyjazdówki i premie.
+            </a>
+            <p>Sprawy pracownicze, tylko delegacje i premie.</p>
+        </div>
+        {% endif %}
+
+        {% if tmb %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/mag_drewno.png' %}">
+            <a class="config-name" href="{% url 'timber_list' mag='mag1' fl='dre' %}">
+                <font color="brown">Magazyn drewna</font>
+            </a>
+            <p>Spis stanu magazynowego płyt drewnianych.</p>
+        </div>
+        {% endif %}
+        {% if mag_int %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/mag_wewn.png' %}">
+            <a class="config-name" href="{% url 'timber_list' mag='mag1' fl='wew' %}">
+                Magazyn wewnetrzny
+            </a>
+            <p>Spis stanu towaru w magazynie wewnętrznym.</p>
+        </div>
+        {% endif %}
+        {% if przech %}
+<!--        <div class="setting text-center box">-->
+<!--            <img src="{% static 'img/MX256.png' %}">-->
+<!--            <a class="config-name" href="{% url 'comp_list' mag='mag' %}">-->
+<!--                Przechowalnia-->
+<!--            </a>-->
+<!--            <p>Spis stanu elemtów stoisk przechowywanych dla innych firm.</p>-->
+<!--        </div>-->
+
+
+        <div class="setting text-center box">
+            <img src="{% static 'img/MX256.png' %}">
+            <a class="config-name" href="{% url 'comp_list' mag='mag' %}">
+                <font color="brown">Przechowalnia</font>
+            </a>
+            <p>Spis stanu elemtów stoisk przechowywanych dla innych firm.</p>
+        </div>
+
+        <div class="setting text-center box">
+            <img src="{% static 'img/MX256.png' %}">
+            <a class="config-name" href="{% url 'ncomp_list' mag='mag' %}">
+                <font color="red">Nowa Przechowalnia</font>
+            </a>
+            <p>Spis stanu elemtów stoisk przechowywanych dla innych firm.</p>
+        </div>
+
+
+        {% endif %}
+        {% if gog %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/gog_docs.png' %}">
+            <a class="config-name" href="{% url 'gog_start' %}">
+                Dokumenty Google
+            </a>
+            <p>Podglądy eksportu do Google DOCS.</p>
+        </div>
+        {% endif %}
+        {% if logs %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/crystal_log.png' %}">
+            <a class="config-name" href="{% url 'log' %}">
+                Logi
+            </a>
+            <p>Logi pracy systemu i zachowań użytkowników.</p>
+        </div>
+        {% endif %}
+        {% if monit %}
+        <div class="setting text-center box">
+            <img src="{% static 'img/mon.png' %}">
+            <a class="config-name" href="{% url 'logs_start' %}">
+                Monitoring  ustawienia
+            </a>
+            <p>Podglądy pracy i ustawień aplikacji.</p>
+        </div>
+        {% endif %}
+
+{% endblock %}
+
+
+{% block script %}
+<!--  <script>-->
+<!--    function openFullscreen() {-->
+<!--      var elem = document.documentElement;-->
+<!--      if (elem.requestFullscreen) {-->
+<!--        elem.requestFullscreen();-->
+<!--      } else if (elem.mozRequestFullScreen) { // dla starszych wersji Firefoksa-->
+<!--        elem.mozRequestFullScreen();-->
+<!--      } else if (elem.webkitRequestFullscreen) { // dla starszych wersji Chrome'a i Safari-->
+<!--        elem.webkitRequestFullscreen();-->
+<!--      } else if (elem.msRequestFullscreen) { // dla starszych wersji IE-->
+<!--        elem.msRequestFullscreen();-->
+<!--      }-->
+<!--    }-->
+
+<!--    // Wywołanie funkcji po załadowaniu strony-->
+<!--    window.onload = openFullscreen;-->
+<!--  </script>-->
+{% endblock %}
+
+
+
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}
+
+

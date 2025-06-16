@@ -1,0 +1,191 @@
+{% extends "dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+{% endblock %}
+
+
+{% block retbutton %}
+                        <li>
+                            <a href="/task"><i class="fa fa-dashboard fa-fw"></i> Pulpit</a>
+                        </li>
+{% endblock %}
+
+{% block userlog %}
+{{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+<table width="100%" height="80px"><tr><td style="width:120px;"><img src="{% static 'img/ico_twoje_faktury1.png' %}" width="80px"></td><td>Faktury</td></tr></table>
+
+{% endblock %}
+
+{% block logo %}
+                   <!-- <table width="100%" height="200" border="0"><tr><td align="center" valign="middle"><img src="{% static 'img/ico_twoje_faktury1.png' %}" width="128"></td></tr></table>-->
+{% endblock %}
+
+{% block leftmenu %}
+
+{% endblock %}
+
+
+{% block content %}
+        <style>
+              a:link.dt, a:visited.dt {
+                         text-decoration: none;
+              }
+              a:hover.dt, a:active.dt {
+                         text-decoration: none;
+                         display: inline-block;
+              }
+        </style>
+
+                <div class="col-lg-12">
+                    <div class="panel panel-green" id="panel_glowny">
+                        <div class="panel-heading">
+                            <table width="100%">
+                                <tr>
+                                    <td width="250px;">
+                                        <form metod="GET" action="{% url 'faktura_search' %}">
+                                            {% csrf_token %}
+                                            <div class="input-group custom-search-form">
+                                                <input type="text" name="SZUKAJ" class="form-control" placeholder="Szukaj...">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                                                </span>
+                                            </div>
+                                        </form>
+                                    </td>
+                                    <td align="center">
+                                        <strong>{{ tytul }}</strong>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body">
+
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Zgłoszenie</th>
+                                    <th>Imię i Nazwisko</th>
+                                    <th>Dla Kogo</th>
+                                    <th>Rodzaj faktury</th>
+                                    <th>Termin&nbsp;płatności</th>
+                                    <th>Targi</th>
+                                    <th>Stoisko</th>
+                                    <td align="right"><strong>Kwota&nbsp;[netto]</strong></td>
+                                    <th>Za Co</strong></th>
+                                    <th>Uwagi</th>
+                                </tr>
+                                {% for del in faktury %}
+                                <tr>
+                                {% if del.zrobione %}
+                                    <td>
+                                        <a class="dt" href="{% url 'faktura_edit' pk=del.pk %}">{{ del.data |date:'d.m.Y' }}</a>
+                                {% else %}
+                                    <td style="background: #ff0000;">
+                                        <a class="dt" href="{% url 'faktura_edit' pk=del.pk %}" style="color: yellow;">{{ del.data |date:'d.m.Y' }}</a>
+                                {% endif %}
+                                    </td>
+
+                                    {% if del.imie == '' %}
+                                        <td>{{ del.osoba }}</td>
+                                    {% else %}
+                                        <td>{{ del.imie }} {{ del.nazwisko }}</td>
+                                    {% endif %}
+
+                                    <td>{{ del.dla_kogo }}</td>
+                                    <td>{{ del.rfaktura }}</td>
+                                    <td>{{ del.termin |date:'d.m.Y' }}</td>
+                                    <td>{{ del.targi }}</td>
+                                    <td>{{ del.stoisko }}</td>
+                                    <td align="right">{{ del.kwota }}</td>
+                                    <td>{{ del.zaco }}</td>
+                                    <td align="center">
+                                             {% if del.uwagi != "" %}
+                                             <a href="#" data-toggle="modal" data-target="#EMC{{ del.id }}"><i class="fa fa-comment-o fa-fw"></i></a>
+                                             {% endif %}
+                                             <div class="modal fade" id="EMC{{ del.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                 <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                         <div class="modal-header" style="background-color: #ddffdd;">
+                                                             <span class="modal-title" id="exampleModalLongTitle">Uwagi do faktury</span>
+                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                             </button>
+                                                         </div>
+                                                         <div class="modal-body">
+                                                             <table width="100%">
+                                                                 <tr><td width="60" align="left">KTO</td><td width="10">:</td><td>{{ del.imie }} {{ del.nazwisko }}</td></tr>
+                                                                 <tr><td align="left">TARGI</td><td>:</td><td>{{ del.targi }}</td></tr>
+                                                                 <tr><td align="left">STOISKO</td><td>:</td><td>{{ del.stoisko }}</td></tr>
+                                                                 <tr><td colspan="3"><hr></td></tr>
+                                                                 <tr><td align="left">UWAGI</td><td>:</td><td>{{ del.uwagi }}</td></tr>
+                                                             </table>
+                                                         </div>
+                                                         <div class="modal-footer" style="background-color: #eeeeee;">
+                                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                         </div>
+                                                    </div>
+                                                 </div>
+                                             </div>
+
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                            <br>
+
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                </div>
+
+
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if faktury.has_previous %}
+                                <a href="?page=1" class="btn btn-default">&laquo; Pierwsza</a>
+                                <a href="?page={{ faktury.previous_page_number }}" class="btn btn-default">Poprzednia</a>
+                            {% endif %}
+
+                            <span class="current">
+                                Strona {{ faktury.number }} z {{ faktury.paginator.num_pages }}.
+                            </span>
+
+                            {% if faktury.has_next %}
+                                <a href="?page={{ faktury.next_page_number }}" class="btn btn-default">Następna</a>
+                                <a href="?page={{ faktury.paginator.num_pages }}" class="btn btn-default">Ostatnia &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+
+
+
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}
+

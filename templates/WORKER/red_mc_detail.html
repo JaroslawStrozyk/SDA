@@ -1,0 +1,283 @@
+{% extends "worker_dashboard.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block leftbutton %}
+<li>
+    <a href="{% url 'red_worker_mc_redirect' wo=pk fl=fl %}" class="primary btn btn-danger"><strong><i class="fa fa-arrow-up" aria-hidden="true"></i> Powrót do listy</strong></a>
+</li>
+{% endblock %} 
+
+
+{% block retbutton %}
+
+{% endblock %}
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+                                                        {% block rightmenu %}
+                                                        {% endblock %}
+
+
+{% block content %}
+                <style>
+                   #tabela {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   #id_data_zat, #id_wymiar, #id_staz {
+                        text-align: center;
+                   }
+
+                    #id_wynagrodzenie_0, #id_przelew_0, #id_ppk_0, #id_dodatek_0, #id_obciazenie_0, #id_premia_0, #id_zaliczka_0, #id_komornik_0
+                    {
+                                    width: 100%;
+                                    height: 34px;
+                                    text-align: right;
+                                    font-size: 14px;
+                                    border-radius: 4px;
+                                    border-width: 1px;
+                                    border: 1px solid #ccc;
+                                    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                                    color: #555;
+                                    background-color: #fff;
+                    }
+
+                    #id_wynagrodzenie_1, #id_przelew_1, #id_ppk_1, #id_dodatek_1, #id_obciazenie_1, #id_premia_1, #id_zaliczka_1, #id_komornik_1
+                    {
+                                    display: none;
+                    }
+
+                    #id_zaliczka_0, #id_komornik_0,  #id_obciazenie_0 {
+                                    background-color: #FFB6C1;
+                    }
+
+                    #id_przelew_0, #id_premia_0  {
+                                    background-color: #98FB98;
+                    }
+
+                    #id_km_ilosc, #id_ppk_0 {
+                                    background-color: #FFFACD;
+                    }
+
+                    #belka > ul.nav.navbar-top-links.navbar-left > li > a:hover {
+                                    background-color: #c42f2a;
+                    }
+
+                </style>
+<!--                <div class="col-lg-1"> &nbsp;</div>-->
+                <div class="col-lg-12">
+                    <br><br>
+                    <div class="panel panel-green" id="tabela">
+                        <div class="panel-heading">
+
+                            <table width="100%">
+                                <tr><td colspan="5" align="center"><strong><font size="+2">{{ tytul }}</font></strong></td></tr>
+                                <tr>
+                                    <td width="5%"  style="background-color:#5ca85c;text-align:center;">&nbsp;&nbsp;<strong>Rok:</strong> {{ rok }}</td>
+                                    <td width="8%" style="background-color:#5ca85c;text-align:center;"><strong>Miesiąc:</strong> {{ miesiac }}</td>
+                                    <td width="10px">&nbsp;</td>
+                                    <td width="20%"  align="right"  style="background-color:#5ca85c;text-align:center;">&nbsp;&nbsp;<strong>Stawka&nbsp;wyjazdowa:</strong>&nbsp;{{ stawka }}&nbsp;({{ stawkar }})&nbsp;&nbsp;</td>
+                                    <td align="right">
+                                        <a href="{% url 'red_worker_mc_redirect' wo=pk fl=fl %}" class="primary btn btn-danger">
+                                                <strong><i class="fa fa-arrow-up" aria-hidden="true"></i> Powrót do listy</strong>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+
+                            <div class="panel-body">
+                                <table width="100%">
+                                    <tr>
+                                        <td style="width:20%; background-color:#777777; color:yellow; text-align:center;">
+                                            <strong>Suma całość: </strong>{{ suma_all }}
+                                        </td>
+                                        <td>
+                                        </td>
+                                        {% if blokada %}
+                                            {% if flb %}
+                                                <td align="right" width="6%;">
+                                                    <a href="{% url 'red_worker_mc_add' wo=pk fl=fl %}" class="primary btn btn-success">Nowy wpis</a>
+                                                </td>
+                                            {% endif %}
+                                        {% else %}
+                                            <td align="right" width="6%;">
+                                                <a href="{% url 'red_worker_mc_add' wo=pk fl=fl %}" class="primary btn btn-success">Nowy wpis</a>
+                                            </td>
+                                            {% if flb %}
+
+                                            {% endif %}
+                                        {% endif %}
+<!--                                        <td align="right" width="6%;">-->
+<!--                                            <a href="{% url 'red_worker_mc_redirect' wo=pk fl=fl %}" class="primary btn btn-danger">-->
+<!--                                                <strong><i class="fa fa-arrow-up" aria-hidden="true"></i> Powrót do listy</strong>-->
+<!--                                            </a>-->
+<!--                                        </td>-->
+                                    </tr>
+                                </table>
+                                <br>
+                                <table width="100%" class="table table-bordered table-condensed" style="border: 0px;">
+                                    <tr>
+                                        <th colspan="2"  style="border: 0px;"></th>
+                                        <th style="text-align:right; background-color: #778899; color: white;">{{ suma_wartosc }}</th>
+                                        <th colspan="3"  style="border: 0px;"></th>
+                                        <th style="text-align:right; background-color: #778899; color: white;">{{ suma_wyjazd }}</th>
+                                        <th style="text-align:right; background-color: #889977; color: white;">{{ suma_sprzedaz }}</th>
+                                        <th style="text-align:right; background-color: #778899; color: white;">{{ suma_pemia }}</th>
+                                        <th style="text-align:right; background-color: #778899; color: white;">{{ suma_indywid }}</th>
+                                        <th  style="border: 0px;" colspan="2"></th>
+                                    </tr>
+                                    <tr style=" padding:0px;height:80px;">
+                                        <th  style="background-color: #A0522D; vertical-align:middle; text-align:center;"><font color="#ffff00">Nazwa projektu</font></th>
+                                        <th  style="background-color: #52A02D; vertical-align:middle; text-align:center;width:120px;"><font color="#ffff00">Wielkość<br>Stoiska</font></th>
+                                        <th  style="background-color: #52A02D; vertical-align:middle; text-align:center;width:120px;"><font color="#ffff00">Wartość</font></th>
+
+                                        <th  style="background-color: #4682B4; vertical-align:middle; text-align:center;width:120px;"><font color="#ffff00">Wyjazd<br>standard</font></th>
+                                        <th  style="background-color: #4682B4; vertical-align:middle; text-align:center;width:120px;"><font color="#ffff00">Wyjazd<br>weekend<br>[Sobota]</font></th>
+                                        <th  style="background-color: #4682B4; vertical-align:middle; text-align:center;width:120px;"><font color="#ffff00">Wyjazd<br>weekend<br>[Niedziela]</font></th>
+                                        <th  style="background-color: #4682B4; vertical-align:middle; text-align:center;width:120px;"><font color="#ffff00">Wyjazd<br>wartość</font></th>
+                                        <th  style="background-color: #46B482; vertical-align:middle; text-align:center;width:120px;"><font color="#ffff00">Kwota<br>sprzedaży</font></th>
+                                        <th  style="background-color: #B44682; vertical-align:middle; text-align:center;width:120px;"><font color="#ffff00">Premia za<br>projekt</font></th>
+                                        <th  style="background-color: #4682B4; vertical-align:middle; text-align:center;width:120px;"><font color="#ffff00">Indywidualna<br>premia<br>za projekt</font></th>
+                                        <th  style="background-color: #AAAAAA; color:#ffff00; vertical-align:middle; text-align:center;width:40px;">Opis</th>
+                                        <th  style="background-color: #BA55D3; color:#ffff00; vertical-align:middle; text-align:center;width:40px;">Edycja<br>lub<br>Zatwie.</th>
+
+                                    </tr>
+                                    {% for pr in premia %}
+                                    <tr>
+                                        <td>
+                                            {% if pr.projekt == None %}
+                                            <font color="red">Kod MPK &#10230; 407-2</font>
+                                            {% else %}
+                                                {{ pr.projekt }}
+                                            {% endif %}
+                                        </td>
+                                        <td align="center">
+                                            {% if pr.pr_wielkosc %}
+                                                {{ pr.pr_wielkosc }}
+                                            {% endif %}
+                                        </td>
+                                        <td align="right">{{ pr.pr_wartosc }}</td>
+
+                                        <td align="center">{{ pr.del_ilosc_st }}</td>
+                                        <td align="center">{{ pr.del_ilosc_so }}</td>
+                                        <td align="center">{{ pr.del_ilosc_we }}</td>
+                                        <td align="right">{{ pr.del_ilosc_razem }}</td>
+                                        <td align="right">{{ pr.kw_sprzedazy }}</td>
+                                        <td align="right">{{ pr.premia_proj }}</td>
+                                        <td align="right">{{ pr.ind_pr_kwota }}</td>
+                                        <td align="center">
+
+                                             {% if pr.ind_pr_opis != "" %}
+                                                  <a href="#" data-toggle="modal" data-target="#KOM{{ pr.id }}">
+                                                      <i class="fa fa-comment-o fa-fw"></i>
+                                                  </a>
+                                             {% endif %}
+                                                 <div class="modal fade" id="KOM{{ pr.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                 <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                         <div class="modal-header">
+                                                             <span class="modal-title" id="exampleModalLongTitle2">Opis premii</span>
+                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                             </button>
+                                                         </div>
+                                                         <div class="modal-body">
+                                                             {{ pr.ind_pr_opis|linebreaks }}
+                                                         </div>
+                                                         <div class="modal-footer" >
+                                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                         </div>
+                                                    </div>
+                                                 </div>
+                                             </div>
+
+                                        </td>
+                                        <td align="center"
+                                            {% if pr.akc %}
+                                                style="background-color: #FFFACD;"
+                                            {% else %}
+                                                style="background-color: #C0C0C0;"
+                                            {% endif %}
+                                        >
+                                            {% if pr.akc %}
+                                                {% if flb %}
+                                                 <a href="{% url 'red_worker_mc_edit' pk=pr.pk wo=pk fl=fl %}">
+                                                     <i class="fa fa-check-square-o fa-fw" style="color:green; background-color: #FFFACD;"></i>
+                                                 </a>
+                                                {% else %}
+                                                 <a href="#"  data-toggle="modal" data-target="#info1">
+                                                     <i class="fa fa-check-square-o fa-fw" style="color:green; background-color: #FFFACD;"></i>
+                                                 </a>
+                                                {% endif %}
+                                            {% else %}
+                                            <a href="{% url 'red_worker_mc_edit' pk=pr.pk wo=pk fl=fl %}">
+                                                 <i class="fa fa-pencil-square-o fa-fw" style="color:black;"></i>
+                                            </a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+
+
+                            </div>
+                            <div class="panel-footer">
+                                <table width="100%" border="0">
+                                        <tr>
+                                            <td align="center">
+                                                <a href="{% url 'red_worker_mc_redirect' wo=pk fl=fl %}" class="primary btn btn-danger"><strong><i class="fa fa-arrow-up" aria-hidden="true"></i> Powrót do listy</strong></a>
+                                            </td>
+                                        </tr>
+                                </table>
+                            </div>
+
+                    </div>
+                </div>
+
+    <div class="modal fade" id="info1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-title   panel-green" id="exampleModalLongTitle1">Informacja...</span>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                            Ta pozycja została zatwierdzona/zablokowana przez szefa.<br>Jedyną osobą, która może w tej chwili dokonać jakichkolwiek zmian jest tylko szef.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

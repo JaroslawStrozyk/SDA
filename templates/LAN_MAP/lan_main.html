@@ -1,0 +1,250 @@
+{% extends "lan_dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+
+{% endblock %} 
+
+
+{% block retbutton %}
+                        <li>
+                            <a href="{% url 'desktop' %}"><i class="fa fa-dashboard fa-fw"></i> Pulpit</a>
+                        </li>
+{% endblock %}
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+
+{% block logo %}
+
+{% endblock %}
+
+
+
+{% block title %}
+<table width="100%" height="80px"><tr><td style="width:120px;"><img src="{% static 'img/lan1.png' %}" width="80px"></td><td>Adresy IP</td></tr></table>
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+{% block content %}
+<style>
+    .form-inline .form-control {
+    display: inline-block;
+    width: 100%;
+    vertical-align: middle;
+    }
+</style>
+    <div class="col-lg-12">
+        <div class="panel panel-green" id="panel_glowny">
+            <div class="panel-heading">
+                <table width="100%">
+                    <tr>
+                        <td><font size="+1"><strong>{{ tytul_tabeli }}</strong></font></td>
+                        <td width="150">
+                            <button class="btn btn-danger form-control" onClick="#" data-toggle="modal" data-target="#myModalN">
+                                <strong>Nowy wpis</strong>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="panel-body">
+                <br>
+                <div id="result"></div>
+            </div>
+            <div class="panel-footer">
+            </div>
+        </div>
+    </div>
+
+<!-- OKNA MODALNE - DODAWANIE -->
+
+    <div class="modal fade" id="myModalN" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                  <h4 class="modal-title" id="myModalLabel1">Nowy wpis</h4>
+                </div>
+                <div class="modal-body">
+                        <form class="form-inline">{% csrf_token %}
+                            <table width="100%">
+                                <tr><td style="padding: 1px;"><input type="text" id="ip"    placeholder="Adres IP" class="form-control" required="required" width="100%"/></td></tr>
+                                <tr><td style="padding: 1px;"><input type="text" id="nazwa" placeholder="Nazwa"    class="form-control" required="required" width="100%"/></td></tr>
+                                <tr><td style="padding: 1px;"><input type="text" id="typ"   placeholder="Typ"      class="form-control" required="required" width="100%"/></td></tr>
+                                <tr><td style="padding: 1px;"><input type="text" id="opis"  placeholder="Opis"     class="form-control" required="required" width="100%"/></td></tr>
+                                <tr><td style="padding: 1px;"><input type="text" id="uwagi" placeholder="Uwagi"    class="form-control" required="required" width="100%"/></td></tr>
+                            </table>
+                        </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" id="create" class="btn btn-primary">Zapisz</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--OKNA MODALNE - EDYCJA-->
+
+    <div class="modal fade" id="myModalE" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                  <h4 class="modal-title" id="myModalLabel2">Aktualizacja wpisu</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="result_u"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="update" class="btn btn-primary" >Zapisz</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                </div>
+            </div>
+        </div>
+    </div>
+             
+{% endblock %}
+
+{% block about %}
+                                 <tr>
+                                     <td class="text-right" width="300">
+                                         <br>Wersja:
+                                         <br>Ostatnia modyfikacja:<br>
+                                         <br>Firma:
+                                         <br>Autor:
+                                         <br>Email:
+                                         <br>Tel. kom.:<br>
+                                         <br>
+                                     </td>
+                                     <td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}
+
+{% block javascript %}
+
+$(document).ready(function(){
+
+    if($('#result') != null){
+        Read();
+    }
+
+    $('#create').on('click', function(){
+        $ip    = $('#ip').val();
+        $nazwa = $('#nazwa').val();
+        $typ   = $('#typ').val();
+        $opis  = $('#opis').val();
+        $uwagi = $('#uwagi').val();
+
+
+        if($ip == ""){
+            alert("Uzupełnij wymagane pola !!!");
+        }else{
+            $.ajax({
+                url: 'create/',
+                type: 'POST',
+                data: {
+                    ip: $ip,
+                    nazwa: $nazwa,
+                    typ: $typ,
+                    opis: $opis,
+                    uwagi: $uwagi,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function(){
+                    Read();
+                    $('#ip').val('');
+                    $('#nazwa').val('');
+                    $('#typ').val('');
+                    $('#opis').val('');
+                    $('#uwagi').val('');
+                }
+            });
+
+            $('#myModalN').modal('hide');
+        }
+    });
+
+    $(document).on('click', '.edit', function(){
+        $id = $(this).attr('name');
+        window.location = "edit/" + $id;
+    });
+
+    $('#update').on('click', function(){
+        alert("Wybrano Zapisz update !!!");
+        $ip    = $('#ip').val();
+        $nazwa = $('#nazwa').val();
+        $typ   = $('#typ').val();
+        $opis  = $('#opis').val();
+        $uwagi = $('#uwagi').val();
+
+        if($ip == ""){
+            alert("Uzupełnij wymagane pola !!!");
+        }else{
+            $id = $('#member_id').val();
+            $.ajax({
+                url: 'update/' + $id,
+                type: 'POST',
+                data: {
+                    ip: $ip,
+                    nazwa: $nazwa,
+                    typ: $typ,
+                    opis: $opis,
+                    uwagi: $uwagi,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function(){
+                    window.location = '/';
+                    alert("Upadted row !!!");
+                }
+            });
+        }
+
+    });
+
+    $(document).on('click', '.delete', function(){
+        $id = $(this).attr('name');
+        $.ajax({
+            url: 'delete/' + $id,
+            type: 'POST',
+            data: {
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function(){
+                Read();
+            }
+        });
+    });
+});
+
+function Read(){
+    $.ajax({
+        url: 'read/',
+        type: 'POST',
+        async: false,
+        data:{
+            res: 1,
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+        },
+        success: function(response){
+            $('#result').html(response);
+        }
+    });
+}
+
+{% endblock %}
+

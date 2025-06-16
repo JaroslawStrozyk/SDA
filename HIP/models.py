@@ -29,6 +29,7 @@ class Sprzet(models.Model):
 		('Tablet', 'Tablet'),
         ('Czytnik', 'Czytnik'),
         ('VOIP', 'VOIP'),
+        ('RCP', 'RCP'),
         ('Inne','Inne'),
     )
 
@@ -63,7 +64,7 @@ class Sprzet(models.Model):
     zam  = models.CharField(blank=True, max_length=300, verbose_name="Zamieszkały")
     pesel = models.CharField(blank=True, max_length=100, verbose_name="PESEL")
     stan = models.DecimalField(max_digits=4, decimal_places=0, default=-1, verbose_name="Stan sprzętu", choices=CHOISES_STAN, )
-    opis = models.CharField(blank=True, max_length=200, verbose_name="Opis")
+    opis = models.TextField(blank=True, verbose_name="Opis")
     historia = models.CharField(blank=True, max_length=200, verbose_name="Historia")
     wartosc = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Wartość sprzętu")
     sprzedany = models.BooleanField(default=False, verbose_name="Sprzedany")
@@ -72,7 +73,7 @@ class Sprzet(models.Model):
         super(Sprzet, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.nazwa_siec
+        return self.nazwa_siec + " [" + self.host + " / " + self.typ + "] " + self.usr
 
     class Meta:
         verbose_name = "Komputer"
@@ -105,5 +106,23 @@ class Profil(models.Model):
     class Meta:
         verbose_name = "Profil"
         verbose_name_plural = "Profile"
+
+
+class Serwis(models.Model):
+    sprzet = models.ForeignKey(Sprzet, on_delete=models.CASCADE, verbose_name="Sprzęt")
+    data = models.DateField(default=timezone.now, verbose_name="Data")
+    problem = models.TextField(blank=True, verbose_name="Problem")
+    opis = models.TextField(blank=True, verbose_name="Opis")
+    uwagi = models.TextField(blank=True, verbose_name="Uwagi")
+
+    def __str__(self):
+        return str(self.data)
+
+    class Meta:
+        verbose_name = "Serwis"
+        verbose_name_plural = "Serwisy"
+
+
+
 
 

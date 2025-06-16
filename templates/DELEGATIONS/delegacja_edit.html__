@@ -1,0 +1,190 @@
+{% extends "dashboard.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block leftbutton %}
+{% endblock %}
+
+
+{% block retbutton %}
+{% endblock %}
+
+{% block userlog %}
+{{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+Edycja delegacji
+{% endblock %}
+
+{% block logo %}
+                    <table width="100%" height="200" border="0"><tr><td align="center" valign="middle"><img src="{% static 'img/ico_twoje_konta1.png' %}" width="128"></td></tr></table>
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+
+{% block content %}
+       <style>
+                    #id_kasa_inna_0, #id_kasa_karta_0 {
+                        width: 130px;
+                        height: 34px;
+                        text-align: right;
+                        font-size: 14px;
+                        border-radius: 4px;
+                        border-width: 1px;
+                        border: 1px solid #ccc;
+                        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                        color: #555;
+                        background-color: #fff;
+                    }
+                    #id_kasa_inna_1, #id_kasa_karta_1 {
+                        width: 60px;
+                        height: 34px;
+                        font-size: 14px;
+                        border-radius: 4px;
+                    }
+                    #id_kasa_pln, #id_kasa_euro, #id_kasa_funt {
+                        width: 130px;
+                        text-align: right;
+                    }
+
+                    #id_data_od_day, #id_data_do_day {
+                        width: 60px;
+                    }
+                    #id_data_od_month, #id_data_do_month {
+                        width: 120px;
+                    }
+                    #id_data_od_year, #id_data_do_year {
+                        width: 80px;
+                    }
+                   #okno {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+       </style>
+        <br><br>
+                <div class="col-lg-12"  style="height:100vh">
+                    <div class="panel panel-green" id="okno">
+                        <div class="panel-heading">
+                            <font style="font-size:18px;">Edycja delegacji</font>
+                        </div>
+                        <div class="panel-body" style="background-color: #f5f5f5;">
+                            <form method="POST"  class="post-form">{% csrf_token %}
+                                        <div class="form-row">
+                                                  <div class="form-group col-md-3 mb-0">
+                                                        {{ form.osoba|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-6 mb-0">
+                                                        {{ form.targi|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-3 mb-0">
+                                                        {{ form.lok_targi|as_crispy_field }}
+                                                  </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-9 mb-0">
+                                                  {{ form.cel_wyj|as_crispy_field }}
+                                            </div>
+                                            <div class="form-group col-md-3 mb-0">
+                                                  {{ form.transport|as_crispy_field }}
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+
+                                                  <div class="form-group col-md-6 mb-0" align="right">
+                                                        {{ form.data_od|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-6 mb-0">
+                                                        {{ form.data_do|as_crispy_field }}
+                                                  </div>
+
+                                        </div>
+                                        <div class="form-row">
+                                                  <div class="form-group col-md-2 mb-0">
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.kasa_pln|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.kasa_euro|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.kasa_funt|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.kasa_dolar|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                  </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12 mb-0"></div>
+                                        </div>
+
+                                        <div class="form-row">
+                                                  <div class="form-group col-md-3 mb-0">
+                                                  </div>
+                                                  <div class="form-group col-md-3 mb-0">
+                                                        {{ form.kasa_inna|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-3 mb-0">
+                                                      {{ form.kasa_karta|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-3 mb-0">
+                                                  </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12 mb-0"></div>
+                                        </div>
+                                        <div class="form-row">
+                                                  <div class="form-group col-md-2 mb-0">
+                                                      {{ form.dataz|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                      {{ form.numer|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-4 mb-0">
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0" style="background-color:#FCF3CF;">
+                                                      {{ form.pobrane_pw|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0" style="background-color:#ABEBC6;">
+                                                      {{ form.zrobione|as_crispy_field }}
+                                                  </div>
+                                        </div>
+
+                        </div>
+                        <div class="panel-footer">
+                                        <table width="100%"><tr>
+                                            <td align="right" width="50%"><button type="submit" class="save btn btn-success">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Zapisz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>&nbsp;</td>
+                                            <td align="left"><a href="{% url 'delegacja_lista' %}" class="primary btn btn-danger"><font color="#ffffff">Anuluj</font></a></td>
+                                        </tr></table>
+
+                        </div>
+                    </div>
+                </div>
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

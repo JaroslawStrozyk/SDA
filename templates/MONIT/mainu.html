@@ -1,0 +1,455 @@
+{% extends "monit_dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+<ul class="nav nav-pills">
+    <li><a href="{% url 'logs_start' %}">Waluta</a></li>
+    <li><a href="{% url 'logs_startp' %}">Powiadomienia</a></li>
+    <li class="active"><a href="{% url 'logs_startu' %}">Uprawnienia</a></li>
+</ul>
+{% endblock %}
+
+
+{% block retbutton %}
+<li>
+    <a class="btn btn-warning" href="{% url 'desktop' %}"><i class="fa fa-dashboard fa-fw"></i> Pulpit</a>
+</li>
+{% endblock %}
+
+{% block userlog %}
+{{ name_log }}
+{% endblock %}
+
+{% block rightmenu %}
+{% endblock %}
+
+{% block logo %}
+{% endblock %}
+
+{% block content %}
+<style>
+                   .alarm{
+                          background-color: #FFE4E1;
+                   }
+                   .alarm1{
+                          background-color: #E1E4FF;
+                   }
+                   .valarm{
+                          background-color: #FFFFE0;
+                   }
+                   .ok{
+                          background-color: #90EE90;
+                   }
+                   .verticalText{
+                          text-align: center;
+                          vertical-align: middle;
+                          -webkit-transform: rotate(90deg);
+                          -moz-transform: rotate(90deg);
+                   };
+                   th {
+                          text-align: center;
+                   }
+
+
+                   #wrapper > nav {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   #tabela {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   #tabela > table > tbody > tr:hover {
+                        background-color: #f5f5f5;
+                   }
+                   
+                   #belka > ul.nav.navbar-top-links.navbar-left > li > a:hover {
+                        background-color: gray;
+                   }
+                   #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
+                        background-color: gray;
+                   }
+                   #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(2) > a:hover {
+                        background-color: gray;
+                   }
+                   .custome-size {
+                        width: 1300px;
+                   }
+
+
+
+                   .nav-pills>li.active>a, .nav-pills>li.active>a:focus {
+                        color: #fff;
+                        background-color: #d43f3a;
+                   }
+                   .nav-pills>li.active>a:hover {
+                        color: #fff;
+                        background-color: #595959;
+                   }
+
+                   .nav-pills>li>a {
+                        color: #fff;
+                        background-color: #a5a5a5;
+                   }
+                   .nav-pills>li>a:hover {
+                        color: #fff;
+                        background-color: #595959;
+                   }
+
+                   /* ============================== */
+
+
+                   .setting {
+                        cursor: default;
+                        cursor: pointer;
+                        width: 480px;
+                        height: 230px;
+                        margin-top: 20px;
+                        margin-left: 10px;
+                        margin-right: 20px;
+                        vertical-align: top;
+                   }
+
+                   .box {
+                        display: inline-block;
+                        background-color: #fff;
+                        padding: 15px 0;
+                        border-radius: 3px;
+                        -webkit-box-shadow: 0 4px 10px 0 rgba(0,0,0,.10);
+                        -moz-box-shadow: 0 4px 10px 0 rgba(0,0,0,.10);
+                        box-shadow: 0 4px 10px 0 rgba(0,0,0,.10);
+                        border: 1px solid #dddde4;
+                   }
+
+                  .box {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                  }
+
+                  .setting>img {
+                        width: 96px;
+                        height: 96px;
+                  }
+
+                  img {
+                        vertical-align: middle;
+                        border:0;
+                  }
+                  .setting>.config-name {
+                        margin-top: 0px;
+                        margin-bottom: 10px;
+                        display: block;
+                        font-size: 18px;
+                        font-weight: 600;
+                        color: #3a1a61;
+                  }
+                  a {
+                        background-color: transparent;
+                        text-decoration: none;
+                  }
+                  .setting>p {
+                        margin: 10px 35px 0;
+                        font-style: italic;
+                        font-size: 13px;
+                        color: grey;
+                  }
+
+                  .tab_tr {
+                        margin: 10px 35px 0;
+                        font-style: italic;
+                        font-size: 13px;
+                        color: grey;
+                  }
+
+                  p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+.text-center {
+    text-align: center;
+    text-decoration: none;
+}
+
+
+
+
+
+</style>
+
+
+
+
+
+<div class="col-lg-12" align="center" style="height: 100vh">
+    <br>
+    <br>
+        <div class="panel panel-default" id="tabela">
+            <div class="panel-heading"  align="center">
+                <h4><strong>Macierz uprawnień do modułów</strong></h4>
+            </div>
+            <table width="100%" class="table  table-bordered table-condensed">
+                <tr style="font-weight: bold; text-align:center;background-color:#a9a9a9;">
+                    <td>&#8659; Moduł \ Grupa &#8658;</td>
+                    <td width="6%">administrator</td>
+                    <td width="6%">biuro</td>
+                    <td width="6%">ksiegowość</td>
+                    <td width="6%">ksiegowość1</td>
+                    <td width="6%">spedycja</td>
+                    <td width="6%">stolarnia</td>
+                    <td width="6%">kierownik</td>
+                    <td width="6%">produkcja</td>
+                    <td width="6%">kontrola</td>
+                    <td width="6%">magazyn</td>
+                    <td width="6%">magazyn1</td>
+                    <td width="6%">magazyn2</td>
+                    <td width="6%">skład</td>
+                </tr>
+                {% for tu in tab_usl %}
+                    <tr align="center">
+                    {% for t in tu %}
+                       <td>{{ t }}</td>
+                    {% endfor %}
+                    </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+
+    <br>
+    <br>
+        <div class="panel panel-default" id="tabela">
+            <div class="panel-heading"  align="center">
+                <h4><strong>Użytkownicy</strong></h4>
+            </div>
+            <table width="100%" class="table  table-bordered table-condensed">
+                <tr style="font-weight: bold; text-align:center;background-color:#a9a9a9;">
+                    <td>Grupa</td>
+                    <td>Użytkownicy</td>
+                </tr>
+                {% for u in us %}
+                    <tr align="center">
+                        {% for t in u %}
+                           <td>{{ t }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+        <br>
+    <br>
+</div>
+
+
+<div class="modal fade" id="MPK_HELP" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title" id="exampleModalLongTitle"><strong>Pomoc - Lista MPK</strong></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table width="100%" class="table table-bordered">
+                    <tr>
+                        <th>KOD</th>
+                        <th>OPIS</th>
+                    </tr>
+                    {% for nr in nrmpk %}
+                    {% if nr.id != nrmpk_id %}
+                    <tr>
+                        <td width="80"><strong>{{ nr.nazwa }}</strong></td>
+                        <td>{{ nr.opis }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="modal-footer" style="background-color: #eeeeee;">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="SDE_WARTOSC" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog custome-size modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title"
+                      id="exampleModalLongTitle1"><strong>Koszty gotówkowe za {{ rok }}</strong></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table width="100%" class="table table-bordered">
+                    <tr>
+                        <th>NAZWA</th>
+                        <th>I</th>
+                        <th>II</th>
+                        <th>III</th>
+                        <th>IV</th>
+                        <th>V</th>
+                        <th>VI</th>
+                        <th>VII</th>
+                        <th>VIII</th>
+                        <th>IX</th>
+                        <th>X</th>
+                        <th>XI</th>
+                        <th>XII</th>
+                        <th>SUMA</th>
+                    </tr>
+                    {% for nr in nrsde %}
+                    {% if tzero != nr.sum_cash %}
+                    <tr>
+                        <td width="80"><strong>{{ nr.nazwa }}</strong></td>
+                        <td align="right">{% if tzero != nr.c_st %}{{ nr.c_st }}{% endif %}</td>
+                        <td align="right">{% if tzero != nr.c_lu %}{{ nr.c_lu }}{% endif %}</td>
+                        <td align="right">{% if tzero != nr.c_ma %}{{ nr.c_ma }}{% endif %}</td>
+                        <td align="right">{% if tzero != nr.c_kw %}{{ nr.c_kw }}{% endif %}</td>
+                        <td align="right">{% if tzero != nr.c_mj %}{{ nr.c_mj }}{% endif %}</td>
+                        <td align="right">{% if tzero != nr.c_cz %}{{ nr.c_cz }}{% endif %}</td>
+                        <td align="right">{% if tzero != nr.c_lp %}{{ nr.c_lp }}{% endif %}</td>
+                        <td align="right">{% if tzero != nr.c_si %}{{ nr.c_si }}{% endif %}</td>
+                        <td align="right">{% if tzero != nr.c_wr %}{{ nr.c_wr }}{% endif %}</td>
+                        <td align="right">{% if tzero != nr.c_pa %}{{ nr.c_pa }}{% endif %}</td>
+                        <td align="right">{% if tzero != nr.c_li %}{{ nr.c_li }}{% endif %}</td>
+                        <td align="right">{% if tzero != nr.c_gr %}{{ nr.c_gr }}{% endif %}</td>
+                        <td align="right">{{ nr.sum_cash }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="modal-footer" style="background-color: #eeeeee;">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="MPK_WARTOSC" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title"
+                      id="exampleModalLongTitle2"><strong>Koszty analityczne za {{ rok }}</strong></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table width="100%" class="table table-bordered">
+                    <tr>
+                        <th>NAZWA</th>
+                        <th>Zamówienia</th>
+                        <th>Zaliczki</th>
+                    </tr>
+                    {% for nr in nrmpk %}
+                    {% if tzero != nr.sum_zam or tzero != nr.sum_zal %}
+                    <tr>
+                        <td width="80"><strong>{{ nr.nazwa }}</strong></td>
+                        <td align="right">{{ nr.sum_zam }}</td>
+                        <td align="right">{{ nr.sum_zal }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="modal-footer" style="background-color: #eeeeee;">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="HELP_HELP" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title" id="exampleModalLongTitle3"><strong>Pomoc</strong></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4><strong>Start z programem.</strong></h4>
+                <ul style="text-align:justify;">
+                    <li>Pobierasz z Kasy zaliczkę.</li>
+                    <li>W aplikacji zaliczki przejdź na zakładkę "Rozliczenia".</li>
+                    <li>Wybierz przycisk "Nowy wpis" i wypełnij pola w nowym oknie pamiętając, że opisy z gwiazdką muszą
+                        mieć jakąś wartość.
+                    </li>
+                    <li>Po prawidłowym wypełnieniu i zapisaniu w oknie głównym pojawi się dodana pozycja.</li>
+                    <li>Przejdź na zakładkę "Pozycje" i w zależności od potrzeby dodawaj wpisy powiązane z wcześniej
+                        zadeklarowaną zaliczką.
+                    </li>
+                </ul>
+                <p style="text-align:justify;">
+                    Uwaga!<br>
+                    Możliwe jest jednoczesne prowadzenie kilku zaliczek jednocześnie z tym że, w oknie dodawania nowego
+                    wpisu domyślnie będzie się podpowiadać
+                    ostatnia wpisana zaliczka (w razie potrzeby można to ręcznie zmienić).
+                </p>
+                <h4><strong>Rozliczenie zaliczki.</strong></h4>
+                <ul style="text-align:justify;">
+                    <li>W celu rozliczenia zaliczki należy przejść na zakładkę "Rozliczenia".</li>
+                    <li>W miarę możliwości należy wypełnić wszystkie nie wypełnione do tej pory pola (szczególnie datę
+                        rozliczenia) - kolumna Edycja -> <i class="fa fa-pencil-square-o fa-fw"></i></li>
+                    <li>Po tej operacji z prawej strony znajdź kolumne Druk i znaczek <i
+                            class="fa fa-file-pdf-o  fa-fw"></i> - klikasz go
+                    </li>
+                    <li>W nowej zakładce przeglądarki pojawi się wygenerowany dokument w formie pdf - wydrukuj go</li>
+                    <li>Zgodnie numeracją na dokumencie przygotuj resztę dokumentów. Taką paczkę przekaż do sprawdzenia
+                        Patrycji.
+                    </li>
+                    <li>Jeżeli weryfikacja Patrycji będzie pozytywna to na pozycji Twojej zaliczki w zakładce
+                        "Rozliczenia" pojawi się <i class="fa fa-check fa-fw"></i> i wiersz zmieni kolor z zielonego na
+                        biały.
+                    </li>
+                </ul>
+
+            </div>
+            <div class="modal-footer" style="background-color: #eeeeee;">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block about %}
+<tr>
+    <td class="text-right" width="300">
+        <br>Wersja:
+        <br>Ostatnia modyfikacja:<br>
+        <br>Firma:
+        <br>Autor:
+        <br>Email:
+        <br>Tel. kom.:<br>
+        <br>
+    </td>
+    <td>
+        {% for ab in about %}
+        <br>{{ ab.WERSJA }}
+        <br>{{ ab.MODYFIKACJA }}
+        <br>
+        <br>{{ ab.FIRMA }}
+        <br>{{ ab.AUTOR }}
+        {% endfor %}
+        <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+        <br>+48 791-648-417<br>
+    </td>
+</tr>
+{% endblock %}

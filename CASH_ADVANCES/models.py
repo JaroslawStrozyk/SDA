@@ -50,6 +50,7 @@ class Pozycja(models.Model):
     kwota_netto_pl = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Kwota [NETTO PLN]")
     kurs_walut = MoneyField(decimal_places=2, default=0, default_currency='PLN', max_digits=11, verbose_name="Kurs walut")
 
+
     def save(self, *args, **kwargs):
         super(Pozycja, self).save(*args, **kwargs)
 
@@ -78,6 +79,7 @@ def aktualizacja_rozliczen(instance):
     zal_kwota = instance.nr_roz.zal_kwota
     zal_suma = CheckCurrency(zal_kwota)
     poz = Pozycja.objects.filter(nr_roz=pk, data_zak__isnull=False)
+    #print(">>> ", poz)
     for pz in poz:
         zal_suma = zal_suma + pz.kwota_brutto
     saldo = zal_kwota - zal_suma

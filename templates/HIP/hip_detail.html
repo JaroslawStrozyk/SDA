@@ -1,0 +1,264 @@
+{% extends "dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+{% endblock %}
+
+
+{% block retbutton %}
+<li>
+    <a href="{% url 'hip_start' %}" id="pulpit"><i class="fa fa-dashboard fa-fw"></i> Lista sprzetu</a>
+</li>
+{% endblock %}
+
+{% block userlog %}
+{{ name_log }}
+{% endblock %}
+
+{% block logo %}
+<table width="100%" height="200" border="0">
+    <tr>
+        <td align="center" valign="middle"><img src="{% static 'img/iconfinder_Keys_58675.png' %}" width="128"></td>
+    </tr>
+</table>
+{% endblock %}
+
+
+{% block title %}
+Hasła i profile - Szczegóły
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+
+{% block content %}
+<style>
+                     #pulpit {color:#FFFACD;background-color:#70665c;}
+                     #pulpit:hover {color:#FFFACD;background-color:#50443a;}
+                     #pulpit:visited {color:#FFFACD;background-color:#70665c;}
+</style>
+<div class="col-lg-12">
+    <br><br>
+    <div class="panel panel-secundary" id="panel_glowny"> <!--primary secundary #337ab7 vertical-align:middle;  -->
+        <div class="panel-heading">
+           <table width="100%" class="table table-bordered">
+                {% for sprzet in sprzety %}
+                <tr>
+                    <td style="color:gray; width:150px; text-align:right;"><strong>Dział</strong></td>
+                    <td style="color:gray; width:350px">{{ sprzet.system }}</td>
+                    <td rowspan="11" style="vertical-align:middle;text-align:right;border-top-color: #FFFFFF; border-right-color: #FFFFFF;">
+                             <!--  -->
+                        {% if sprzet.zdj == "" %}
+                        <img src="{% static 'img/brak.png' %}" height="390"/>
+                        {% else %}
+                        <img src="{{ sprzet.zdj.url }}" height="390"/>
+                        {% endif %}
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="text-align:right;color:gray;"><strong>Użytkownik</strong></td>
+                    <td style="color:gray;">{{ sprzet.usr }}</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;color:gray;"><strong>Typ hosta</strong></td>
+                    <td style="color:gray;">{{ sprzet.host }}</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;color:gray;"><strong>Oznaczenie</strong></td>
+                    <td style="color:gray;">{{ sprzet.kik }}</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;color:gray;"><strong>Typ sprzętu</strong></td>
+                    <td style="color:gray;">{{ sprzet.typ }}</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;color:gray;"><strong>Nr ser. sprzętu</strong></td>
+                    <td style="color:gray;">{{ sprzet.snk }}</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;color:gray;"><strong>Termin gwarancji</strong></td>
+                    <td style="color:gray;">{{ sprzet.gw|date:'Y-m-d' }}</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;color:gray;"><strong>Nazwa sieć</strong></td>
+                    <td style="color:gray;">{{ sprzet.nazwa_siec }}</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;color:gray;"><strong>Adres IP</strong></td>
+                    <td style="color:gray;">{{ sprzet.adres_ip }}</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;color:gray;"><strong>Domena</strong></td>
+                    <td style="color:gray;">{{ sprzet.domena }}</td>
+                </tr>
+
+                <tr>
+                    <td style="text-align:right;color:gray;"><strong>SW gniazdo</strong></td>
+                    <td style="color:gray;">{{ sprzet.sw_gn }}</td>
+                </tr>
+
+                <tr>
+                    <td style="text-align:right;color:gray;"><strong>Opis</strong></td>
+                    <td style="color:gray;" colspan="2">{{ sprzet.opis|linebreaksbr }}</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;color:gray;"><strong>Uwagi</strong></td>
+                    <td style="color:gray;" colspan="2">{{ sprzet.uwagi|linebreaksbr }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="panel-body">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    <table width="100%">
+                        <tr>
+                            <td><strong>Profile</strong></td>
+                            <td align="right"><a href="{% url 'hip_new_profil' pk=PK %}" class="primary btn btn-danger">&nbsp;
+                                <font color="#FFFACD"> <strong>Nowy wpis</strong> </font></a></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="panel-body">
+                    <table width="100%" class="table table-striped table-bordered">
+                        <tr height="50">
+                            <th style="color:#FFFACD;text-align:center;vertical-align: middle;background-color: #6b9bb6;">
+                                Rodzaj konta/Program
+                            </th>
+                            <th style="color:#FFFACD;text-align:center;vertical-align: middle;background-color: #57a278;">
+                                Kod
+                            </th>
+                            <th style="color:#FFFACD;text-align:center;vertical-align: middle;background-color: #ad845b;">
+                                Konto
+                            </th>
+                            <th width="200" style="color:#FFFACD;width:200px; text-align:center;vertical-align: middle;background-color: #8c847c;">
+                                Hasło
+                            </th>
+                            <td style="width:60px;color:#FFFACD;text-align:center;vertical-align: middle;background-color: #ad845b;">
+                                <strong>WWW</strong>
+                            </td>
+                            <td style="width:60px;color:#FFFACD;text-align:center;vertical-align: middle;background-color: #57a278;">
+                                <strong>Uwagi</strong>
+                            </td>
+                            <td style="width:60px;color:#FFFACD;text-align:center;vertical-align: middle;background-color: #6b9bb6;border-right-color: #6b9bb6;">
+                                <strong>FV</strong>
+                            </td>
+                            <th style="width:60px;color:#FFFACD;text-align:center;vertical-align: middle;background-color: #6b9bb6;">
+
+                            </th>
+                        </tr>
+                        {% for profil in profile %}
+                        <tr>
+                            <td style="color:gray;vertical-align: middle;text-align:center;">&nbsp;&nbsp;&nbsp;{{ profil.rodzaj_konta }}</td>
+                            <td style="color:gray;vertical-align: middle;text-align:center;">{{ profil.kod }}</td>
+                            <td style="color:gray;vertical-align: middle;text-align:center;">{{ profil.konto }}</td>
+                            <td style="color:gray;vertical-align: middle;text-align:center;">
+                                <input value="{{ profil.haslo }}" type="password" id="password" name="password"
+                                       class="form-control" data-toggle="password"
+                                       style="background-color: transparent;">
+                            </td>
+                            <td style="color:gray;vertical-align: middle;text-align:center;">
+                                {% if profil.adres != "" %}
+                                <a href="https://{{ profil.adres }}" target="_blank">
+                                    <i class="fa fa-globe fa-fw"></i></a>
+                                {% endif %}
+                            </td>
+                            <td style="color:gray;vertical-align: middle;text-align:center;">
+                                {% if profil.uwagi != "" %}
+                                <a href="#" data-toggle="modal" data-target="#EMC{{ profil.id }}">
+                                    <i class="fa fa-comment-o fa-fw"></i></a>
+                                {% endif %}
+
+                                <div class="modal fade" id="EMC{{ profil.id }}" tabindex="-1" role="dialog"
+                                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <span class="modal-title" id="exampleModalLongTitle">Komentarz do profilu</span>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <table width="100%">
+                                                    <tr>
+                                                        <td width="160" align="left">RODZAJ KONTA</td>
+                                                        <td width="10">:</td>
+                                                        <td>{{ profil.rodzaj_konta }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="left">KONTO</td>
+                                                        <td>:</td>
+                                                        <td>{{ profil.konto }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="left">UWAGI</td>
+                                                        <td>:</td>
+                                                        <td>{{ profil.uwagi|linebreaks }}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">
+                                                    &nbsp;&nbsp;OK&nbsp;&nbsp;
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="color:gray;vertical-align: middle;text-align:center;">
+
+                                {% if profil.fv != "" %}
+                                <a href="{{ profil.fv.url }}"><i class="fa fa-file-pdf-o  fa-fw"></i></a>
+                                {% endif %}
+
+                            </td>
+                            <td style="color:gray;vertical-align: middle;text-align:center;">
+                                <a href="{% url 'hip_edit_profil' pk=profil.sprzet.id lp=profil.pk %}">
+                                <i class="fa fa-pencil-square-o fa-fw"></i></a></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+<!--                <div class="panel-footer">-->
+
+<!--                </div>-->
+            </div>
+        </div>
+    <br><br><br>
+
+
+        {% endblock %}
+
+        {% block about %}
+        <tr>
+            <td class="text-right" width="300">
+                <br>Wersja:
+                <br>Ostatnia modyfikacja:<br>
+                <br>Firma:
+                <br>Autor:
+                <br>Email:
+                <br>Tel. kom.:<br>
+                <br>
+            </td>
+            <td>
+                {% for ab in about %}
+                <br>{{ ab.WERSJA }}
+                <br>{{ ab.MODYFIKACJA }}
+                <br>
+                <br>{{ ab.FIRMA }}
+                <br>{{ ab.AUTOR }}
+                {% endfor %}
+                <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                <br>+48 791-648-417<br>
+            </td>
+        </tr>
+        {% endblock %}

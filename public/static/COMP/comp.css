@@ -1,0 +1,121 @@
+.container {
+    width:100%;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    background-color: #fff;
+}
+
+#belka {
+    box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;margin-bottom: 0px;
+}
+
+.nav {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+.nav>li {
+    position: relative;
+    display: block;
+}
+.nav>li>a {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+}
+.navbar-top-links {
+    margin-right: 0;
+}
+.navbar-top-links li {
+    display: inline-block;
+}
+.navbar-top-links li a {
+    padding: 15px;
+    min-height: 50px;
+}
+.navbar-right {
+}
+.navbar-top-links .dropdown-menu li a {
+    padding: 3px 20px;
+    min-height: 0;
+}
+.dropdown-menu>li>a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+}
+#adt:link, #adt:visited {
+    decoration: none;
+    background-color: #404040;
+    border-color: #404040;
+    color:#fff;
+}
+#adt:hover {
+    color: #fff;
+    background-color: #000000;
+    border-color: #000000;
+}
+#ret:link, #ret:visited {
+    color: #FFFACD;
+    background-color: #70665c;
+    border-color: #70665c;
+}
+#ret:hover {
+    color: #FFFACD;
+    background-color: #60564c;
+    border-color: #60564c;
+}
+#fir:link, #fir:visited {
+    color: #FFFFFF;
+    background-color: #DAA520;
+    border-color: #DAA520;
+}
+#fir:hover {
+    color: #FFFFFF;
+    background-color: #B8860B;
+    border-color: #B8860B;
+}
+
+
+
+#gpanel {
+    width:100%;
+    padding-top: 60px;
+    padding-right: 30px;
+    padding-left: 30px;
+}
+.panel  {
+    box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+}
+.verticalText{
+    text-align: center;
+    vertical-align: middle;
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+}
+.panel-heading {
+    border-color: #5cb85c;
+    color: white;
+    background-color: #5cb85c;
+}
+#inf:link, #ret:visited {
+    color: #FFFACD;
+    background-color: #70665c;
+    border-color: #70665c;
+}
+#inf:hover {
+    color: #FFFACD;
+    background-color: #60564c;
+    border-color: #60564c;
+}

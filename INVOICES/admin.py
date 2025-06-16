@@ -11,7 +11,7 @@ class FakturaAdmin(admin.ModelAdmin):
     
 class OsobaAdmin(admin.ModelAdmin):
     list_display = [
-        'naz_imie', 'skype', 'email'
+        'naz_imie', 'skype', 'email', 'invoice', 'delega'
     ]
     ordering = ['naz_imie']
 

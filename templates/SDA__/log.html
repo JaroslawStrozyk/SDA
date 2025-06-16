@@ -1,0 +1,74 @@
+{% extends "dashboard.html" %}
+
+{% block leftbutton %}
+
+{% endblock %} 
+
+
+{% block retbutton %}
+                        <li>
+                            <a href="{% url 'desktop' %}"><i class="fa fa-dashboard fa-fw"></i> Pulpit</a>
+                        </li>
+{% endblock %}
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+Wpisy logu - rejestracja działań użytkownika [RODO]
+{% endblock %}
+
+{% block leftmenu %}
+
+{% endblock %}
+
+{% block content %}
+
+
+                <div class="col-lg-12">
+                    <br><br>
+                    <div class="panel panel-green" >
+                        <div class="panel-heading">
+                            <strong>Logi</strong>
+                        </div>
+                        <div class="panel-body">
+                                     <table width="100%" class="table table-striped">
+                                        <thead>
+                                            <tr><th>Data i Godzina</th><th>Moduł</th><th>Użytkownik</th><th>Uwagi</th></tr>
+                                        </thead>
+                                        <tbody>
+                                     {% for log in logi %}
+                                            <tr><td>{{ log.data }}</td><td>{{ log.modul }}</td><td>{{ log.usr }}</td><td>{{ log.uwagi }}</td></tr>
+                                     {% endfor %}
+                                        </tbody>
+                                    </table>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                </div>
+
+
+                   <div class="pagination">
+                        <span class="step-links">
+                            {% if logi.has_previous %}
+                                <a href="?page=1" class="btn btn-default">&laquo; Pierwsza</a>
+                                <a href="?page={{ logi.previous_page_number }}" class="btn btn-default">Poprzednia</a>
+                            {% endif %}
+
+                            <span class="current">
+                                Strona {{ logi.number }} z {{ logi.paginator.num_pages }}.
+                            </span>
+
+                            {% if logi.has_next %}
+                                <a href="?page={{ logi.next_page_number }}" class="btn btn-default">Następna</a>
+                                <a href="?page={{ logi.paginator.num_pages }}" class="btn btn-default">Ostatnia &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+
+
+
+{% endblock %}

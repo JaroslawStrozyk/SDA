@@ -1,0 +1,156 @@
+{% extends "google_dashboard.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block leftbutton %}
+{% endblock %} 
+
+
+{% block retbutton %}
+
+{% endblock %}
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+
+{% block content %}
+                <style>
+                   #tabela {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   #id_kwota_netto_0, #id_kwota_brutto_0 {
+                        width: 100%;
+                        height: 34px;
+                        text-align: right;
+                        font-size: 14px;
+                        border-radius: 4px;
+                        border-width: 1px;
+                        border: 1px solid #ccc;
+                        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                        color: #555;
+                        background-color: #fff;
+                   }
+                   #id_kwota_netto_1, #id_kwota_brutto_1 {
+                        width: 60px;
+                        height: 34px;
+                        font-size: 14px;
+                        border-radius: 4px;
+                   }
+
+                   #id_data_zak {
+                        text-align: center;
+                   }
+
+                   #id_data_zam {
+                        text-align: center;
+                   }
+
+                   #id_kwota_netto_1 {
+                        background-color: #0000ff;
+                        color: #ffff00;
+                   }
+                   #id_kwota_netto_1, #id_kwota_brutto_1 {
+                        width: 0px;
+                        display:none;
+                   }
+
+                   #div_id_nr_sde > div > span {
+                        width:100%;
+                   }
+
+                   .select2-container {
+                        width: 100% !important;
+                   }
+
+
+
+                </style>
+
+                <div class="col-lg-12">
+                    <br><br>
+                    <div class="panel panel-green" id="tabela">
+                        <div class="panel-heading">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="150px"><strong><font size="+1">{{ zlecenie }}</font></strong></td>
+                                    <td align="center">{{ opis }}</td>
+                                    <td width="150px" align="right"><strong><font color="#FFFF00" size="+1">{{ suma }}</font></strong></td>
+                                </tr>
+
+                            </table>
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered">
+                                    <tr class="table-success">
+                                        <th style="text-align: center; vertical-align:middle;">Zaliczka z dnia</th>
+                                        <th style="text-align: center; vertical-align:middle;">Kontrahent</th>
+                                        <th style="text-align: center; vertical-align:middle;">Opis</th>
+                                        <th style="text-align: center; vertical-align:middle;">Wartość</th>
+                                        <td style="text-align: center; vertical-align:middle;">
+                                            <strong>Inne waluty</strong><br>
+                                            <font size="-1">równowartość w PLN</font>
+                                        </td>
+                                    </tr>
+                                    {% for z in zam_dane %}
+                                    <tr>
+                                        <td style="text-align: center;">{{ z.nr_roz }}</td>
+                                        <td style="text-align: center;">{{ z.kontrahent }}</td>
+                                        <td style="text-align: center;">{{ z.opis }}</td>
+                                        <td style="text-align: right;">
+                                            {% if tzero_curr == z.kwota_netto.currency %}
+                                                {{ z.kwota_netto }}
+                                            {% endif %}
+                                        </td>
+                                        <td style="text-align: right;">
+                                            {% if tzero != z.kwota_netto_pl %}
+                                                {{ z.kwota_netto_pl }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+
+
+                        </div>
+                        <div class="panel-footer">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td align="right"><a href="{% url 'gog_kp' %}" class="primary btn btn-success">OK</a></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

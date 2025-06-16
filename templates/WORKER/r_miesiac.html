@@ -1,0 +1,469 @@
+{% extends "cash_advances_dashboard_w.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block leftbutton %}
+<li class="dropdown">
+    <a class="dropdown-toggle btn btn-primary" data-toggle="dropdown" href="#" id="sel_miesiac">
+        <i class="fa fa-calendar fa-fw"></i> MIESIĄC <i class="fa fa-caret-down"></i>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        {% for item in months_list %}
+            <li>
+                <a href="{% url 'red_worker_mc' b_mc=item.month|add:"0"|slice:"-2:" b_rk=item.year fl='t' %}">
+                    <i class="fa fa-calendar fa-fw"></i> {{ item.month_name }} {{ item.year }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</li>
+
+
+
+
+<!--        <li class="dropdown">-->
+<!--        <a class="dropdown-toggle btn btn-primary" data-toggle="dropdown" href="#" id="sel_miesiac">-->
+<!--            <i class="fa fa-calendar fa-fw"></i> MIESIĄC (STARY)  <i class="fa fa-caret-down"></i>-->
+<!--        </a>-->
+<!--            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='10' b_rk='2024' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Październik   2024</a>-->
+<!--                </li>-->
+
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='09' b_rk='2024' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Wrzesień   2024</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='08' b_rk='2024' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Sierpień   2024</a>-->
+<!--                </li>-->
+
+
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='07' b_rk='2024' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Lipiec   2024</a>-->
+<!--                </li>-->
+
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='06' b_rk='2024' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Czerwiec   2024</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='05' b_rk='2024' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Maj   2024</a>-->
+<!--                </li>-->
+
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='04' b_rk='2024' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Kwiecień   2024</a>-->
+<!--                </li>-->
+
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='03' b_rk='2024' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Marzec   2024</a>-->
+<!--                </li>-->
+
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='02' b_rk='2024' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Luty   2024</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='01' b_rk='2024' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Styczeń   2024</a>-->
+<!--                </li>-->
+
+
+<!--                <li>-->
+<!--                    <hr>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='12' b_rk='2023' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Grudzień   2023</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='11' b_rk='2023' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Listopad   2023</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='10' b_rk='2023' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Październik   2023</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='09' b_rk='2023' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Wrzesień   2023</a>-->
+<!--                </li>-->
+
+
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='08' b_rk='2023' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Sierpień   2023</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='07' b_rk='2023' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Lipec   2023</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='06' b_rk='2023' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Czerwiec   2023</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='05' b_rk='2023' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Maj   2023</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='04' b_rk='2023' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Kwiecień   2023</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='03' b_rk='2023' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Marzec   2023</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='02' b_rk='2023' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Luty     2023</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                   <a href="{% url 'red_worker_mc' b_mc='01' b_rk='2023' fl='t' %}"><i class="fa fa-calendar fa-fw"></i> Styczeń  2023</a>-->
+<!--                </li>-->
+
+<!--            </ul>-->
+<!--        </li>-->
+{% endblock %}
+
+
+{% block retbutton %}
+<li>
+    {% if f_l %}
+        <a class="btn btn-danger" href="{% url 'desktop' %}" id="pulpit"><i class="fa fa-dashboard fa-fw"></i> Menu</a>
+    {% else %}
+        {% if sw %}
+             <a class="btn btn-warning" href="{% url 'worker_mc' %}" id="pulpit1"><i class="fa fa-dashboard fa-fw"></i> Lista płac</a>
+        {% else %}
+             <a class="btn btn-warning" href="{% url 'worker_mc_arch' mc=b_mc rk=b_rk %}" id="pulpit2"><i class="fa fa-dashboard fa-fw"></i> Lista płac</a>
+        {% endif %}
+    {% endif %}
+</li>
+{% endblock %}
+
+{% block userlog %}
+{{ name_log }}
+{% endblock %}
+
+{% block rightmenu %}
+{% endblock %}
+
+{% block logo %}
+{% endblock %}
+
+{% block content %}
+<style>
+                   .alarm{
+                          background-color: #FFE4E1;
+                   }
+                   .alarm1{
+                          background-color: #E1E4FF;
+                   }
+                   .valarm{
+                          background-color: #FFFFE0;
+                   }
+                   .ok{
+                          background-color: #90EE90;
+                   }
+                   .pok{
+                          color: yellow;
+                          font-weight: bold;
+                          background-color: #A5A5A5;
+                   }
+                   .verticalText{
+                          text-align: center;
+                          vertical-align: middle;
+                          -webkit-transform: rotate(90deg);
+                          -moz-transform: rotate(90deg);
+                   };
+                   th {
+                          text-align: center;
+                   }
+
+
+                   #wrapper > nav {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   #tabela {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   #tabela > table > tbody > tr:hover {
+                        background-color: #f5f5f5;
+                   }
+                   
+                   #belka > ul.nav.navbar-top-links.navbar-left > li > a:hover {
+                        background-color: gray;
+                   }
+                   #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
+                        background-color: gray;
+                   }
+                   #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(2) > a:hover {
+                        background-color: gray;
+                   }
+                   .custome-size {
+                        width: 1300px;
+                   }
+
+                   #komunikat {
+                        margin-top:25px;
+                        margin-left:10%;
+                        margin-right:10%;
+                   }
+                   #komunikat_przycisk {
+                        text-align: center;
+                        margin-bottom:25px;
+                   }
+                   #tab_row:hover {
+                        background-color: #dedede;
+                   }
+
+                   #przelicz_w {
+                        margin-top: 20px;
+                        margin-left: 40px;
+                        margin-bottom: 10px;
+                   }
+
+                   .badge {
+                        background-color: #5cb85c;
+                   }
+
+                   #nag {
+                        border: 1px;
+                        vertical-align:middle;
+                        text-align:right;
+                        background-color: #5cb85c;
+                        color: white;
+                        font-weight: bold;
+                   }
+
+                   #nag1 {
+                        border: 1px;
+                        vertical-align:middle;
+                        text-align:right;
+                        background-color: #800080;
+                        color: white;
+                        font-weight: bold;
+                   }
+
+                   #nag2 {
+                        border: 1px;
+                        vertical-align:middle;
+                        text-align:right;
+                        background-color: #BA0000;
+                        color: white;
+                        font-weight: bold;
+                   }
+
+
+                   #lk, #lk1 {
+                        color: green;
+                        text-decoration: none;
+                   }
+
+                   #lk:hover, #lk1:hover {
+                        color: brown;
+                        text-decoration: none;
+                   }
+                   #dodatki {
+                        font-weight: bold;
+                        background-color: #BA55D3;
+                        border-color: #9A35B3;
+                   }
+                   #dodatki:hover {
+                        font-weight: bold;
+                        background-color: #9A35B3;
+                        border-color: #BA55D3;
+                   }
+                   #kilometr {
+                        font-weight: bold;
+                        background-color: #A0522D;
+                        border-color: #80322B;
+                   }
+                   #kilometr:hover {
+                        font-weight: bold;
+                        background-color: #80322B;
+                        border-color: #A0522D;
+                   }
+                   #obciazenia {
+                        font-weight: bold;
+                   }
+                   #obciazenia:hover {
+                        font-weight: bold;
+                   }
+
+                   #delegacja {
+                        font-weight: bold;
+                        background-color: #778899;
+                        border-color: #576879;
+                        }
+
+                   #delegacja:hover {
+                        font-weight: bold;
+                        background-color: #576879;
+                        border-color: #778899;
+                        }
+
+                   #sel_miesiac {color: #FFFACD;background-color: #6b9bb6;border-color: #6b9bb6;}
+                   #sel_miesiac:hover {color: #FFFACD;background-color: #4b7b96;border-color: #4b7b96;}
+                   #sel_miesiac:visited {color: #FFFACD;background-color: #6b9bb6;border-color: #6b9bb6;}
+
+                   #pulpit {color: #FFFACD;background-color:#70665c;border-color: #70665c;}
+                   #pulpit:hover {color: #FFFACD;background-color:#50443a;border-color: #50443a;}
+                   #pulpit:visited {color: #FFFACD;background-color:#70665c;border-color: #70665c;}
+
+</style>
+<div class="col-lg-12">
+    <br><br>
+    <div class="panel panel-default" id="tabela">
+        <div class="panel-heading">
+
+            <table width="100%">
+                <tr>
+                    <td align="center">
+                        <h4><strong>{{ tytul_tabeli }}</strong></h4>
+                    </td>
+
+                    {% if admin_mo_js %}
+                        <td>
+                            {% if blokada %}
+                                <td align="right" width="6%;">
+                                    <a href="{% url 'red_worker_mc_blok' fl=fl mc=b_mc rk=b_rk fn=0 %}" class="primary btn btn-warning">Blokada wł.&nbsp;</a>
+                                </td>
+                            {% else %}
+                                <td align="right" width="6%;">
+                                    <a href="{% url 'red_worker_mc_blok' fl=fl mc=b_mc rk=b_rk fn=1 %}" class="primary btn btn-primary">Blokada wył.</a>
+                                </td>
+                            {% endif %}
+                        </td>
+                    {% endif %}
+
+                </tr>
+            </table>
+
+        </div>
+        <div class="panel-body" style="padding:3px; ">
+
+        {% if brak_danych %}
+
+                    <div class="alert alert-warning" role="alert" id="komunikat">
+                          <p align="center"><strong>Brak danych dla bieżącego miesiąca!</strong><br>
+                              <br>Ten profil nie ma uprawnień do generowania tych danych.<br>
+                             Skontaktuj się w tej sprawie z księgową lub administartorem.
+
+                          </p>
+                    </div>
+
+        {% else %}
+
+            <br>
+            <table width="100%" class="table table-bordered table-condensed" style="border: 0px;"> <!--  style="border-collapse: collapse;" -->
+
+                <tr style=" padding:0px;">
+                    <th  style="background-color: #A0522D; vertical-align:middle; text-align:center;"><font color="#ffff00">Nazwisko i Imię</font></th>
+                    <th  style="background-color: #46B482; vertical-align:middle; text-align:center;width:8%;"><font color="#ffff00">Delegacja<br>różnica</font></th>
+                    <th  style="background-color: #4682B4; vertical-align:middle; text-align:center;width:5%;"><font color="#ffff00">Wyjazd<br>standard</font></th>
+                    <th  style="background-color: #4682B4; vertical-align:middle; text-align:center;width:5%;"><font color="#ffff00">Wyjazd<br>weekend [SO]</font></th>
+                    <th  style="background-color: #4682B4; vertical-align:middle; text-align:center;width:5%;"><font color="#ffff00">Wyjazd<br>weekend [ND]</font></th>
+                    <th  style="background-color: #4682B4; vertical-align:middle; text-align:center;width:8%;"><font color="#ffff00">Wyjazd<br>wartość</font></th>
+                    <th  style="background-color: #BA55D3; vertical-align:middle; text-align:center;width:8%;"><font color="#ffff00">Premia</font></th>
+                    <th  style="background-color: #d9534f; vertical-align:middle; text-align:center;width:8%;"><font color="#ffff00">Suma</font></th>
+                    <th  style="background-color: #B44682; vertical-align:middle; text-align:center;width:3%;"><font color="#ffff00">Dok.</font></th>
+<!--                    {% if admin %}-->
+<!--                    <th  style="background-color: #FF0000; vertical-align:middle; text-align:center;width:8%;"><font color="#ffff00">Suma</font></th>-->
+<!--                    {% endif %}-->
+                </tr>
+                {% for p in pen %}
+                <tr id="tab_row">
+
+                    <td align="center">
+                        <a href="{% url 'red_worker_mc_detail' pk=p.id fl=fl %}" id="lk">
+                            {{ p.pracownik.nazwisko }} {{ p.pracownik.imie }}
+                        </a>
+                    </td>
+                    <td {% if p.del_rozli == zero %}
+                            style="text-align: right; color:#C0C0C0;"
+                        {% else %}
+                            style="text-align: right;"
+                        {% endif %}>
+                        {{ p.del_rozli }}
+                    </td>
+                    <td {% if p.del_ilosc_st == izero %}
+                            style="text-align: center; color:#C0C0C0;"
+                        {% else %}
+                            style="text-align: center;"
+                        {% endif %}>
+                        {{ p.del_ilosc_st }}
+                    </td>
+                    <td {% if p.del_ilosc_so == izero %}
+                            style="text-align: center; color:#C0C0C0;"
+                        {% else %}
+                            style="text-align: center;"
+                        {% endif %}>
+                        {{ p.del_ilosc_so }}
+                    </td>
+                    <td {% if p.del_ilosc_we == izero %}
+                            style="text-align: center; color:#C0C0C0;"
+                        {% else %}
+                            style="text-align: center;"
+                        {% endif %}>
+                        {{ p.del_ilosc_we }}
+                    </td>
+                    <td {% if p.del_ilosc_razem == zero %}
+                            style="text-align: right; color:#C0C0C0;"
+                        {% else %}
+                            style="text-align: right;"
+                        {% endif %}>
+                        {{ p.del_ilosc_razem }}
+                    </td>
+                    <td {% if p.premia == zero %}
+                            style="text-align: right; color:#C0C0C0;"
+                        {% else %}
+                            style="text-align: right;"
+                        {% endif %}>
+                        {{ p.premia }}
+                    </td>
+                    <td {% if p.suma_pd == zero %}
+                            style="text-align: right; color:#C0C0C0; font-weight: bold;"
+                        {% else %}
+                            style="text-align: right; font-weight: bold; color:brown;"
+                        {% endif %}>
+                        {{ p.suma_pd }}
+                    </td>
+                    <td style="text-align: center;">
+                        <a href="{% url 'red_worker_mc_pdf' b_rk=b_rk b_mc=b_mc pk=p.id fl=fl %}" id="lk1">
+                            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                        </a>
+                    </td>
+<!--                    {% if admin %}-->
+<!--                    <td style="text-align: right; font-weight: bold; color:brown;">{{ p.suma_pd }}</td>-->
+<!--                    {% endif %}-->
+
+
+                </tr>
+                {% endfor %}
+            </table>
+<!--            </div>-->
+        {% endif %}
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+{% endblock %}
+
+{% block about %}
+<tr>
+    <td class="text-right" width="300">
+        <br>Wersja:
+        <br>Ostatnia modyfikacja:<br>
+        <br>Firma:
+        <br>Autor:
+        <br>Email:
+        <br>Tel. kom.:<br>
+        <br>
+    </td>
+    <td>
+        {% for ab in about %}
+        <br>{{ ab.WERSJA }}
+        <br>{{ ab.MODYFIKACJA }}
+        <br>
+        <br>{{ ab.FIRMA }}
+        <br>{{ ab.AUTOR }}
+        {% endfor %}
+        <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+        <br>+48 791-648-417<br>
+    </td>
+</tr>
+{% endblock %}

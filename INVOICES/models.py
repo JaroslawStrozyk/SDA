@@ -1,7 +1,7 @@
 from django.db import models
 from djmoney.models.fields import MoneyField
 from django.utils import timezone
-
+from django.core.validators import ValidationError
 from SDA.settings import DEL_INV_OP
 
 
@@ -35,6 +35,8 @@ class Faktura(models.Model):
     imie       = models.CharField(max_length=100, verbose_name="Imię", blank=True, default='')
     nazwisko   = models.CharField(max_length=100, verbose_name="Nazwisko", blank=True, default='')
     naz_imie   = models.CharField(max_length=300, verbose_name="Imię i Nazwisko", choices=CHOISES_PM, default='')
+    osoba      = models.ForeignKey('Osoba', verbose_name="Imię i Nazwisko", max_length=100, on_delete=models.SET_NULL, null=True, blank=True)
+    dla_kogo   = models.CharField(max_length=200, verbose_name="Dla Kogo", blank=True, default='')
     rfaktura   = models.CharField(max_length=100, verbose_name="Rodzaj faktury", choices=CHOISES_WHAT, default='PROFORMA')
     termin     = models.DateField(default=timezone.now, verbose_name="Termin płatności")
     targi      = models.CharField(max_length=200, verbose_name="Nazwa Targów")
@@ -45,10 +47,16 @@ class Faktura(models.Model):
     uwagi      = models.TextField(blank=True, verbose_name="Uwagi")
     zrobione   = models.BooleanField(default=False,  verbose_name="Wystawione")
     sig_source = models.BooleanField(default=False)
-    confirm    = models.CharField(max_length=50,  verbose_name="Potwierdzenie (smartinfo@smartdesign-expo.com)", choices=CHOISES_CON, default='SKYPE')
+    confirm    = models.CharField(max_length=50,  verbose_name="Potwierdzenie (smartinfo@smartdesign-expo.com)", choices=CHOISES_CON, default='BEZ POTWIERDZENIA')
 
     def __str__(self):
-        return self.nazwisko
+        return self.osoba
+
+    def clean(self):
+        if not (self.osoba_id):
+            raise ValidationError("Musisz coś wybrać.")
+
+
 
     class Meta:
         verbose_name = "Faktura"
@@ -58,7 +66,9 @@ class Faktura(models.Model):
 class Osoba(models.Model):
     naz_imie = models.CharField(max_length=300, verbose_name="Imię i Nazwisko")
     skype    = models.CharField(max_length=200, verbose_name="Adres Skype",blank=True)
-    email    = models.CharField(max_length=200, verbose_name="Adres e-mail",blank=True)
+    email    = models.EmailField(max_length=254, blank=False, error_messages={'required': 'Podaj swój adres e-mail.'}, verbose_name="Adres e-mail")
+    invoice  = models.BooleanField(default=False, verbose_name="Widoczny INV")
+    delega   = models.BooleanField(default=False, verbose_name="Widoczny DEL")
 
     def __str__(self):
         return self.naz_imie

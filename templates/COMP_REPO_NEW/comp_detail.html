@@ -1,0 +1,976 @@
+{% extends "timber_dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+{% endblock %}
+
+
+{% block retbutton %}
+<li>
+    <a class="btn btn-primary" href="{% url 'ncomp_list' mag=mag %}">
+        <font color="white">
+            <i class="fa fa-reply-all" aria-hidden="true"></i> Lista
+        </font>
+    </a>
+</li>
+{% endblock %}
+
+{% block userlog %}
+                {{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+<br><br>
+{% endblock %}
+
+{% block logo %}
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+{% block style %}
+            a:link.dt, a:visited.dt {
+                     text-decoration: none;
+            }
+            a:hover.dt, a:active.dt {
+                     text-decoration: none;
+                     display: inline-block;
+            }
+
+
+            #wpz {
+                color: brown;
+                font-weight: bold;
+            }
+            #wrz {
+                color: #a9a9a9;
+            }
+
+            .verticalText{
+                text-align: center;
+                vertical-align: middle;
+                -webkit-transform: rotate(90deg);
+                -moz-transform: rotate(90deg);
+            }
+
+            #panel_naglowek {
+                background-color: #6cd86c;
+            }
+
+            .nav-pills>li.active>a, .nav-pills>li.active>a:focus {
+                color: #fff;
+                background-color: #d43f3a;
+            }
+            .nav-pills>li.active>a:hover {
+                color: #fff;
+                background-color: #595959;
+            }
+
+            .nav-pills>li>a {
+                color: #fff;
+                background-color: #a5a5a5;
+            }
+            .nav-pills>li>a:hover {
+                color: #fff;
+                background-color: #595959;
+            }
+            #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
+                color: #fff;
+                background-color: #595959;
+            }
+
+            #l_zest:link, #l_zest:visited {
+                 color: brown;
+            }
+            #l_zest:hover {
+                 color: red;
+            }
+
+            #l_ed:link, #l_ed:visited {
+                 color: #6C3483;
+            }
+            #l_ed:hover {
+                 color: #4A235A;
+            }
+            .table > tbody > tr:hover {
+                        background-color: #f5f5f5;
+            }
+/* DYMKI  */
+            .tooltip1 {
+                position: relative;
+                display: inline-block;
+                border-bottom: 1px dotted black; /* Opcjonalnie, dla wizualnego wyróżnienia */
+            }
+
+            .tooltip1 .tooltiptext1 {
+                visibility: hidden;
+                background-color: grey; /* Zmiana koloru tła na szary */
+                color: #fff;
+                text-align: left;
+                border-radius: 4px;
+                padding: 5px 0;
+
+                /* Pozycjonowanie */
+                position: absolute;
+                z-index: 1;
+                bottom: 100%;
+                left: 50%;
+
+            }
+
+            .tooltip1:hover .tooltiptext1 {
+                visibility: visible;
+            }
+
+
+            .tooltip2 {
+                position: relative;
+                display: inline-block;
+                border-bottom: 1px dotted black; /* Opcjonalnie, dla wizualnego wyróżnienia */
+            }
+
+            .tooltip2 .tooltiptext2 {
+                visibility: hidden;
+                background-color: grey; /* Zmiana koloru tła na szary */
+                color: #fff;
+                text-align: left;
+                border-radius: 4px;
+                padding: 5px 0;
+
+                /* Pozycjonowanie */
+                position: absolute;
+                z-index: 1;
+                top: 100%;
+                left: 50%;
+
+            }
+
+            .tooltip2:hover .tooltiptext2 {
+                visibility: visible;
+            }
+
+
+
+/* ... */
+
+            #kol1 {
+               background-color: #FAD7A0;
+               vertical-align:middle;
+               text-align:center;
+               color:brown;
+               width:40px;
+               padding: 1px;
+               font-weight: bold;
+            }
+
+            #kol1a {
+               background-color: #ffffff;
+               vertical-align:middle;
+               text-align:center;
+               color:gray;
+               width:40px;
+               padding: 1px;
+               font-weight: bold;
+            }
+
+            #ikol1 {
+               border: 1px solid #c0c0c0;
+               background-color: #FAD7A0;
+               vertical-align:middle;
+               text-align:center;
+               color:brown;
+               width:40px;
+               padding: 1px;
+               font-size: 75%;
+               font-weight: bold;
+            }
+
+            #ikol1a {
+               border: 1px solid #c0c0c0;
+               background-color: #c0c0c0;
+               vertical-align:middle;
+               text-align:center;
+               color:gray;
+               width:40px;
+               padding: 1px;
+               font-size: 75%;
+               font-weight: bold;
+            }
+
+
+            #ikol1b {
+               border: 1px solid #c0c0c0;
+               vertical-align:middle;
+               text-align:center;
+               color:white;
+               width:40px;
+               padding: 1px;
+               font-size: 75%;
+               font-weight: bold;
+            }
+
+            #kol2 {
+               border: 1px solid #c0c0c0;
+               vertical-align:middle;
+               text-align:center;
+               color:white;
+               width:40px;
+               padding: 1px;
+               font-size: 75%;
+               font-weight: bold;
+            }
+
+            .verticalText1 {
+                text-align: center;
+                vertical-align: middle;
+                -webkit-transform: rotate(270deg);
+                -moz-transform: rotate(270deg);
+            }
+
+            .panel-green > .panel-heading {
+                border-color: #5cb85c;
+                color: white;
+                background-color: #999999;
+            }
+            .panel-green {
+                border-color: #999999;
+            }
+
+        #BDG {
+            color: #FFFACD;
+            font-weight: bold;
+            background-color: #4c6056;
+            border-color: #4c6056;
+            box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+        }
+
+        #BDG:hover {
+            color: #FFFACD;
+            font-weight: bold;
+            background-color: #4c6056;
+            border-color: #4c6056;
+            box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+        }
+
+
+{% endblock %}
+
+
+{% block content %}
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
+        <link href="{% static 'DP/bootstrap-datetimepicker.min.css' %}" rel="stylesheet" type="text/css">
+
+                <div class="col-lg-12">
+                    <div class="panel panel-green" id="panel_glowny">
+                        <div class="panel-heading">
+                            <table width="100%">
+                                <tr>
+                                {% if admin %}
+                                    <td width="100px">
+
+<!--                                        {% if blokz %}-->
+<!--                                            <a href="{% url 'ncomp_detail' pk=det mag=mag st='b0' %}" class="btn btn-danger" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">-->
+<!--                                                <font color="#ffffff"><i class="fa fa-lock" aria-hidden="true"></i></font>-->
+<!--                                            </a>-->
+<!--                                        {% else %}-->
+<!--                                            <a href="{% url 'ncomp_detail' pk=det mag=mag st='b1' %}" class="btn btn-primary" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">-->
+<!--                                                <font color="#ffffff"><i class="fa fa-unlock" aria-hidden="true"></i></font>-->
+<!--                                            </a>-->
+<!--                                        {% endif %}-->
+
+                                    </td>
+                                {% else %}
+                                    <td width="100px"></td>
+                                {% endif %}
+                                    <td style="text-align:center;">
+                                        {% if sw %}
+                                            <font style="font-size:18px;"><strong>{{ title }}</strong></font>
+                                             [ <font style="font-size:12px;"><strong>{{ opis }}</strong></font> ]
+                                        {% else %}
+                                            <font style="font-size:18px;"><strong>{{ title }}</strong></font>
+                                        {% endif %}
+                                    </td>
+<!--                                    <td width="50px" align="right">-->
+<!--                                        <a href="#" data-toggle="modal" data-target="#HELP_HELP" class="btn btn-default" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">-->
+<!--                                            <font color="blue">Info</font>-->
+<!--                                        </a>-->
+<!--                                    </td>-->
+<!--                                    <td width="20px"></td>-->
+
+                                    <td width="50px">
+                                        <a href="{% url 'ncomp_add_d' mag=mag pk=pk id=firma_pk %}" class="danger btn btn-danger"  style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;color:white;">
+                                            <font color="#fff"><i class="fa fa-plus" aria-hidden="true"></i></font>
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body">
+
+                            <table width="100%" class="table  table-bordered" style="margin-bottom: 0px;">
+                                <tr style="height:50px;">
+                                    <th class="bg-warning" style="width:100px;text-align:right;vertical-align:middle;">SDE:</th>
+                                    <td style="background-color:#eee;color:brown;text-align:center;vertical-align:middle;">{{ nnazwa }}</td>
+                                    <th class="bg-warning" style="width:100px;text-align:right;vertical-align:middle;">TARGI:</th>
+                                    <td style="background-color:#eee;color:brown;text-align:center;vertical-align:middle;">{{ ntargi }}</td>
+                                    <th class="bg-warning" style="width:100px;text-align:right;vertical-align:middle;">KLIENT:</th>
+                                    <td style="background-color:#eee;color:brown;text-align:center;vertical-align:middle;">{{ nklient }}</td>
+                                    <th class="bg-warning" style="width:100px;text-align:right;vertical-align:middle;">STOISKO:</th>
+                                    <td style="background-color:#eee;color:brown;text-align:center;vertical-align:middle;" colspan="5">{{ nstoisko }}</td>
+                                    <th class="bg-warning" style="width:50px;text-align:right;vertical-align:middle;">PM:</th>
+                                    <td style="width:16%;background-color:#eee;color:brown;text-align:center;vertical-align:middle;">{{ npm }}</td>
+                                </tr>
+                            </table>
+                            <table width="100%" class="table  table-bordered">
+                                <tr style="height:50px;">
+                                    <td style="color:blue;font-weight:bold;text-align:center;background-color:#eee;vertical-align:middle;">
+                                        <button class="btn btn-primary" id="BDG">
+                                          Całość kosztów dla SDA:&nbsp;<span class="badge badge-light">
+                                            {% if st_sum %}
+                                            <font size="3" color="gray"><del>&nbsp;&nbsp;{{ nsuma }}&nbsp;&nbsp;</del></font>
+                                            {% else %}
+                                                <font size="3" color="red">&nbsp;&nbsp;{{ nsuma }}&nbsp;&nbsp;</font>
+                                            {% endif %}
+                                        </span>
+                                        </button>
+                                    </td>
+
+                                    <th class="bg-warning" style="text-align:right;vertical-align:middle;width:170px;">POWIERZCHNIA:</th>
+                                    <td style="color:blue;font-weight:bold;text-align:center;background-color:#eee;vertical-align:middle;">{{ nsuma_pow }}</td>
+                                    <td style="color:red;font-weight:bold;text-align:center;background-color:#eee;vertical-align:middle;width:50px;">
+                                        <a href="{% url 'ncomp_doc_edit' mag=mag det=det %}" class="btn btn-default tooltip2"  style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
+                                        <font color="gray"><strong><i class="fa fa-wpforms" aria-hidden="true"></i></strong></font>
+                                        <span class="tooltiptext2">&nbsp;Zmiana:<br>&nbsp;→ Listy przechowywania.<br>&nbsp;→ faktury.&nbsp;<br>&nbsp;→ Adnotacji.&nbsp;</span>
+                                    </a>
+
+                                    </td>
+                                    <th class="bg-warning" style="text-align:right;vertical-align:middle;width:170px;">LISTY PRZECHOWYWANIA:</th>
+
+                                    <td style="text-align:center;background-color:#eee;vertical-align:middle;width:60px;">
+                                        {% if ndok_pdf1 %}
+                                            <a href="{{ ndok_pdf1 }}" target="_blank">
+                                                <i class="fa fa-file-pdf-o" style="color: #660066;"></i>
+                                            </a>
+                                        {% endif %}
+                                        {% if ndok_pdf2 %}
+                                            <a href="{{ ndok_pdf2 }}" target="_blank">
+                                                <i class="fa fa-file-pdf-o" style="color: #660066;"></i>
+                                            </a>
+                                        {% endif %}
+                                        {% if ndok_pdf3 %}
+                                            <a href="{{ ndok_pdf3 }}" target="_blank">
+                                                <i class="fa fa-file-pdf-o" style="color: #660066;"></i>
+                                            </a>
+                                        {% endif %}
+                                        {% if ndok_pdf4 %}
+                                            <a href="{{ ndok_pdf4 }}" target="_blank">
+                                                <i class="fa fa-file-pdf-o" style="color: #660066;"></i>
+                                            </a>
+                                        {% endif %}
+                                    </td>
+
+
+
+                                    <th class="bg-warning" style="text-align:right;vertical-align:middle;">ADNOTACJE:</th>
+
+                                    <td style="text-align:center;vertical-align:middle;background-color:#eee;width:60px;">
+
+                                        {% if nuwagi %}
+                                            <a href="#" data-toggle="modal" data-target="#NUWAGI"><i class="fa fa-comment-o fa-fw" style="color:#660066"></i></a>
+                                        {% else %}
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        {% endif %}
+                                             <div class="modal fade" id="NUWAGI" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                 <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                         <div class="modal-header">
+                                                             <span class="modal-title" id="exampleModalLongTitleUW"  style="color:gray;font-weight:bold;text-align:left;">
+                                                                 <strong>Uwagi</strong>
+                                                             </span>
+                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                             </button>
+                                                         </div>
+                                                         <div class="modal-body" style="text-align:left;">
+                                                            {{ nuwagi|linebreaksbr }}
+                                                         </div>
+                                                         <div class="modal-footer" style="background-color: #eeeeee;">
+                                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                         </div>
+                                                    </div>
+                                                 </div>
+                                             </div>
+
+                                    </td>
+
+                                    <th class="bg-warning" style="text-align:right;vertical-align:middle;width:60px;">FV:</th>
+                                    <td style="text-align:center;background-color:#eee;vertical-align:middle;">
+                                        {% if nfv_pdf1 %}
+                                            <a href="{{ nfv_pdf1 }}" target="_blank">
+                                                <i class="fa fa-file-pdf-o" style="color: #660066;"></i>
+                                            </a>
+                                        {% else %}
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <td style="background-color:#eee;text-align:center;vertical-align:middle;width:50px;">
+                                        <a href="{% url 'ncomp_detail' pk=det mag=mag st='cs' %}" class="btn btn-default tooltip1" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
+                                            <i class="fa fa-exchange" aria-hidden="true"></i>
+                                            <span class="tooltiptext1">&nbsp;Zmiana statusy:<br>&nbsp;→ Dane kompletne.<br>&nbsp;→ Dane uzupełniane !!!&nbsp;</span>
+                                        </a>
+
+<!--                                        <a href="{% url 'ncomp_detail' pk=det mag=mag st='cs' %}" class="btn btn-default tooltip1" style="box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">-->
+<!--                                            <i class="fa fa-exchange" aria-hidden="true"></i>-->
+<!--                                            <span class="tooltiptext1">&nbsp;Zmiana statusy:<br>&nbsp;→ Dane kompletne.<br>&nbsp;→ Dane uzupełniane !!!&nbsp;</span>-->
+<!--                                        </a>-->
+                                    </td>
+                                    {% if nstatus == 3 %}
+                                        <td style="width:200px;font-weight:bold;text-align:center;vertical-align:middle;background-color:#CCFFCC;color:#006400;">
+                                            DANE KOMPLETNE.
+                                        </td>
+                                    {% elif nstatus == 2 %}
+                                        <td style="width:200px;font-weight:bold;text-align:center;vertical-align:middle;background-color:#DADA00;color:#333333;">
+                                            DANE DO<br>WERYFIKACJI !!!
+                                        </td>
+                                    {% elif nstatus == 1 %}
+                                        <td style="width:200px;font-weight:bold;text-align:center;vertical-align:middle;background-color:#FFA500;color:#333333;">
+                                            DANE W TRAKCIE<br>UZUPEŁNIANIA !!!
+                                        </td>
+                                    {% else %}
+                                        <td style="width:200px;font-weight:bold;text-align:center;vertical-align:middle;background-color:#A8FBFB;color:#333333;">
+                                            ???
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                            </table>
+
+                            <table width="100%" class="table  table-bordered"> <!--  table-condensed -->
+                                <thead>
+                                <tr class="bg-info" style="height:40px;background-color: #90867c;color:#FFFACD;">
+                                    <th colspan="5" style="vertical-align:middle; text-align:center;">PRZECHOWUJEMY</th>
+                                    <th colspan="2" style="vertical-align:middle; text-align:center;">WYDANO</th>
+                                    <th colspan="3" style="vertical-align:middle; text-align:center;">ZWRÓCONO</th>
+                                    <th colspan="3" style="vertical-align:middle; text-align:center;">CZAS PRZECHOWYWANIA</th>
+                                    <th rowspan="2" style="vertical-align:middle; text-align:center;padding: 1px;">
+                                        FAKTURA
+                                    </th>
+                                    <th rowspan="2" style="vertical-align:middle; text-align:center;width:40px;padding: 1px;">
+                                        <div class="verticalText">ZWOLNIO.</div>
+                                    </th>
+                                    <th rowspan="2" style="vertical-align:middle; text-align:center;width:40px;padding: 1px;">
+                                        <div class="verticalText">KOSZTY<br>I POWIE</div>
+                                    </th>
+                                    <th rowspan="2" style="vertical-align:middle; text-align:center;width:40px;padding: 1px;">
+                                        <div class="verticalText">EDYCJA</div>
+                                    </th>
+                                    <th rowspan="2" style="vertical-align:middle; text-align:center;width:40px;padding: 1px;">
+                                        <div class="verticalText">EKSPORT</div>
+                                    </th>
+                                    </tr>
+                                <tr class="bg-info"  style="height:40px;background-color: #90867c;color:#FFFACD;">
+                                    <th colspan="2" style="vertical-align:middle; text-align:center;">NAZWA</th>
+                                    <th style="vertical-align:middle; text-align:center;">NR. PAL.</th>
+                                    <th style="vertical-align:middle; text-align:center;">WYGLĄD</th>
+                                    <th style="vertical-align:middle; text-align:center;">USZKODZENIA</th>
+                                    <th style="vertical-align:middle; text-align:center;">ILOŚĆ</th>
+                                    <th style="vertical-align:middle; text-align:center;">DATA</th>
+                                    <th style="vertical-align:middle; text-align:center;">ILOŚĆ</th>
+                                    <th style="vertical-align:middle; text-align:center;">DATA</th>
+                                    <th style="vertical-align:middle; text-align:center;">UWAGI</th>
+                                    <th style="vertical-align:middle; text-align:center;">OD</th>
+                                    <th style="vertical-align:middle; text-align:center;">DO</th>
+                                    <th style="vertical-align:middle; text-align:center;">MAGAZYN</th>
+                                    </tr>
+                                </tr>
+
+                                </thead>
+                                <tbody>
+                                {% for s in sklad %}
+                                    
+                                        <tr>
+
+                                                {% if s.liczyc %}
+                                                    <td id="kol1" ><i class="fa fa-money" aria-hidden="true" title="Jest liczone"></i></td>
+                                                {% else %}
+                                                    <td id="kol1a" ><i class="fa fa-times" aria-hidden="true" title="Nie jest liczone"></i></td>
+                                                {% endif %}
+
+                                            <td style="vertical-align:middle; text-align:center;">{{ s.przech_nazwa }} <!--[ {{ s.liczyc }} ]--></td>
+                                            <td style="vertical-align:middle; text-align:center;">{{ s.przech_nrpalet }}</td>
+                                            <td style="vertical-align:middle; text-align:center;">
+
+                                                 {% if s.element_katalogowy.przech_zdjecie or s.element_katalogowy.przech_zdjecie2 or s.element_katalogowy.przech_zdjecie3 or s.element_katalogowy.przech_zdjecie4 %}
+                                                     <a href="#" data-toggle="modal" data-target="#VIEW{{ s.id }}" style="color:brown;"><i class="fa fa-picture-o"></i></a>
+
+                                                     <div class="modal fade" id="VIEW{{ s.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                         <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                 <div class="modal-header">
+                                                                     <span class="modal-title" id="exampleModalLongTitle">
+                                                                         <strong>{{ s.przech_nazwa }}</strong>
+                                                                     </span>
+                                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                     </button>
+                                                                 </div>
+                                                                 <div class="modal-body">
+                                                                     <table width="100%">
+                                                                         <tr>
+                                                                             <td style="color:brown;">
+                                                                                 {% if s.element_katalogowy.przech_zdjecie %}
+                                                                                    <img src="{{ s.element_katalogowy.przech_zdjecie.url }}" width="100%"/>
+                                                                                 {% endif %}
+                                                                             </td>
+                                                                         </tr>
+                                                                         <tr>
+                                                                             <td style="padding-top: 5px;color:brown;">
+                                                                                 {% if s.element_katalogowy.przech_zdjecie2 %}
+                                                                                    <img src="{{ s.element_katalogowy.przech_zdjecie2.url }}" width="100%"/>
+                                                                                 {% endif %}
+                                                                             </td>
+                                                                         </tr>
+                                                                         <tr>
+                                                                             <td style="padding-top: 5px;color:brown;">
+                                                                                 {% if s.element_katalogowy.przech_zdjecie3 %}
+                                                                                    <img src="{{ s.element_katalogowy.przech_zdjecie3.url }}" width="100%"/>
+                                                                                 {% endif %}
+                                                                             </td>
+                                                                         </tr>
+                                                                         <tr>
+                                                                             <td style="padding-top: 5px;color:brown;">
+                                                                                 {% if s.element_katalogowy.przech_zdjecie4 %}
+                                                                                    <img src="{{ s.element_katalogowy.przech_zdjecie4.url }}" width="100%"/>
+                                                                                 {% endif %}
+                                                                             </td>
+                                                                         </tr>
+
+
+                                                                     </table>
+
+                                                                 </div>
+                                                                 <div class="modal-footer" style="background-color: #eeeeee;">
+                                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                                 </div>
+                                                            </div>
+                                                         </div>
+                                                     </div>
+                                                {% endif %}
+
+                                            </td>
+                                            <td style="vertical-align:middle; text-align:center;">
+
+                                                 {% if s.element_katalogowy.uszkodz_zdjecie1 or s.element_katalogowy.uszkodz_zdjecie2 or s.element_katalogowy.uszkodz_zdjecie3 or s.element_katalogowy.uszkodz_zdjecie4  %}
+                                                     <a href="#" data-toggle="modal" data-target="#VIEWU{{ s.id }}" style="color:brown;"><i class="fa fa-picture-o"></i></a>
+
+                                                     <div class="modal fade" id="VIEWU{{ s.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                         <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                 <div class="modal-header">
+                                                                     <span class="modal-title" id="exampleModalLongTitleU">
+                                                                         <strong>{{ s.przech_nazwa }}</strong>
+                                                                     </span>
+                                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                     </button>
+                                                                 </div>
+                                                                 <div class="modal-body">
+                                                                     <table width="100%">
+                                                                         {% if s.element_katalogowy.uszkodz_zdjecie1 %}
+                                                                         <tr>
+                                                                             <td>
+                                                                                 <img src="{{ s.element_katalogowy.uszkodz_zdjecie1.url }}" width="100%"/>
+                                                                             </td>
+                                                                         </tr>
+                                                                         {% endif %}
+                                                                         {% if s.element_katalogowy.uszkodz_zdjecie2 %}
+                                                                         <tr>
+                                                                             <td style="padding-top: 5px;">
+                                                                                 <img src="{{ s.element_katalogowy.uszkodz_zdjecie2.url }}" width="100%"/>
+                                                                             </td>
+                                                                         </tr>
+                                                                         {% endif %}
+                                                                         {% if s.element_katalogowy.uszkodz_zdjecie3 %}
+                                                                         <tr>
+                                                                             <td style="padding-top: 5px;">
+                                                                                 <img src="{{ s.element_katalogowy.uszkodz_zdjecie3.url }}" width="100%"/>
+                                                                             </td>
+                                                                         </tr>
+                                                                         {% endif %}
+                                                                         {% if s.element_katalogowy.uszkodz_zdjecie4 %}
+                                                                         <tr>
+                                                                             <td style="padding-top: 5px;">
+                                                                                 <img src="{{ s.element_katalogowy.uszkodz_zdjecie4.url }}" width="100%"/>
+                                                                             </td>
+                                                                         </tr>
+                                                                         {% endif %}
+                                                                     </table>
+
+                                                                 </div>
+                                                                 <div class="modal-footer" style="background-color: #eeeeee;">
+                                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                                 </div>
+                                                            </div>
+                                                         </div>
+                                                     </div>
+                                                {% endif %}
+
+                                            </td>
+
+
+                                            <td style="vertical-align:middle; text-align:center;">{{ s.wydano_ilosc }}</td>
+                                            <td style="vertical-align:middle; text-align:center;">{{ s.wydano_data|date:'d.m.Y' }}</td>
+                                            <td style="vertical-align:middle; text-align:center;">{{ s.zwroco_ilosc }}</td>
+                                            <td style="vertical-align:middle; text-align:center;">{{ s.zwroco_data|date:'d.m.Y' }}</td>
+                                            <td style="vertical-align:middle; text-align:center;">
+
+                                                 {% if s.zwroco_uwagi != "" %}
+                                                 <a href="#" data-toggle="modal" data-target="#AT{{ s.id }}"><i class="fa fa-comment-o fa-fw"></i></a>
+                                                 {% endif %}
+                                                 <div class="modal fade" id="AT{{ s.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                     <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                             <div class="modal-header">
+                                                                 <span class="modal-title" id="exampleModalLongTitle1">
+                                                                     <strong>Uwagi</strong>
+                                                                 </span>
+                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                 </button>
+                                                             </div>
+                                                             <div class="modal-body">
+                                                                {{ s.zwroco_uwagi|linebreaksbr }}
+                                                             </div>
+                                                             <div class="modal-footer" style="background-color: #eeeeee;">
+                                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                             </div>
+                                                        </div>
+                                                     </div>
+                                                 </div>
+
+                                            </td>
+                                            {% if blokz %}
+                                                <td style="vertical-align:middle; text-align:center;color:brown;">{{ s.okres.data_od|date:'d.m.Y' }}</td>
+                                                <td style="vertical-align:middle; text-align:center;color:brown;">{{ s.okres.data_do|date:'d.m.Y' }}</td>
+                                            {% else %}
+                                                <td style="vertical-align:middle; text-align:center;">{{ s.okres.data_od|date:'d.m.Y' }}</td>
+                                                <td style="vertical-align:middle; text-align:center;">{{ s.okres.data_do|date:'d.m.Y' }}</td>
+                                            {% endif %}
+                                            <td style="vertical-align:middle; text-align:center;">{{ s.magazyn }}</td>
+                                            <td style="vertical-align:middle; text-align:center;">{{ s.okres.faktura }}</td>
+                                            <td style="vertical-align:middle; text-align:center;">
+                                                {% if s.zwolnione %}<i class="fa fa-check" aria-hidden="true"></i>{% endif %}
+                                            </td>
+                                            <td style="vertical-align:middle; text-align:center;">
+                                                <a href="#" data-toggle="modal" data-target="#CASH{{ s.id }}"><i class="fa fa-money" style="color:brown;"></i></a>
+
+                                                <div class="modal fade" id="CASH{{ s.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                         <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                 <div class="modal-header">
+                                                                     <span class="modal-title" id="exampleModalLongTitle2" style="color:brown;">
+                                                                         {% if s.nr_sde %}
+                                                                         <strong>{{ s.nr_sde.nazwa }}</strong>, <i>{{ s.nr_sde.targi }}, {{ s.nr_sde.klient }},</i> {{ s.nr_sde.stoisko }}
+                                                                         {% else %}
+                                                                         <strong>???</strong>
+                                                                         {% endif %}
+                                                                     </span>
+                                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                     </button>
+                                                                 </div>
+                                                                 <div class="modal-body">
+                                                                     <table class="table table-bordered table-condensed">
+                                                                         <tr>
+                                                                             <th style="background:#F5F5DC; text-align:center;" colspan="3">{{ s.przech_nazwa }}</th>
+                                                                         </tr>
+                                                                         <tr>
+                                                                             <th style="background:#F5F5DC; text-align:center;">Szerokość [m]</th>
+    <!--                                                                         <th style="background:#F5F5DC; text-align:center;">Wysokość [m]</th>-->
+                                                                             <th style="background:#F5F5DC; text-align:center;">Głębokość [m]</th>
+                                                                             <th style="background:#F5F5DC; text-align:center;">Powierzchnia [m²]</th>
+                                                                         </tr>
+                                                                         <tr>
+                                                                             <td>{{ s.przech_sze }}</td>
+    <!--                                                                         <td style="color:gray;">{{ s.przech_wys }}</td>-->
+                                                                             <td>{{ s.przech_gl }}</td>
+                                                                             <td style="font-weight:bold;background:#7FFFD4;">{{ s.przech_pow }}</td>
+                                                                         </tr>
+                                                                     </table>
+                                                                     <br>
+                                                                     <table class="table table-bordered table-condensed">
+                                                                         <tr>
+                                                                             <th style="background:#FFFACD; text-align:center;">Ilość dni przechowania dla wybranej pozycji</th>
+                                                                             <td style="text-align:right;font-weight:bold;">{{ s.ilosc_dni }}</td>
+                                                                         </tr>
+                                                                         <tr>
+                                                                             <th style="background:#FFFACD; text-align:center;">Stawka przechowania dla wybranej pozycji</th> <!--  colspan="3" -->
+                                                                             <td style="text-align:right;font-weight:bold;">{{ s.stawka }}</td>
+                                                                         </tr>
+                                                                         <tr>
+                                                                             <th style="background:#FFFACD; text-align:center;">Koszt przechowania wybranej pozycji</th> <!--  colspan="3" -->
+                                                                             {% if s.element_katalogowy.zwolnione %}
+                                                                                <td style="text-align:right;font-weight:bold;color:gray;">Blokada<!-- &nbsp;&nbsp;{{ s.koszt_przech }}--></td>
+                                                                             {% else %}
+                                                                                <td style="text-align:right;font-weight:bold;">{{ s.koszt_przech }}</td>
+                                                                             {% endif %}
+                                                                         </tr>
+    <!--                                                                     <tr>-->
+    <!--                                                                         <th style="background:#FFFACD; text-align:center;">Całkowity koszt przechowania dla [{{ s.nr_sde.nazwa }}]</th> &lt;!&ndash;  colspan="3" &ndash;&gt;-->
+    <!--                                                                         <td style="text-align:right;font-weight:bold;color:brown;">{{ s.suma }}</td>-->
+    <!--                                                                     </tr>-->
+                                                                     </table>
+
+                                                                     </p>
+
+                                                                 </div>
+                                                                 <!-- <div class="modal-footer" style="background-color: #eeeeee;"> -->
+                                                                 <!--    <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button> -->
+                                                                 <!-- </div> -->
+
+
+
+
+
+                                                              <div class="modal-footer" style="background-color: #eeeeee;">
+                                                                     <table style="width:100%;">
+                                                                         <tr>
+                                                                             <td style="color:gray;text-align:center;">
+                                                                                 <strong>Podpowiedź:</strong> {{ s.koszt_przech }} = {{ s.przech_pow }} * ({{ s.stawka }}/30 * {{ s.ilosc_dni }})
+                                                                             </td>
+                                                                             <td>
+                                                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                                             </td>
+                                                                         </tr>
+                                                                     </table>
+                                                                </div>
+
+
+
+
+
+
+
+
+
+                                                            </div>
+                                                         </div>
+                                                     </div>
+
+                                            </td>
+                                            <td style="vertical-align:middle; text-align:center;">
+                                                {% if rw %}
+                                                <a href="{% url 'ncomp_edit' pk=s.pk mag=mag det=det %}">
+                                                    <i class="fa fa-pencil-square-o fa-fw" style="color:brown;"></i>
+                                                </a>
+                                                {% endif %}
+                                            </td>
+                                            <td style="vertical-align:middle; text-align:center;">
+                                                {% if s.nr_sde %}
+                                                <a href="{% url 'comp_pdf_sim' pk=s.pk mag=mag %}">
+                                                    <i class="fa fa-file-pdf-o" style="color:brown;"></i>
+                                                </a>
+                                                {% endif %}
+                                            </td>
+
+                                        </tr>
+                                    
+
+
+                                {% endfor %}
+                                </tbody>
+
+
+
+                            </table>
+
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+
+
+                             <div class="modal fade" id="HELP_HELP" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                 <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                         <div class="modal-header">
+                                             <span class="modal-title" id="exampleModalLongTitle3"><strong>Informacja.</strong></span>
+                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                             </button>
+                                         </div>
+                                         <div class="modal-body">
+                                             <p style="text-align:justify;">
+                                                 Opis Pola sygnalizacyjnego:
+                                             </p>
+                                             <table width="100%">
+                                                 <tr>
+                                                     <td height="40" id="ikol1" ><div class="verticalText1">EWU</div></td>
+                                                     <td width="5px"></td>
+                                                     <td align="justify" rowspan="2">
+                                                         Ten stan sygnalizuje, że jest to element wielokrotnego użytku i że jest to jego pierwsze wystąpienie w bazie. Oznacza to, że koszt przechowywania elementu<font color="red"> jest wyliczany i doliczany do pola "KOSZT DLA SDA"</font>.
+                                                     </td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td colspan="2"></td>
+                                                 </tr>
+                                                 <tr><td colspan="3" height="5px"></td></tr>
+                                                 <tr>
+                                                     <td height="40" id="ikol1a" ><div class="verticalText1">EWU</div></td>
+                                                     <td width="5px"></td>
+                                                     <td align="justify" rowspan="2">
+                                                         Ten stan sygnalizuje, że jest to element wielokrotnego użytku i że jest to jego kolejne wystąpienie w bazie. Oznacza to, że koszt przechowywania elementu<font color="red"> jest wyliczany ale nie jest doliczany do pola "KOSZT DLA SDA"</font>.
+                                                     </td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td colspan="2"></td>
+                                                 </tr>
+                                                 <tr><td colspan="3" height="5px"></td></tr>
+                                                  <tr>
+                                                     <td height="40" id="ikol1b" ><div class="verticalText1">EWU</div></td>
+                                                     <td width="5px"></td>
+                                                     <td align="justify" rowspan="2">
+                                                         Ten stan sygnalizuje, że nie jest to element wielokrotnego użytku. Oznacza to, że koszt przechowywania elementu jest wyliczany i zawsze doliczany do pola "KOSZT DLA SDA".
+                                                     </td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td colspan="2"></td>
+                                                 </tr>
+                                             </table>
+                                             <br>
+                                             <p style="text-align:justify;">
+                                                 Wszystkie te powyższe działania można wyłączyć opcją "ZWOLNIONY". W takim przypadku koszt przechowywania elementu jest wyliczany ale nie doliczany do pola "KOSZT DLA SDA".
+                                             </p>
+                                             <p style="text-align:justify;">
+                                                 Dodawanie zupełnie nowego elementu wykonuje się z okna głównego - przycisk - "Nowy element"
+                                             </p>
+                                             <p style="text-align:justify;">
+                                                 Wydawanie na targi już wpisanego elementu w bazie wykonuje się z pozycji okna "Elementy wielokrotnego użytku". Zalecam zapoznać się z instrukcją (przycisk w górnej części okna).
+                                             </p>
+                                             <br>
+                                         </div>
+                                         <div class="modal-footer" style="background-color: #eeeeee;">
+                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                         </div>
+                                    </div>
+                                 </div>
+                             </div>
+
+
+
+
+                </div>
+
+<script type="text/javascript" src="{% static 'DP/bootstrap-datetimepicker.pl.js' %}" charset="UTF-8"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script type="text/javascript">
+    // Funkcja do otwierania modala i wypełniania pól danymi z templatki
+    function openModal() {
+        // Otwórz modal
+        $('#myModal').modal('show');
+
+        $('#data_od').datetimepicker({
+              language:  'pl',
+              format: 'dd.mm.yyyy',
+              todayBtn:  1,
+              autoclose: 1,
+              minView: 2,
+              startDate: "2009-01-01",
+        });
+
+        $('#data_do').datetimepicker({
+              language:  'pl',
+              format: 'dd.mm.yyyy',
+              todayBtn:  1,
+              autoclose: 1,
+              minView: 2,
+              startDate: "2009-01-01",
+        });
+
+
+
+    }
+
+    function submitForm() {
+        const mag = "{{ mag }}";
+        const pk = "{{ det }}";
+        const st = '^';
+
+        const data_od = document.getElementById("data_od").value;
+        const data_do = document.getElementById("data_do").value;
+        const nr_fv = document.getElementById("nr_fv").value;
+        const npoz = document.getElementById("powiadom_o_zmianie").checked;
+
+        // Wywołanie widoku sklad_detail_up za pomocą AJAX
+        fetch(`/COMP/detail_up/${mag}/${pk}/${st}/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}",  // Ustawienie tokenu CSRF
+                "X-Requested-With": "XMLHttpRequest" // Dodanie nagłówka X-Requested-With
+            },
+            body: JSON.stringify({
+                data_od: data_od,
+                data_do: data_do,
+                nr_fv: nr_fv,
+                npoz: npoz
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Przekierowanie po zapisaniu
+                window.location.href = data.redirect_url;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // Reset formularza przy zamykaniu modala
+    $('#myModal').on('hidden.bs.modal', function () {
+        document.getElementById("modalForm").reset();
+    });
+</script>
+
+
+
+
+{% endblock %}
+
+
+{% block script %}
+{% endblock %}
+
+
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

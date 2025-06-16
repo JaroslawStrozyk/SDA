@@ -1,0 +1,570 @@
+{% extends "order_dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+
+{% endblock %} 
+
+
+{% block retbutton %}
+                        <li>
+                            <a class="btn" href="{% url 'order_start' %}"  id="RET_BTN"><i class="fa fa-dashboard fa-fw"></i> Zamówienia</a>
+                        </li>
+{% endblock %}
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+{% block rightmenu %}
+                        <li>
+                            <a href="{% url 'desktop' %}"><i class="fa fa-dashboard fa-fw"></i> Pulpit</a>
+                        </li>
+
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#HELP_HELP"><i class="fa fa-cog fa-fw"></i> Pomoc</a>
+                        </li>
+                        <li class="divider"></li>
+
+{% endblock %}
+
+{% block logo %}
+                    <table width="100%" height="200" border="0">
+                        <tr>
+                            <td align="center" valign="middle">
+                                <img src="{% static 'img/iconfinder_Tag_58692.png' %}" width="128">
+                            </td>
+                        </tr>
+                    </table>
+{% endblock %}
+
+
+
+{% block content %}
+               <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+               <style>
+                   .alarm{
+                          background-color: #FFE4E1;
+                   }
+                   .alarm1{
+                          background-color: #E1E4FF;
+                   }
+                   .valarm{
+                          background-color: #FFFFE0;
+                   }
+                   .ok{
+                          background-color: #90EE90;
+                   }
+                   .verticalText{
+                          text-align: center;
+                          vertical-align: middle;
+                          -webkit-transform: rotate(90deg);
+                          -moz-transform: rotate(90deg);
+                   }
+                   th {
+                          text-align: center;
+                   }
+                   #belka {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                        margin-bottom: 0px;
+                   }
+
+                   #tab_belka, #flagi-tabela, #flagi-lista, #paneln, #panele, #paneld {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+
+                   #sort {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   #wrapper > nav {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+                   #wrapper > nav > ul.nav.navbar-top-links.navbar-left > li {
+                        background-color:  #AAEEAA;
+                   }
+                   #wrapper > nav > ul.nav.navbar-top-links.navbar-left > li.dropdown > a:hover {
+                          background-color: gray;
+                   }
+                   #wrapper > nav > ul.nav.navbar-top-links.navbar-left > li:nth-child(2) > a:hover {
+                          background-color: gray;
+                   }
+                   #wrapper > nav > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
+                          background-color: gray;
+                   }
+                   #wrapper > nav > ul.nav.navbar-top-links.navbar-right > li:nth-child(2) > a:hover {
+                          background-color: gray;
+                   }
+                   #wrapper > nav > ul.nav.navbar-top-links.navbar-left > li:nth-child(3) > a:hover {
+                          background-color: gray;
+                   }
+
+
+                   #belka > tbody > tr > td:nth-child(5) > a:hover {
+                          background-color: gray;
+                   }
+                   #sort > tbody:nth-child(2) > tr:hover {
+                          background-color: #d5d5d5;
+                   }
+                   .custome-size {
+                        width: 1200px;
+                   }
+                   .custome-size1 {
+                        width: 1300px;
+                   }
+
+                   @media screen and (min-width: 1601px) {
+                        div.title_r {
+                            font-size: 20px;
+                        }
+                    }
+
+                    @media screen and (max-width: 1600px) {
+                        div.title_r {
+                            font-size: 14px;
+                        }
+                    }
+
+
+                    #flagi-tabela th,
+                    #flagi-tabela td {
+                      text-align: center;
+                      vertical-align: middle;
+                    }
+
+
+
+                    /* CSS - Możesz umieścić to w sekcji head lub zewnętrznym pliku CSS */
+#flagi-lista {
+  width: 100%;
+  list-style: none;
+  padding: 0;
+}
+
+#flagi-lista li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+#flagi-lista li:last-child {
+  border-bottom: none;
+}
+
+#flagi-lista li .nazwa-uwagi {
+  flex-basis: 70%;
+}
+
+#flagi-lista li .akcje {
+  flex-basis: 30%;
+  text-align: right;
+}
+
+#flagi-lista li button {
+  margin-left: 5px;
+}
+
+               </style>
+                <div class="col-lg-12">
+
+                    <br><br>
+
+
+                    <h1>Lista flag dla wyszukiwania danych</h1>
+                    <table width="100%">
+                        <tr>
+                            <td width="84%">
+                                <ul id="flagi-lista" class="list-group"></ul>
+                            </td>
+                            <td width="1%"></td>
+                            <td width="15%">
+                                <!-- DODAWANIE -->
+                                <div class="panel panel-success" id="paneln">
+                                  <div class="panel-heading">Nowy wpis</div>
+                                  <div class="panel-body">
+                                    <form id="dodaj-form">{% csrf_token %}
+                                        <label for="nazwa">Nazwa:</label>
+                                        <input class="form-control" type="text" name="nazwa" required>
+                                        <br>
+                                        <label for="uwagi">Uwagi:</label>
+                                        <textarea class="form-control" name="uwagi"></textarea>
+                                        <br>
+                                        <button class="btn btn-danger" type="submit">Dodaj</button>
+                                    </form>
+                                  </div>
+                                </div>
+
+                                <!-- EDYCJA -->
+                                <form id="edytuj-form" style="display: none;">{% csrf_token %}
+                                    <div class="panel panel-info" id="panele">
+                                        <div class="panel-heading">Edycja wpisu</div>
+                                        <div class="panel-body">
+                                            <input type="hidden" name="id" id="flaga-id">
+                                            <label for="nazwa">Nazwa:</label>
+                                            <input class="form-control" type="text" name="nazwa" id="flaga-nazwa" required>
+                                            <br>
+                                            <label for="uwagi">Uwagi:</label>
+                                            <textarea class="form-control" name="uwagi" id="flaga-uwagi"></textarea>
+                                            <br>
+                                            <button class="btn btn-danger" type="submit">Zapisz zmiany</button>
+                                            <button class="btn btn-success" type="button" id="anuluj">Anuluj</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <!-- KASUJ -->
+                                <form id="usun-form" style="display: none;">{% csrf_token %}
+                                     <div class="panel panel-danger" id="paneld">
+                                        <div class="panel-heading">Edycja wpisu</div>
+                                        <div class="panel-body">
+                                            <input type="hidden" name="id" id="usun-flaga-id">
+                                            <p>Czy na pewno chcesz usunąć pozycję<br> "<span id="usun-flaga-nazwa"></span>"?</p>
+                                            <button class="btn btn-danger" type="submit">Tak, usuń</button>
+                                            <button class="btn btn-success" type="button" id="anuluj-usun">Anuluj</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+
+                            </td>
+                        </tr>
+
+                    </table>
+
+
+                    <script>
+                        // Kod JavaScript obsługujący interakcje z użytkownikiem i AJAX
+                        // Wykorzystamy jQuery do ułatwienia zapytań AJAX
+
+                        // Dodajemy obsługę tokenu CSRF do każdego żądania AJAX
+                        $.ajaxSetup({
+                            beforeSend: function(xhr, settings) {
+                                if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                                    // Dodajemy token CSRF do nagłówka żądania
+                                    xhr.setRequestHeader("X-CSRFToken", $("input[name='csrfmiddlewaretoken']").val());
+                                }
+                            }
+                        });
+
+                        // Funkcja do ładowania listy flag przy załadowaniu strony
+                        function zaladujListeFlag() {
+                          $.getJSON('/ZAMOWIENIA/lista_flag/', function (data) {
+                            var lista = $('#flagi-lista');
+                            lista.empty();
+
+                            data.flagi.forEach(function (flaga) {
+                              var li = $('<li>').addClass('list-group-item');
+                              var nazwaUwagiDiv = $('<div>').addClass('nazwa-uwagi').text(flaga.nazwa + ' - ' + flaga.uwagi);
+                              var akcjeDiv = $('<div>').addClass('akcje');
+                              var edytujBtn = $('<button>').addClass('btn btn-primary').html('<i class="fa fa-pencil-square-o fa-fw"></i>').click(function () {
+                                zaladujDaneDoEdycji(flaga.id);
+                              });
+                              var usunBtn = $('<button>').addClass('btn btn-danger').html('<i class="fa fa-trash-o fa-fw"></i>').click(function () {
+                                zaladujDaneDoUsuniecia(flaga.id, flaga.nazwa);
+                              });
+                              akcjeDiv.append(edytujBtn).append(usunBtn);
+
+                              li.append(nazwaUwagiDiv).append(akcjeDiv);
+                              lista.append(li);
+                            });
+                          });
+                        }
+
+
+                        // Funkcja do dodawania nowej flagi
+                        $('#dodaj-form').submit(function(event) {
+                            event.preventDefault();
+                            $.post('/ZAMOWIENIA/dodaj/', $(this).serialize(), function(data) {
+                                zaladujListeFlag();
+                                $('#dodaj-form').trigger('reset');
+                            });
+                        });
+
+                        // Funkcja do ładowania danych flagi do edycji
+                        function zaladujDaneDoEdycji(id) {
+                            $.getJSON('/ZAMOWIENIA/edytuj/' + id + '/', function(data) {
+                                $('#flaga-id').val(data.id);
+                                $('#flaga-nazwa').val(data.nazwa);
+                                $('#flaga-uwagi').val(data.uwagi);
+                                $('#edytuj-form').show();
+                            });
+                        }
+
+                        // Funkcja do edycji flagi
+                        $('#edytuj-form').submit(function(event) {
+                            event.preventDefault();
+                            $.post('/ZAMOWIENIA/edytuj/' + $('#flaga-id').val() + '/', $(this).serialize(), function(data) {
+                                zaladujListeFlag();
+                                $('#edytuj-form').hide();
+                            });
+                        });
+
+                        // Anulowanie edycji
+                        $('#anuluj').click(function() {
+                            $('#edytuj-form').hide();
+                        });
+
+                        // Funkcja do ładowania danych flagi do usunięcia
+                        function zaladujDaneDoUsuniecia(id, nazwa) {
+                            $('#usun-flaga-id').val(id);
+                            $('#usun-flaga-nazwa').text(nazwa);
+                            $('#usun-form').show();
+                        }
+
+                        // Funkcja do usuwania flagi
+                        $('#usun-form').submit(function(event) {
+                            event.preventDefault();
+                            $.post('/ZAMOWIENIA/usun/' + $('#usun-flaga-id').val() + '/', $(this).serialize(), function(data) {
+                                zaladujListeFlag();
+                                $('#usun-form').hide();
+                            });
+                        });
+
+                        // Anulowanie usuwania
+                        $('#anuluj-usun').click(function() {
+                            $('#usun-form').hide();
+                        });
+
+                        // Po załadowaniu strony wywołujemy funkcję, która załaduje listę flag
+                        $(document).ready(function() {
+                            zaladujListeFlag();
+                            zaladujTabeleFlag();
+                        });
+                    </script>
+
+                </div>
+
+<!--                                            <div class="modal fade" id="SDE_HELP" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+<!--                                                 <div class="modal-dialog custome-size modal-dialog-centered" role="document">-->
+<!--                                                    <div class="modal-content">-->
+<!--                                                         <div class="modal-header">-->
+<!--                                                             <span class="modal-title" id="exampleModalLongTitleX"><strong>Pomoc - Lista SDE</strong></span>-->
+<!--                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                                                                    <span aria-hidden="true">&times;</span>-->
+<!--                                                             </button>-->
+<!--                                                         </div>-->
+<!--                                                         <div class="modal-body">-->
+<!--                                                             <table width="100%">-->
+<!--                                                                 <table width="100%" class="table table-bordered">-->
+<!--                                                                     <tr style="text-align: center; font-weight: bold;background-color:#f5f5f5;"><th>KOD</th><th>KLIENT</th><th>TARGI</th><th>OPIS/STOISKO</th><th>PM</th></tr>-->
+<!--                                                                 {% for nr in nr_sde %}-->
+<!--                                                                     {% if fid1 != nr.id %}-->
+<!--                                                                      <tr><td width="80" style="background-color:#f5f5f5;"><strong>{{ nr.nazwa }}</strong></td><td>{{ nr.klient }}</td><td>{{ nr.targi }}</td><td>{{ nr.opis }}</td><td>{{ nr.pm }}</td></tr>-->
+<!--                                                                     {% endif %}-->
+<!--                                                                 {% endfor %}-->
+<!--                                                                 </table>-->
+<!--                                                             </table>-->
+<!--                                                         </div>-->
+<!--                                                         <div class="modal-footer" style="background-color: #eeeeee;">-->
+<!--                                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>-->
+<!--                                                         </div>-->
+<!--                                                    </div>-->
+<!--                                                 </div>-->
+<!--                                             </div>-->
+
+
+
+
+<!--                                            <div class="modal fade" id="MPK_HELP" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+<!--                                                 <div class="modal-dialog modal-dialog-centered" role="document">-->
+<!--                                                    <div class="modal-content">-->
+<!--                                                         <div class="modal-header">-->
+<!--                                                             <span class="modal-title" id="exampleModalLongTitle"><strong>Pomoc - Lista MPK</strong></span>-->
+<!--                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                                                                    <span aria-hidden="true">&times;</span>-->
+<!--                                                             </button>-->
+<!--                                                         </div>-->
+<!--                                                         <div class="modal-body">-->
+<!--                                                             <table width="100%">-->
+<!--                                                                 <table width="100%" class="table table-bordered">-->
+<!--                                                                     <tr><th>KOD</th><th>OPIS</th></tr>-->
+<!--                                                                 {% for nr in nrmpk %}-->
+<!--                                                                     {% if fid1 != nr.id %}-->
+<!--                                                                      <tr><td width="80"><strong>{{ nr.nazwa }}</strong></td><td>{{ nr.opis }}</td></tr>-->
+<!--                                                                     {% endif %}-->
+<!--                                                                 {% endfor %}-->
+<!--                                                                 </table>-->
+<!--                                                             </table>-->
+<!--                                                         </div>-->
+<!--                                                         <div class="modal-footer" style="background-color: #eeeeee;">-->
+<!--                                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>-->
+<!--                                                         </div>-->
+<!--                                                    </div>-->
+<!--                                                 </div>-->
+<!--                                             </div>-->
+
+<!--                                            <div class="modal fade" id="SDE_WARTOSC" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+<!--                                                 <div class="modal-dialog custome-size1 modal-dialog-centered" role="document">-->
+<!--                                                    <div class="modal-content">-->
+<!--                                                         <div class="modal-header">-->
+<!--                                                             <span class="modal-title" id="exampleModalLongTitle1"><strong>Koszty bezpośrednie w {{ rok }}</strong></span>-->
+<!--                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                                                                    <span aria-hidden="true">&times;</span>-->
+<!--                                                             </button>-->
+<!--                                                         </div>-->
+<!--                                                         <div class="modal-body">-->
+<!--                                                             <table width="100%" class="table table-bordered">-->
+<!--                                                                 <tr><th>NAZWA</th><th>I</th><th>II</th><th>III</th><th>IV</th><th>V</th><th>VI</th><th>VII</th><th>VIII</th><th>IX</th><th>X</th><th>XI</th><th>XII</th><th>SUMA</th>&lt;!&ndash;<th>M-C</th>&ndash;&gt;</tr>-->
+<!--                                                                 {% for nr in nr_sde %}-->
+<!--                                                                    {% if tzero != nr.sum_direct %}-->
+<!--                                                                      <tr>-->
+<!--                                                                          <td width="80"><strong>{{ nr.nazwa }}</strong></td>-->
+<!--                                                                          <td align="right">{% if tzero != nr.d_st %}{{ nr.d_st }}{% endif %}</td>-->
+<!--                                                                          <td align="right">{% if tzero != nr.d_lu %}{{ nr.d_lu }}{% endif %}</td>-->
+<!--                                                                          <td align="right">{% if tzero != nr.d_ma %}{{ nr.d_ma }}{% endif %}</td>-->
+<!--                                                                          <td align="right">{% if tzero != nr.d_kw %}{{ nr.d_kw }}{% endif %}</td>-->
+<!--                                                                          <td align="right">{% if tzero != nr.d_mj %}{{ nr.d_mj }}{% endif %}</td>-->
+<!--                                                                          <td align="right">{% if tzero != nr.d_cz %}{{ nr.d_cz }}{% endif %}</td>-->
+<!--                                                                          <td align="right">{% if tzero != nr.d_lp %}{{ nr.d_lp }}{% endif %}</td>-->
+<!--                                                                          <td align="right">{% if tzero != nr.d_si %}{{ nr.d_si }}{% endif %}</td>-->
+<!--                                                                          <td align="right">{% if tzero != nr.d_wr %}{{ nr.d_wr }}{% endif %}</td>-->
+<!--                                                                          <td align="right">{% if tzero != nr.d_pa %}{{ nr.d_pa }}{% endif %}</td>-->
+<!--                                                                          <td align="right">{% if tzero != nr.d_li %}{{ nr.d_li }}{% endif %}</td>-->
+<!--                                                                          <td align="right">{% if tzero != nr.d_gr %}{{ nr.d_gr }}{% endif %}</td>-->
+<!--                                                                          <td align="right">{{ nr.sum_direct }}</td>-->
+<!--                                                                          &lt;!&ndash;<td align="right">{{ nr.d_miesiac }}</td>&ndash;&gt;-->
+<!--                                                                      </tr>-->
+<!--                                                                    {% endif %}-->
+<!--                                                                 {% endfor %}-->
+<!--                                                             </table>-->
+<!--                                                         </div>-->
+<!--                                                         <div class="modal-footer" style="background-color: #eeeeee;">-->
+<!--                                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>-->
+<!--                                                         </div>-->
+<!--                                                    </div>-->
+<!--                                                 </div>-->
+<!--                                             </div>-->
+
+
+<!--                                            <div class="modal fade" id="MPK_WARTOSC" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+<!--                                                 <div class="modal-dialog modal-dialog-centered" role="document">-->
+<!--                                                    <div class="modal-content">-->
+<!--                                                         <div class="modal-header">-->
+<!--                                                             <span class="modal-title" id="exampleModalLongTitle2"><strong>Koszty analityczne za {{ rok }}</strong></span>-->
+<!--                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                                                                    <span aria-hidden="true">&times;</span>-->
+<!--                                                             </button>-->
+<!--                                                         </div>-->
+<!--                                                         <div class="modal-body">-->
+<!--                                                             <table width="100%" class="table table-bordered">-->
+<!--                                                                 <tr><th>NAZWA</th><th>Zamówienia</th><th>Zaliczki</th></tr>-->
+<!--                                                                 {% for nr in nrmpk %}-->
+<!--                                                                    {% if tzero != nr.sum_zam or tzero != nr.sum_zal  %}-->
+<!--                                                                      <tr><td width="80"><strong>{{ nr.nazwa }}</strong></td><td align="right">{{ nr.sum_zam }}</td><td align="right">{{ nr.sum_zal  }}</td></tr>-->
+<!--                                                                    {% endif %}-->
+<!--                                                                 {% endfor %}-->
+<!--                                                             </table>-->
+<!--                                                         </div>-->
+<!--                                                         <div class="modal-footer" style="background-color: #eeeeee;">-->
+<!--                                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>-->
+<!--                                                         </div>-->
+<!--                                                    </div>-->
+<!--                                                 </div>-->
+<!--                                             </div>-->
+
+
+
+                                            <div class="modal fade" id="HELP_HELP" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                 <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                         <div class="modal-header">
+                                                             <span class="modal-title" id="exampleModalLongTitle3"><strong>Pomoc</strong></span>
+                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                             </button>
+                                                         </div>
+                                                         <div class="modal-body">
+                                                             <h4><strong>Zestawienie - Lista Kolorów sygnalizacyjnych</strong></h4>
+                                                             <table width="100%" class="table table-bordered">
+                                                                 <tr><th>KOLOR</th><th>OPIS</th></tr>
+                                                                 <tr><td width="80" class="alarm1">&nbsp;</td><td>Zamówienie zostało otwarte bez kwoty i innych wpisów.</td></tr>
+                                                                 <tr><td width="80" class="alarm">&nbsp;</td><td>Zamówienie jest w trakcie realizacji lecz nie ma wszystkich wpisów.</td></tr>
+                                                                 <tr><td width="80" class="valarm">&nbsp;</td><td>Zamówienie jest w trakcie realizacji lecz bez pola kwota.</td></tr>
+                                                                 <tr><td width="80" class="ok">&nbsp;</td><td>Zamówienie zostało wypełanione i prawidłowo rozliczone. </td></tr>
+                                                                 <tr><td width="80">&nbsp;</td><td>Zamówienie zostało potwierdzone przez Patrycję.</td></tr>
+                                                             </table>
+                                                             <p style="text-align:justify;">
+                                                                 Jak można wywnioskować z powyższej tabelki Małgosia swoimi działaniami musi dążyć do tego by wpis miał tło koloru zielonego. Oznacza to, że wpis przeszedł formalne sprawdzenie
+                                                                 i z punktu widzenia Małgosi sprawa jest zakończona.<br>
+                                                                 W momencie rozliczania się Małgosi, Patrycją potwierdza (w oknie edycji) że wszystko jest ok. W takim przypadku tło pozycji w tabeli zmienia kolor na biały i pojawia się znaczek
+                                                                 <i class="fa fa-check fa-fw"></i> w kolumnie rozliczono (Rozli.)
+                                                             </p>
+                                                             <br>
+                                                             <h4><strong>Dodawanie i edycja pozycji zamówienia</strong></h4>
+                                                             <ul style="text-align:justify;">
+                                                                 <li>Wybierz przycisk <strong>Nowy wpis</strong> dla nowej pozycji lub  celu edycji znaczek <i class="fa fa-pencil-square-o fa-fw"></i> umieszczony na prawej krawędzi linii do edycji.</li>
+                                                                 <li>Wypełnij pozycje w oknie wg potrzeby pamiętając że te z opisem w kolorze brązowym muszą mieć wartości.</li>
+                                                                 <li>Należy pamiętać, że:</li>
+                                                                 <ul>
+                                                                     <li>Wartości dokumentów się sumują (dok1/proforma, dok2, fv rozli). Watrość ta jest wyświetlana w polu kwota netto. W przypadku gdy w zamowieniu jest faktura proforma a przyjdzie faktura rozliczająca na tę samą kwotę, po wpisaniu faktury należy wyzerować wartość faktury proforma.</li>
+                                                                     <li>W przypadku wystąpienia faktury zbiorczej (na różne pozycje SDE/MPK) należy ją odpowiednio podzielić pomiędzy pozycje SDE i MPK (wpis kilku pozycji z z tą samą fakturą ale odpowiednimi wartościami.</li>
+                                                                     <li>Ta tą chwilę pozycję kwota brutto wypełnic należy indywidualnie. Kwota netto jest wyliczana i kontrolowana automatycznie.</li>
+                                                                 </ul>
+                                                                 <li>Po zatwierdzeniu kwota netto i brutto na podstawie nr SDE lub MPK jest przeliczana i dodawana do odpowiedniej tabeli SDE/MPK a późniejszym czasie wartości te są eksportowane do odpowiedniego dokumentu Google docs dla Michała i Iwony.</li>
+                                                             </ul>
+                                                         </div>
+                                                         <div class="modal-footer" style="background-color: #eeeeee;">
+                                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                         </div>
+                                                    </div>
+                                                 </div>
+                                             </div>
+
+                                            <div class="modal fade" id="CHOISE_POZ" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                 <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                         <div class="modal-header">
+                                                             <span class="modal-title" id="exampleModalLongTitle4"><strong>Wybierz rodzaj kosztów</strong></span>
+                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                             </button>
+                                                         </div>
+                                                         <div class="modal-body">
+                                                             <table style="border-spacing: 5px;border-collapse: separate;width:100%;">
+                                                                 <tr>
+                                                                     <td width="33%">
+                                                                         <a href="{% url 'ord_new' sel='s' %}" class="btn btn-primary btn-lg btn-block"> Do SDA </a>
+                                                                     </td>
+                                                                     <td width="33%">
+                                                                         <a href="{% url 'ord_new' sel='m' %}" class="btn btn-primary btn-lg btn-block"> Do MPK </a>
+                                                                     </td>
+                                                                     <td width="33%">
+                                                                         <a href="{% url 'ord_new' sel='n' %}" class="btn btn-info btn-lg btn-block"> Nie wiem </a>
+                                                                     </td>
+                                                                 </tr>
+                                                             </table>
+
+                                                         </div>
+                                                         <div class="modal-footer" style="background-color: #eeeeee;">
+                                                         </div>
+                                                    </div>
+                                                 </div>
+                                             </div>
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

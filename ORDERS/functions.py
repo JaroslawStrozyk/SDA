@@ -1,11 +1,43 @@
 from django.contrib.auth.models import Group
+
+from ORDERS.models import NrMPK
 from TaskAPI.models import Rok, URok, Waluta
 from django.conf import settings
 from moneyed import Money, PLN
 import datetime
 
+# Function to parse each value in the file
+def custom_parser(val):
+    val = val.strip()
+    if val in ['True', 'False']:
+        return val == 'True'  # Convert to boolean
+    try:
+        return int(val)  # Convert to integer
+    except ValueError:
+        return val.strip("'")  # Remove single quotes for strings
+def SetNewYear():
+    tst = NrMPK.objects.filter(rok=2024).count()
+    if tst == 0:
+        file_path = 'MPK_2024A.csv'
+        data = []
+        with open(file_path, 'r') as file:
+            # Skipping the first line (header)
+            next(file)
+            for i, line in enumerate(file):
+                parsed_line = [custom_parser(val) for val in line.split(';')]
+                data.append(parsed_line)
 
+        for d in data:
+            nazwa = d[0].strip().strip('"')
+            opis = d[2].strip().strip('"')
+            rok = d[3]
+            lsde = d[4]
 
+            mpk = NrMPK(nazwa=nazwa, opis=opis, rok=rok, lsde=lsde)
+            mpk.save()
+        print("Operacja wykonana prawidłowo.")
+    else:
+        print("Operacja odrzucona bo 2024 już istnieje !!!")
 
 
 def test_admin(request):
@@ -30,7 +62,7 @@ def test_osoba1(request):
     name_log = request.user.first_name + " " + request.user.last_name
     inicjaly = '.'.join([x[0] for x in name_log.split()]) + '.'
 
-    if inicjaly == 'J.S.' or inicjaly == 'M.O.':
+    if inicjaly == 'J.S.' or inicjaly == 'M.O.' or inicjaly == 'J.M.':
         rozliczenie = 1
     else:
         rozliczenie = 0
@@ -125,7 +157,10 @@ def CalcCurrency(kwota, dataf):
 
     return data, wartosc, kurs
 
-
+#
+#  Kontrola danych
+#  0-zielone; 1-czerwone; 10-białe;
+#
 def TestValidate(wartosc_zam, kwota_netto, tsde, tmpk, data_fv, roz): #, nr_dok3
     kontrola = -1
 
@@ -144,13 +179,7 @@ def TestValidate(wartosc_zam, kwota_netto, tsde, tmpk, data_fv, roz): #, nr_dok3
         kontrola = 1
 
     # Kontrola celu
-    ts = False
-    if tsde != '':
-        ts = True
-    tm = False
-    if tmpk != '':
-        tm = True
-    if (ts ^ tm) == False:  # XOR
+    if (tsde == '') and (tmpk == ''):
         kontrola = 1
 
     # Patrycja, Michał

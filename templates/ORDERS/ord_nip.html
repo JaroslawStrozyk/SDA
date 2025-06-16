@@ -1,0 +1,177 @@
+{% extends "order_dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+{% endblock %}
+
+
+{% block retbutton %}
+<li>
+    <a class="btn" href="{% url 'order_start' %}" id="RET_BTN"><i class="fa fa-dashboard fa-fw"></i> Zamówienia</a>
+</li>
+{% endblock %}
+
+{% block userlog %}
+{{ name_log }}
+{% endblock %}
+
+{% block rightmenu %}
+{% endblock %}
+
+{% block logo %}
+{% endblock %}
+
+{% block content %}
+<link href="{% static 'ORD/css/ord_nip.css' %}" rel="stylesheet">
+<meta name="csrf-token" content="{{ csrf_token }}">
+
+
+<div class="col-lg-12">
+    <br><br>
+
+    <br>
+    <div class="panel panel-default" id="panel_tabela">
+        <div class="panel-heading">
+            <table width="100%">
+                <tr>
+                    <td align="center">
+                        <h4><strong>{{ tytul_tabeli }}</strong></h4>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="panel-body">
+            <div class="container" id="CON_DIV">
+                <!-- Tabela NIP-ów -->
+                <table id="nipsTable" class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th id="NIP_TH">NIP</th>
+                            <th id="KON_TH">KONTRAHENT</th>
+                            <th id="AKC_TH">
+                                <a href="#" class="btn btn-success" data-toggle="modal" data-target="#addNipModal">
+                                    <strong><i class="fa fa-cog fa-fw"></i> Nowy</strong>
+                                </a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Wiersze tabeli będą wypełniane przez JavaScript -->
+                    </tbody>
+                </table>
+
+                <!-- Modal do dodawania nowego NIP -->
+                <div class="modal fade" id="addNipModal" tabindex="-1" role="dialog" aria-labelledby="addNipModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header" style="color: #3c763d;background-color: #dff0d8;border-color: #d6e9c6;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="addNipModalLabel">Dodaj Nowego Kontrahenta</h4>
+                      </div>
+                      <div class="modal-body">
+                        <form>{% csrf_token %}
+                          <div class="form-group">
+                            <label for="nipInput" class="control-label">NIP:</label>
+                            <input type="text" class="form-control" id="nipInput">
+                          </div>
+                          <div class="form-group">
+                            <label for="kontrahentInput" class="control-label">Kontrahent:</label>
+                            <input type="text" class="form-control" id="kontrahentInput">
+                          </div>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                        <button type="button" class="btn btn-primary" id="addNipBtn">Dodaj NIP</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Modal do edytowania NIP -->
+                <div class="modal fade" id="editNipModal" tabindex="-1" role="dialog" aria-labelledby="editNipModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header" style="color: #31708f;background-color: #d9edf7;border-color: #bce8f1;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="editNipModalLabel">Edytuj NIP</h4>
+                      </div>
+                      <div class="modal-body">
+                        <form>{% csrf_token %}
+                          <input type="hidden" id="editIdInput">
+                          <div class="form-group">
+                            <label for="editNipInput" class="control-label">NIP:</label>
+                            <input type="text" class="form-control" id="editNipInput">
+                          </div>
+                          <div class="form-group">
+                            <label for="editKontrahentInput" class="control-label">Kontrahent:</label>
+                            <input type="text" class="form-control" id="editKontrahentInput">
+                          </div>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                        <button type="button" class="btn btn-primary" id="saveEditBtn">Zapisz zmiany</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Modal do potwierdzenia usunięcia NIP -->
+                <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header" style="color: #a94442;background-color: #f2dede;border-color: #ebccd1;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="confirmDeleteModalLabel">Potwierdź usunięcie</h4>
+                      </div>
+                      <div class="modal-body">
+                        Czy na pewno chcesz usunąć ten NIP?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                        <button type="button" class="btn btn-danger" id="deleteNipBtn">Usuń</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'ORD/js/jquery.min.js' %}"></script>
+<script src="{% static 'ORD/js/ord_nip.js' %}" rel="stylesheet"></script>
+<script>
+
+</script>
+
+
+{% endblock %}
+
+{% block about %}
+<tr>
+    <td class="text-right" width="300">
+        <br>Wersja:
+        <br>Ostatnia modyfikacja:<br>
+        <br>Firma:
+        <br>Autor:
+        <br>Email:
+        <br>Tel. kom.:<br>
+        <br>
+    </td>
+    <td>
+        {% for ab in about %}
+        <br>{{ ab.WERSJA }}
+        <br>{{ ab.MODYFIKACJA }}
+        <br>
+        <br>{{ ab.FIRMA }}
+        <br>{{ ab.AUTOR }}
+        {% endfor %}
+        <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+        <br>+48 791-648-417<br>
+    </td>
+</tr>
+{% endblock %}

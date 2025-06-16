@@ -1,0 +1,181 @@
+{% extends "worker_dashboard.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block leftbutton %}
+{% endblock %} 
+
+
+{% block retbutton %}
+
+{% endblock %}
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+
+{% block content %}
+                <style>
+                   #tabela {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   #id_data_zat, #id_wymiar, #id_staz {
+                        text-align: center;
+                   }
+
+
+
+
+        #id_zaliczka_0, #id_komornik_0,  #id_obciazenie_0 {
+                        background-color: #FFB6C1;
+        }
+
+        #id_przelew_0, #id_obciazenie_0  {
+                        background-color: #98FB98;
+        }
+
+        #id_km_ilosc, #id_ppk_0 {
+                        background-color: #FFFACD;
+        }
+
+        #id_form-0-zaliczka_1, #id_form-1-zaliczka_1, #id_form-2-zaliczka_1, #id_form-3-zaliczka_1, #id_form-4-zaliczka_1,
+        #id_form-5-zaliczka_1, #id_form-6-zaliczka_1, #id_form-7-zaliczka_1, #id_form-8-zaliczka_1, #id_form-9-zaliczka_1,
+        #id_form-10-zaliczka_1, #id_form-11-zaliczka_1, #id_form-12-zaliczka_1, #id_form-13-zaliczka_1, #id_form-14-zaliczka_1,
+        #id_form-15-zaliczka_1, #id_form-16-zaliczka_1, #id_form-17-zaliczka_1, #id_form-18-zaliczka_1, #id_form-19-zaliczka_1,
+        #id_form-20-zaliczka_1, #id_form-21-zaliczka_1, #id_form-22-zaliczka_1, #id_form-23-zaliczka_1, #id_form-24-zaliczka_1,
+        #id_form-25-zaliczka_1, #id_form-26-zaliczka_1, #id_form-27-zaliczka_1, #id_form-28-zaliczka_1, #id_form-29-zaliczka_1,
+        #id_form-30-zaliczka_1, #id_form-31-zaliczka_1, #id_form-32-zaliczka_1, #id_form-33-zaliczka_1, #id_form-34-zaliczka_1,
+        #id_form-35-zaliczka_1, #id_form-36-zaliczka_1, #id_form-37-zaliczka_1, #id_form-38-zaliczka_1, #id_form-39-zaliczka_1,
+
+        #id_form-0-obciazenie_1, #id_form-1-obciazenie_1, #id_form-2-obciazenie_1, #id_form-3-obciazenie_1, #id_form-4-obciazenie_1,
+        #id_form-5-obciazenie_1, #id_form-6-obciazenie_1, #id_form-7-obciazenie_1, #id_form-8-obciazenie_1, #id_form-9-obciazenie_1,
+        #id_form-10-obciazenie_1, #id_form-11-obciazenie_1, #id_form-12-obciazenie_1, #id_form-13-obciazenie_1, #id_form-14-obciazenie_1,
+        #id_form-15-obciazenie_1, #id_form-16-obciazenie_1, #id_form-17-obciazenie_1, #id_form-18-obciazenie_1, #id_form-19-obciazenie_1,
+        #id_form-20-obciazenie_1, #id_form-21-obciazenie_1, #id_form-22-obciazenie_1, #id_form-23-obciazenie_1, #id_form-24-obciazenie_1,
+        #id_form-25-obciazenie_1, #id_form-26-obciazenie_1, #id_form-27-obciazenie_1, #id_form-28-obciazenie_1, #id_form-29-obciazenie_1,
+        #id_form-30-obciazenie_1, #id_form-31-obciazenie_1, #id_form-32-obciazenie_1, #id_form-33-obciazenie_1, #id_form-34-obciazenie_1,
+        #id_form-35-obciazenie_1, #id_form-36-obciazenie_1, #id_form-37-obciazenie_1, #id_form-38-obciazenie_1, #id_form-39-obciazenie_1,
+        
+        #id_form-0-komornik_1, #id_form-1-komornik_1, #id_form-2-komornik_1, #id_form-3-komornik_1, #id_form-4-komornik_1,
+        #id_form-5-komornik_1, #id_form-6-komornik_1, #id_form-7-komornik_1, #id_form-8-komornik_1, #id_form-9-komornik_1,
+        #id_form-10-komornik_1, #id_form-11-komornik_1, #id_form-12-komornik_1, #id_form-13-komornik_1, #id_form-14-komornik_1,
+        #id_form-15-komornik_1, #id_form-16-komornik_1, #id_form-17-komornik_1, #id_form-18-komornik_1, #id_form-19-komornik_1,
+        #id_form-20-komornik_1, #id_form-21-komornik_1, #id_form-22-komornik_1, #id_form-23-komornik_1, #id_form-24-komornik_1,
+        #id_form-25-komornik_1, #id_form-26-komornik_1, #id_form-27-komornik_1, #id_form-28-komornik_1, #id_form-29-komornik_1,
+        #id_form-30-komornik_1, #id_form-31-komornik_1, #id_form-32-komornik_1, #id_form-33-komornik_1, #id_form-34-komornik_1,
+        #id_form-35-komornik_1, #id_form-36-komornik_1, #id_form-37-komornik_1, #id_form-38-komornik_1, #id_form-39-komornik_1
+        {
+                        display: none;
+        }
+        
+
+        #id_form-0-zaliczka_0, #id_form-1-zaliczka_0, #id_form-2-zaliczka_0, #id_form-3-zaliczka_0, #id_form-4-zaliczka_0,
+        #id_form-5-zaliczka_0, #id_form-6-zaliczka_0, #id_form-7-zaliczka_0, #id_form-8-zaliczka_0, #id_form-9-zaliczka_0,
+        #id_form-10-zaliczka_0, #id_form-11-zaliczka_0, #id_form-12-zaliczka_0, #id_form-13-zaliczka_0, #id_form-14-zaliczka_0,
+        #id_form-15-zaliczka_0, #id_form-16-zaliczka_0, #id_form-17-zaliczka_0, #id_form-18-zaliczka_0, #id_form-19-zaliczka_0,
+        #id_form-20-zaliczka_0, #id_form-21-zaliczka_0, #id_form-22-zaliczka_0, #id_form-23-zaliczka_0, #id_form-24-zaliczka_0,
+        #id_form-25-zaliczka_0, #id_form-26-zaliczka_0, #id_form-27-zaliczka_0, #id_form-28-zaliczka_0, #id_form-29-zaliczka_0,
+        #id_form-30-zaliczka_0, #id_form-31-zaliczka_0, #id_form-32-zaliczka_0, #id_form-33-zaliczka_0, #id_form-34-zaliczka_0,
+        #id_form-35-zaliczka_0, #id_form-36-zaliczka_0, #id_form-37-zaliczka_0, #id_form-38-zaliczka_0, #id_form-39-zaliczka_0,
+
+        #id_form-0-obciazenie_0, #id_form-1-obciazenie_0, #id_form-2-obciazenie_0, #id_form-3-obciazenie_0, #id_form-4-obciazenie_0,
+        #id_form-5-obciazenie_0, #id_form-6-obciazenie_0, #id_form-7-obciazenie_0, #id_form-8-obciazenie_0, #id_form-9-obciazenie_0,
+        #id_form-10-obciazenie_0, #id_form-11-obciazenie_0, #id_form-12-obciazenie_0, #id_form-13-obciazenie_0, #id_form-14-obciazenie_0,
+        #id_form-15-obciazenie_0, #id_form-16-obciazenie_0, #id_form-17-obciazenie_0, #id_form-18-obciazenie_0, #id_form-19-obciazenie_0,
+        #id_form-20-obciazenie_0, #id_form-21-obciazenie_0, #id_form-22-obciazenie_0, #id_form-23-obciazenie_0, #id_form-24-obciazenie_0,
+        #id_form-25-obciazenie_0, #id_form-26-obciazenie_0, #id_form-27-obciazenie_0, #id_form-28-obciazenie_0, #id_form-29-obciazenie_0,
+        #id_form-30-obciazenie_0, #id_form-31-obciazenie_0, #id_form-32-obciazenie_0, #id_form-33-obciazenie_0, #id_form-34-obciazenie_0,
+        #id_form-35-obciazenie_0, #id_form-36-obciazenie_0, #id_form-37-obciazenie_0, #id_form-38-obciazenie_0, #id_form-39-obciazenie_0,        
+        
+        #id_form-0-komornik_0, #id_form-1-komornik_0, #id_form-2-komornik_0, #id_form-3-komornik_0, #id_form-4-komornik_0,
+        #id_form-5-komornik_0, #id_form-6-komornik_0, #id_form-7-komornik_0, #id_form-8-komornik_0, #id_form-9-komornik_0,
+        #id_form-10-komornik_0, #id_form-11-komornik_0, #id_form-12-komornik_0, #id_form-13-komornik_0, #id_form-14-komornik_0,
+        #id_form-15-komornik_0, #id_form-16-komornik_0, #id_form-17-komornik_0, #id_form-18-komornik_0, #id_form-19-komornik_0,
+        #id_form-20-komornik_0, #id_form-21-komornik_0, #id_form-22-komornik_0, #id_form-23-komornik_0, #id_form-24-komornik_0,
+        #id_form-25-komornik_0, #id_form-26-komornik_0, #id_form-27-komornik_0, #id_form-28-komornik_0, #id_form-29-komornik_0,
+        #id_form-30-komornik_0, #id_form-31-komornik_0, #id_form-32-komornik_0, #id_form-33-komornik_0, #id_form-34-komornik_0,
+        #id_form-35-komornik_0, #id_form-36-komornik_0, #id_form-37-komornik_0, #id_form-38-komornik_0, #id_form-39-komornik_0
+        {
+                        width: 100%;
+                        height: 34px;
+                        text-align: right;
+                        font-size: 14px;
+                        border-radius: 4px;
+                        border-width: 1px;
+                        border: 1px solid #ccc;
+                        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                        color: #555;
+                        background-color: #fff;
+        }
+        
+
+                </style>
+                <div class="col-lg-1"> &nbsp;</div>
+                <div class="col-lg-10">
+                    <br><br>
+                    <div class="panel panel-green" id="tabela">
+                        <div class="panel-heading" align="center">
+                            <strong><font size="+3">{{ tytul }}</font></strong>
+                        </div>
+
+                        <form method="POST"  class="post-form" enctype="multipart/form-data">
+                                {% csrf_token %}
+                            <div class="panel-body">
+                                {{ formset.management_form }}
+                                {% for f in formset %}
+
+                                    <div class="form-row">  {{ f.id }}
+                                                      <div class="form-group col-md-2 mb-0">
+                                                            {{ f.osoba|as_crispy_field  }}
+                                                      </div>
+                                                      <div class="form-group col-md-2 mb-0">
+                                                            {{ f.obciazenie|as_crispy_field  }}
+                                                      </div>
+                                                      <div class="form-group col-md-8 mb-0">
+                                                            {{ f.obciazenie_opis|as_crispy_field  }}
+                                                      </div>
+                                    </div>
+
+                                {% endfor %}
+                            </div>
+                            <div class="panel-footer">
+                                <table width="100%" border="0">
+                                        <tr>
+                                            <td align="center">
+                                                <button type="submit" class="save btn btn-success">Zapisz</button>
+                                                <a href="{% url 'worker_mc' %}" class="primary btn btn-danger">Anuluj</a>
+                                            </td>
+                                        </tr>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-1"> &nbsp;</div>
+
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

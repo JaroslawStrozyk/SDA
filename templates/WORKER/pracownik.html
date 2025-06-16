@@ -1,0 +1,262 @@
+{% extends "cash_advances_dashboard.html" %}
+{% load static %}
+
+{% block leftbutton %}
+{% endblock %}
+
+
+{% block retbutton %}
+<li>
+    <a class="btn btn-primary" href="{% url 'worker_start' %}" id="pulpit"><i class="fa fa-dashboard fa-fw"></i> Menu</a>
+</li>
+{% endblock %}
+
+{% block userlog %}
+{{ name_log }}
+{% endblock %}
+
+{% block rightmenu %}
+<li>
+    <a href="{% url 'worker_start' %}"><i class="fa fa-dashboard fa-fw"></i> Menu</a>
+</li>
+<li class="divider"></li>
+{% endblock %}
+
+{% block logo %}
+{% endblock %}
+
+{% block content %}
+<style>
+                   .alarm{
+                          background-color: #FFE4E1;
+                   }
+                   .alarm1{
+                          background-color: #E1E4FF;
+                   }
+                   .valarm{
+                          background-color: #FFFFE0;
+                   }
+                   .ok{
+                          background-color: #90EE90;
+                   }
+                   .pok{
+                          color: yellow;
+                          font-weight: bold;
+                          background-color: #A5A5A5;
+                   }
+                   .verticalText{
+                          text-align: center;
+                          vertical-align: middle;
+                          -webkit-transform: rotate(90deg);
+                          -moz-transform: rotate(90deg);
+                   };
+                   th {
+                          text-align: center;
+                   }
+
+
+                   #wrapper > nav {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   #tabela {
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+                   }
+
+                   #tabela > table > tbody > tr:hover {
+                        background-color: #f5f5f5;
+                   }
+                   
+                   #belka > ul.nav.navbar-top-links.navbar-left > li > a:hover {
+                        background-color: gray;
+                   }
+                   #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(1) > a:hover {
+                        background-color: gray;
+                   }
+                   #belka > ul.nav.navbar-top-links.navbar-right > li:nth-child(2) > a:hover {
+                        background-color: gray;
+                   }
+                   .custome-size {
+                        width: 1300px;
+                   }
+
+                   .panel-default>.panel-heading .badge {
+                        color: #00ff00;
+                        background-color: #aaaaaa;
+                   }
+                   #tab_row:hover {
+                        background-color: #dedede;
+                   }
+                   #pulpit {color: #FFFACD;background-color:#70665c;border-color: #70665c;}
+                   #pulpit:hover {color: #FFFACD;background-color:#50443a;border-color: #50443a;}
+                   #pulpit:visited {color: #FFFACD;background-color:#70665c;border-color: #70665c;}
+
+                   #adt {color: #fff; background-color: #404040; border-color: #404040;}
+                   #adt:hover {color: #fff; background-color: grey; border-color: grey;}
+                   #adt:visited {color: #fff; background-color: #404040; border-color: #404040;}
+
+</style>
+<div class="col-lg-12">
+    <br><br>
+    <div class="panel panel-default" id="tabela">
+        <div class="panel-heading">
+
+            <table width="100%">
+                <tr>
+                    <td width="250px" style=" border-right:1pt solid #F3F3F3;">
+                        <form metod="GET" action="{% url 'worker_pr' %}">
+                            {% csrf_token %}
+                            <div class="input-group custom-search-form">
+                                <input type="text" name="SZUKAJ" class="form-control" placeholder="Szukaj...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                                </span>
+                            </div>
+                        </form>
+                    </td>
+                    <td width="40px" align="center">
+                            <span class="badge badge-primary">
+                                {{ p_ilosc }}
+                            </span>
+                    </td>
+                    <td align="center">
+                        <h4>
+                            <strong>
+                                {{ tytul_tabeli }}
+                            </strong>
+                        </h4>
+                    </td>
+                    <td align="right" width="455px">
+                        <a href="{% url 'worker_pr_add' %}" class="primary btn btn-success">&nbsp;<strong>Nowy wpis</strong> </a>
+
+                        {% if mc_test %}
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <a href="{% url 'worker_pr_update' mc=bmc %}" class="primary btn btn-primary">&nbsp;<strong>Aktualizuj ten m-c</strong> </a>
+                                <a href="{% url 'worker_pr_update_prev' %}" class="primary btn btn-warning">&nbsp;<strong>Aktualizuj poprzedni m-c</strong> </a>
+                            </div>
+                        {% endif %}
+
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div class="modal-body">
+
+              <table width="100%" class="table table-bordered table-condensed" id="sort">
+                  <tr>
+<!--                      <th  style="height:70px; background-color: #4682A4; vertical-align:middle; text-align:center;"><font color="#ffff00">Imię</font></th>-->
+                      <th  style="background-color: #4682A4; vertical-align:middle; text-align:center;" colspan="2"><font color="#ffff00">Nazwisko</font></th>
+                      <th  style="background-color: #4682A4; vertical-align:middle; text-align:center;"><font color="#ffff00">Imię</font></th>
+                      <th  style="background-color: #CD853F; vertical-align:middle; text-align:center;width: 100px;"><font color="#ffff00">Grupa</font></th>
+                      <th  style="background-color: #CD853F; vertical-align:middle; text-align:center;width: 140px;"><font color="#ffff00">Dział</font></th>
+                      <th  style="background-color: #BA55D3; vertical-align:middle; text-align:center;width: 80px;"><font color="#ffff00">Zatrudnienie</font></th>
+                      <th  style="background-color: #BA55D3; vertical-align:middle; text-align:center;width: 70px;"><font color="#ffff00">Wymiar</font></th>
+                      <th  style="background-color: #BA55D3; vertical-align:middle; text-align:center;width: 80px;"><font color="#ffff00">Data<br>zatrudnienia</font></th>
+                      <th  style="background-color: #BA55D3; vertical-align:middle; text-align:center;width: 60px;"><font color="#ffff00">Staż<br>pracy</font></th>
+                      <th  style="background-color: #5F9EA0; vertical-align:middle; text-align:center;width: 120px;"><font color="#ffff00">Pensja<br>ustalona<br>[netto]</font></th>
+                      <th  style="background-color: #5F9EA0; vertical-align:middle; text-align:center;width: 120px;"><font color="#ffff00">Pensja<br>[brutto]</font></th>
+                      <th  style="background-color: #A09E5F; vertical-align:middle; text-align:center;width: 120px;"><font color="#ffff00">Stawka<br>godzinowa</font></th>
+                      <th  style="background-color: #337ab7; vertical-align:middle; text-align:center;width: 120px;">
+                          <font color="#ffff00">Stawka<br>wyjazdowa<br>[standard]</font>
+                      </th>
+                      <th  style="background-color: #337ab7; vertical-align:middle; text-align:center;width: 120px;">
+                          <font color="#ffff00">Stawka<br>wyjazdowa<br>[wyliczona]</font>
+                      </th>
+                      <th style="background-color: #C0C0C0; vertical-align:middle; text-align:center; width:20px;">
+                          <div class="verticalText">Uwagi</div>
+                      </th>
+                      <th style="background-color: #A0A0A0; vertical-align:middle; text-align:center; width:20px;">
+                          <div class="verticalText">Edycja</div>
+                      </th>
+
+                  </tr>
+                  {% for p in pracownik %}
+                  <tr align="center"  id="tab_row">
+                      <td width="10px" {% if p.lp_biuro %}
+                          style="background-color: #E8F8F5;"
+                          {% else %}
+                          style="background-color: #FFFFFF;"
+                          {% endif %}></td>
+                      <td>{{ p.nazwisko }}</td>
+                      <td>{{ p.imie }}</td>
+                      <td>{{ p.grupa }}</td>
+                      <td>{{ p.dzial }}</td>
+                      <td>{{ p.zatrudnienie }}</td>
+                      <td>{{ p.wymiar }}</td>
+                      <td>{{ p.data_zat|date:'d-m-Y' }}</td>
+                      <td>{{ p.staz }}</td>
+                      <td align="right">{{ p.pensja_ust }}</td>
+                      <td align="right">{{ p.pensja_brutto }}</td>
+                      <td align="right">{{ p.stawka_godz }}</td>
+                      <td align="right">{{ p.stawka_wyj_rob }}</td>
+                      <td align="right">{{ p.stawka_wyj }}</td>
+<!--                      <td align="right">{{ p.stawka_nadgodz }}</td>-->
+<!--                      <td align="right">{{ p.ppk }}</td>-->
+<!--                      <td align="center">{{ p.dystans }}</td>-->
+                      <td>
+                                             {% if p.uwagi != "" %}
+                                                  <a href="#" data-toggle="modal" data-target="#EMC{{ p.id }}"><i class="fa fa-comment-o fa-fw"></i></a>
+                                             {% endif %}
+                                                 <div class="modal fade" id="EMC{{ p.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                 <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                         <div class="modal-header">
+                                                             <span class="modal-title" id="exampleModalLongTitle10">Komentarz do pracownika</span>
+                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                             </button>
+                                                         </div>
+                                                         <div class="modal-body">
+                                                             {{ p.uwagi|linebreaks }}
+                                                         </div>
+                                                         <div class="modal-footer" >
+                                                             <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                                                         </div>
+                                                    </div>
+                                                 </div>
+                                             </div>
+                      </td>
+                      <td>
+                          <a href="{% url 'worker_pr_edit' pk=p.id %}"><i class="fa fa-pencil-square-o fa-fw"></i></a>
+                      </td>
+                  </tr>
+                  {% endfor %}
+              </table>
+
+        </div>
+        <div class="modal-footer">
+        </div>
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}
+
+{% block about %}
+<tr>
+    <td class="text-right" width="300">
+        <br>Wersja:
+        <br>Ostatnia modyfikacja:<br>
+        <br>Firma:
+        <br>Autor:
+        <br>Email:
+        <br>Tel. kom.:<br>
+        <br>
+    </td>
+    <td>
+        {% for ab in about %}
+        <br>{{ ab.WERSJA }}
+        <br>{{ ab.MODYFIKACJA }}
+        <br>
+        <br>{{ ab.FIRMA }}
+        <br>{{ ab.AUTOR }}
+        {% endfor %}
+        <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+        <br>+48 791-648-417<br>
+    </td>
+</tr>
+{% endblock %}

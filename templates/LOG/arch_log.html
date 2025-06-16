@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log Viewer</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        #log-content {
+            max-height: 80vh; /* Maksymalna wysokość to 80% widoku przeglądarki */
+            overflow: auto; /* Automatyczne przewijanie */
+        }
+        #log-tree {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Log Viewer</h2>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#fileModal">Select Log File</button>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h3 id="log-file-name">Select a log file</h3>
+                <pre id="log-content"></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="fileModalLabel">Select Log File</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="log-tree" class="list-group"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#fileModal').on('shown.bs.modal', function () {
+                loadLogTree();
+            });
+
+            // Load the list of log files
+            function loadLogTree() {
+                $.ajax({
+                    url: '/LOG/list_logs/',
+                    method: 'GET',
+                    success: function(data){
+                        var tree = data.logs;
+                        var html = generateHtml(tree, '');
+                        $('#log-tree').html(html);
+                    }
+                });
+            }
+
+            // Handle click on log file list item
+            $('#log-tree').on('click', 'a.file-item', function(){
+                var file = $(this).data('file');
+                $('#log-file-name').text(file);
+                $('#fileModal').modal('hide');
+                $.ajax({
+                    url: '/LOG/get_log_content/',
+                    method: 'GET',
+                    data: {file: file},
+                    success: function(data){
+                        $('#log-content').text(data.content);
+                    }
+                });
+            });
+
+            // Handle click on directory to toggle visibility of child items
+            $('#log-tree').on('click', 'a.dir-item', function(e){
+                e.preventDefault();
+                $(this).siblings('ul').toggle();
+            });
+        });
+
+        function generateHtml(tree, parentPath) {
+            var html = '';
+            for (var key in tree) {
+                var fullPath = parentPath ? parentPath + '/' + key : key;
+                if (tree[key] === null) {
+                    html += '<li class="list-group-item"><a href="#" class="file-item" data-file="' + fullPath + '">' + key + '</a></li>';
+                } else {
+                    html += '<li class="list-group-item"><a href="#" class="dir-item">' + key + '</a>';
+                    html += '<ul class="list-group" style="display:none;">' + generateHtml(tree[key], fullPath) + '</ul>';
+                    html += '</li>';
+                }
+            }
+            return html;
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Log Viewer</title>-->
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+<!--    <style>-->
+<!--        #log-content {-->
+<!--            max-height: 80vh; /* Maksymalna wysokość to 80% widoku przeglądarki */-->
+<!--            overflow: auto; /* Automatyczne przewijanie */-->
+<!--        }-->
+<!--        #log-tree {-->
+<!--            max-height: 400px;-->
+<!--            overflow-y: auto;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <div class="container">-->
+<!--        <h2>Log Viewer</h2>-->
+<!--        <button class="btn btn-primary" data-toggle="modal" data-target="#fileModal">Select Log File</button>-->
+
+<!--        <div class="row">-->
+<!--            <div class="col-md-12">-->
+<!--                <h3 id="log-file-name">Select a log file</h3>-->
+<!--                <pre id="log-content"></pre>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Modal &ndash;&gt;-->
+<!--    <div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel">-->
+<!--        <div class="modal-dialog" role="document">-->
+<!--            <div class="modal-content">-->
+<!--                <div class="modal-header">-->
+<!--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                        <span aria-hidden="true">&times;</span>-->
+<!--                    </button>-->
+<!--                    <h4 class="modal-title" id="fileModalLabel">Select Log File</h4>-->
+<!--                </div>-->
+<!--                <div class="modal-body">-->
+<!--                    <div id="log-tree" class="list-group"></div>-->
+<!--                </div>-->
+<!--                <div class="modal-footer">-->
+<!--                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <script type="text/javascript">-->
+<!--        $(document).ready(function(){-->
+<!--            $('#fileModal').on('shown.bs.modal', function () {-->
+<!--                loadLogTree();-->
+<!--            });-->
+
+<!--            // Load the list of log files-->
+<!--            function loadLogTree() {-->
+<!--                $.ajax({-->
+<!--                    url: '/LOG/list_logs/',-->
+<!--                    method: 'GET',-->
+<!--                    success: function(data){-->
+<!--                        var tree = data.logs;-->
+<!--                        var html = generateHtml(tree, '');-->
+<!--                        $('#log-tree').html(html);-->
+<!--                    }-->
+<!--                });-->
+<!--            }-->
+
+<!--            // Handle click on log file list item-->
+<!--            $('#log-tree').on('click', 'a.file-item', function(){-->
+<!--                var file = $(this).data('file');-->
+<!--                $('#log-file-name').text(file);-->
+<!--                $('#fileModal').modal('hide');-->
+<!--                $.ajax({-->
+<!--                    url: '/LOG/get_log_content/',-->
+<!--                    method: 'GET',-->
+<!--                    data: {file: file},-->
+<!--                    success: function(data){-->
+<!--                        $('#log-content').text(data.content);-->
+<!--                    }-->
+<!--                });-->
+<!--            });-->
+
+<!--            // Handle click on directory to toggle visibility of child items-->
+<!--            $('#log-tree').on('click', 'a.dir-item', function(e){-->
+<!--                e.preventDefault();-->
+<!--                $(this).siblings('ul').toggle();-->
+<!--            });-->
+<!--        });-->
+
+<!--        function generateHtml(tree, parentPath) {-->
+<!--            var html = '<ul class="list-group">';-->
+<!--            for (var key in tree) {-->
+<!--                var fullPath = parentPath ? parentPath + '/' + key : key;-->
+<!--                if (tree[key] === null) {-->
+<!--                    html += '<li class="list-group-item"><a href="#" class="file-item" data-file="' + fullPath + '">' + key + '</a></li>';-->
+<!--                } else {-->
+<!--                    html += '<li class="list-group-item"><a href="#" class="dir-item">' + key + '</a>';-->
+<!--                    html += '<ul class="list-group" style="display:none;">' + generateHtml(tree[key], fullPath) + '</ul>';-->
+<!--                    html += '</li>';-->
+<!--                }-->
+<!--            }-->
+<!--            html += '</ul>';-->
+<!--            return html;-->
+<!--        }-->
+<!--    </script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Log Viewer</title>-->
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+<!--    <style>-->
+<!--        #log-content {-->
+<!--            max-height: 80vh; /* Maksymalna wysokość to 80% widoku przeglądarki */-->
+<!--            overflow: auto; /* Automatyczne przewijanie */-->
+<!--        }-->
+<!--        #log-tree {-->
+<!--            max-height: 400px;-->
+<!--            overflow-y: auto;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <div class="container">-->
+<!--        <h2>Log Viewer</h2>-->
+<!--        <button class="btn btn-primary" data-toggle="modal" data-target="#fileModal">Select Log File</button>-->
+
+<!--        <div class="row">-->
+<!--            <div class="col-md-12">-->
+<!--                <h3 id="log-file-name">Select a log file</h3>-->
+<!--                <pre id="log-content"></pre>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Modal &ndash;&gt;-->
+<!--    <div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel">-->
+<!--        <div class="modal-dialog" role="document">-->
+<!--            <div class="modal-content">-->
+<!--                <div class="modal-header">-->
+<!--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                        <span aria-hidden="true">&times;</span>-->
+<!--                    </button>-->
+<!--                    <h4 class="modal-title" id="fileModalLabel">Select Log File</h4>-->
+<!--                </div>-->
+<!--                <div class="modal-body">-->
+<!--                    <div id="log-tree" class="list-group"></div>-->
+<!--                </div>-->
+<!--                <div class="modal-footer">-->
+<!--                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <script type="text/javascript">-->
+<!--        $(document).ready(function(){-->
+<!--            $('#fileModal').on('shown.bs.modal', function () {-->
+<!--                loadLogTree();-->
+<!--            });-->
+
+<!--            // Load the list of log files-->
+<!--            function loadLogTree() {-->
+<!--                $.ajax({-->
+<!--                    url: '/LOG/list_logs/',-->
+<!--                    method: 'GET',-->
+<!--                    success: function(data){-->
+<!--                        var tree = data.logs;-->
+<!--                        var html = generateHtml(tree, '');-->
+<!--                        $('#log-tree').html(html);-->
+<!--                    }-->
+<!--                });-->
+<!--            }-->
+
+<!--            // Handle click on log file list item-->
+<!--            $('#log-tree').on('click', 'a.file-item', function(){-->
+<!--                var file = $(this).data('file');-->
+<!--                $('#log-file-name').text(file);-->
+<!--                $('#fileModal').modal('hide');-->
+<!--                $.ajax({-->
+<!--                    url: '/LOG/get_log_content/',-->
+<!--                    method: 'GET',-->
+<!--                    data: {file: file},-->
+<!--                    success: function(data){-->
+<!--                        $('#log-content').text(data.content);-->
+<!--                    }-->
+<!--                });-->
+<!--            });-->
+
+<!--            // Handle click on directory to toggle visibility of child items-->
+<!--            $('#log-tree').on('click', 'a.dir-item', function(e){-->
+<!--                e.preventDefault();-->
+<!--                $(this).siblings('ul').toggle();-->
+<!--            });-->
+<!--        });-->
+
+<!--        function generateHtml(tree, parentPath) {-->
+<!--            var html = '<ul class="list-group">';-->
+<!--            for (var key in tree) {-->
+<!--                var fullPath = parentPath ? parentPath + '/' + key : key;-->
+<!--                if (tree[key] === null) {-->
+<!--                    html += '<li class="list-group-item"><a href="#" class="file-item" data-file="' + fullPath + '">' + key + '</a></li>';-->
+<!--                } else {-->
+<!--                    html += '<li class="list-group-item"><a href="#" class="dir-item">' + key + '</a>';-->
+<!--                    html += generateHtml(tree[key], fullPath);-->
+<!--                    html += '</li>';-->
+<!--                }-->
+<!--            }-->
+<!--            html += '</ul>';-->
+<!--            return html;-->
+<!--        }-->
+<!--    </script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Log Viewer</title>-->
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+<!--    <style>-->
+<!--        #log-content {-->
+<!--            max-height: 80vh; /* Maksymalna wysokość to 80% widoku przeglądarki */-->
+<!--            overflow: auto; /* Automatyczne przewijanie */-->
+<!--        }-->
+<!--        #log-tree {-->
+<!--            max-height: 400px;-->
+<!--            overflow-y: auto;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <div class="container">-->
+<!--        <h2>Log Viewer</h2>-->
+<!--        <button class="btn btn-primary" id="openFileBrowser">Select Log File</button>-->
+
+<!--        <div class="row">-->
+<!--            <div class="col-md-12">-->
+<!--                <h3 id="log-file-name">Select a log file</h3>-->
+<!--                <pre id="log-content"></pre>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; File Browser &ndash;&gt;-->
+<!--    <div id="fileBrowser" style="display:none;">-->
+<!--        <h4>Select Log File</h4>-->
+<!--        <ul id="log-tree" class="list-group"></ul>-->
+<!--    </div>-->
+
+<!--    <script type="text/javascript">-->
+<!--        $(document).ready(function(){-->
+<!--            $('#openFileBrowser').on('click', function() {-->
+<!--                $('#fileBrowser').toggle();-->
+<!--            });-->
+
+<!--            // Load the list of log files-->
+<!--            $.ajax({-->
+<!--                url: '/LOG/list_logs/',-->
+<!--                method: 'GET',-->
+<!--                success: function(data){-->
+<!--                    var logs = data.logs;-->
+<!--                    var tree = buildTree(logs);-->
+<!--                    $('#log-tree').html(tree);-->
+<!--                }-->
+<!--            });-->
+
+<!--            // Handle click on log file list item-->
+<!--            $('#log-tree').on('click', 'li.file-item', function(){-->
+<!--                var file = $(this).data('file');-->
+<!--                $('#log-file-name').text(file);-->
+<!--                $('#fileBrowser').hide();-->
+<!--                $.ajax({-->
+<!--                    url: '/LOG/get_log_content/',-->
+<!--                    method: 'GET',-->
+<!--                    data: {file: file},-->
+<!--                    success: function(data){-->
+<!--                        $('#log-content').text(data.content);-->
+<!--                    }-->
+<!--                });-->
+<!--            });-->
+
+<!--            // Handle click on directory to toggle visibility of child items-->
+<!--            $('#log-tree').on('click', 'li.dir-item', function(){-->
+<!--                $(this).children('ul').toggle();-->
+<!--            });-->
+<!--        });-->
+
+<!--        function buildTree(logs) {-->
+<!--            var tree = {};-->
+<!--            for (var i = 0; i < logs.length; i++) {-->
+<!--                var parts = logs[i].split('/');-->
+<!--                var current = tree;-->
+<!--                for (var j = 0; j < parts.length; j++) {-->
+<!--                    if (!current[parts[j]]) {-->
+<!--                        current[parts[j]] = j == parts.length - 1 ? logs[i] : {};-->
+<!--                    }-->
+<!--                    current = current[parts[j]];-->
+<!--                }-->
+<!--            }-->
+<!--            return generateHtml(tree);-->
+<!--        }-->
+
+<!--        function generateHtml(tree) {-->
+<!--            var html = '<ul class="list-group">';-->
+<!--            for (var key in tree) {-->
+<!--                if (typeof tree[key] === 'string') {-->
+<!--                    html += '<li class="list-group-item file-item" data-file="' + tree[key] + '">' + key + '</li>';-->
+<!--                } else {-->
+<!--                    html += '<li class="list-group-item dir-item">' + key + generateHtml(tree[key]) + '</li>';-->
+<!--                }-->
+<!--            }-->
+<!--            html += '</ul>';-->
+<!--            return html;-->
+<!--        }-->
+<!--    </script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Log Viewer</title>-->
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+<!--    <style>-->
+<!--        #log-tree {-->
+<!--            max-height: 400px;-->
+<!--            overflow-y: auto;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <div class="container">-->
+<!--        <h2>Log Viewer</h2>-->
+<!--        <button class="btn btn-primary" data-toggle="modal" data-target="#fileModal">Select Log File</button>-->
+
+<!--        <div class="row">-->
+<!--            <div class="col-md-12">-->
+<!--                <h3 id="log-file-name">Select a log file</h3>-->
+<!--                <pre id="log-content"></pre>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Modal &ndash;&gt;-->
+<!--    <div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel">-->
+<!--        <div class="modal-dialog" role="document">-->
+<!--            <div class="modal-content">-->
+<!--                <div class="modal-header">-->
+<!--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                        <span aria-hidden="true">&times;</span>-->
+<!--                    </button>-->
+<!--                    <h4 class="modal-title" id="fileModalLabel">Select Log File</h4>-->
+<!--                </div>-->
+<!--                <div class="modal-body">-->
+<!--                    <ul id="log-tree" class="list-group"></ul>-->
+<!--                </div>-->
+<!--                <div class="modal-footer">-->
+<!--                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <script type="text/javascript">-->
+<!--        $(document).ready(function(){-->
+<!--            // Load the list of log files-->
+<!--            $.ajax({-->
+<!--                url: '/LOG/list_logs/',-->
+<!--                method: 'GET',-->
+<!--                success: function(data){-->
+<!--                    var logs = data.logs;-->
+<!--                    var tree = buildTree(logs);-->
+<!--                    $('#log-tree').html(tree);-->
+<!--                }-->
+<!--            });-->
+
+<!--            // Handle click on log file list item-->
+<!--            $('#log-tree').on('click', 'li', function(){-->
+<!--                var file = $(this).data('file');-->
+<!--                $('#log-file-name').text(file);-->
+<!--                $('#fileModal').modal('hide');-->
+<!--                $.ajax({-->
+<!--                    url: '/LOG/get_log_content/',-->
+<!--                    method: 'GET',-->
+<!--                    data: {file: file},-->
+<!--                    success: function(data){-->
+<!--                        $('#log-content').text(data.content);-->
+<!--                    }-->
+<!--                });-->
+<!--            });-->
+<!--        });-->
+
+<!--        function buildTree(logs) {-->
+<!--            var tree = {};-->
+<!--            for (var i = 0; i < logs.length; i++) {-->
+<!--                var parts = logs[i].split('/');-->
+<!--                var current = tree;-->
+<!--                for (var j = 0; j < parts.length; j++) {-->
+<!--                    if (!current[parts[j]]) {-->
+<!--                        current[parts[j]] = j == parts.length - 1 ? logs[i] : {};-->
+<!--                    }-->
+<!--                    current = current[parts[j]];-->
+<!--                }-->
+<!--            }-->
+<!--            return generateHtml(tree);-->
+<!--        }-->
+
+<!--        function generateHtml(tree) {-->
+<!--            var html = '<ul class="list-group">';-->
+<!--            for (var key in tree) {-->
+<!--                if (typeof tree[key] === 'string') {-->
+<!--                    html += '<li class="list-group-item" data-file="' + tree[key] + '">' + key + '</li>';-->
+<!--                } else {-->
+<!--                    html += '<li class="list-group-item">' + key + generateHtml(tree[key]) + '</li>';-->
+<!--                }-->
+<!--            }-->
+<!--            html += '</ul>';-->
+<!--            return html;-->
+<!--        }-->
+<!--    </script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Log Viewer</title>-->
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <div class="container">-->
+<!--        <h2>Log Viewer</h2>-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-4">-->
+<!--                <h3>Log Files</h3>-->
+<!--                <ul id="log-list" class="list-group"></ul>-->
+<!--            </div>-->
+<!--            <div class="col-md-8">-->
+<!--                <h3 id="log-file-name">Select a log file</h3>-->
+<!--                <pre id="log-content"></pre>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    -->
+<!--    <script type="text/javascript">-->
+<!--        $(document).ready(function(){-->
+<!--            // Load the list of log files-->
+<!--            $.ajax({-->
+<!--                url: '/LOG/list_logs/',-->
+<!--                method: 'GET',-->
+<!--                success: function(data){-->
+<!--                    var logs = data.logs;-->
+<!--                    for (var i = 0; i < logs.length; i++) {-->
+<!--                        var fileName = logs[i].split('/').pop(); // Extract the file name from the path-->
+<!--                        $('#log-list').append('<li class="list-group-item" data-file="' + logs[i] + '">' + fileName + '</li>');-->
+<!--                    }-->
+<!--                }-->
+<!--            });-->
+
+<!--            // Handle click on log file list item-->
+<!--            $('#log-list').on('click', 'li', function(){-->
+<!--                var file = $(this).data('file');-->
+<!--                $('#log-file-name').text(file);-->
+<!--                $.ajax({-->
+<!--                    url: '/LOG/get_log_content/',-->
+<!--                    method: 'GET',-->
+<!--                    data: {file: file},-->
+<!--                    success: function(data){-->
+<!--                        $('#log-content').text(data.content);-->
+<!--                    }-->
+<!--                });-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
+<!--</body>-->
+<!--</html>-->
+
+

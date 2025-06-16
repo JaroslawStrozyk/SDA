@@ -1,0 +1,182 @@
+{% extends "doc_main.html" %}
+{% load static %}
+
+{% block leftbutton %}
+{% endblock %}
+
+{% block retbutton %}
+    <li><a href="{% url 'login' %}"  class="btn btn-primary"><strong>  Wyjście</strong></a></li>
+{% endblock %}
+
+{% block userlog %}
+    {{ name_log }}
+{% endblock %}
+
+{% block style %}
+{% endblock %}
+
+{% block content %}
+        <style>
+           #wrapper > nav {
+                box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+           }
+           .box {
+                box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+           }
+           .setting {
+                cursor: default;
+           }
+           #panel_glowny {
+                box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+           }
+
+           #ul1, #ul2 {
+                color:red;
+           }
+
+            a {
+              color: brown;
+              text-decoration: none;
+            }
+
+            a:hover {
+              color: brown;
+              text-decoration: none;
+              font-weight: bold;
+            }
+
+            #wrapper > nav > ul.nav.navbar-top-links.navbar-right > li > a {
+                color: yellow;
+                background-color: #337ab7;
+                border-color: #2e6da4;
+            }
+
+            #wrapper > nav > ul.nav.navbar-top-links.navbar-right > li > a:hover {
+                color: white;
+                background-color: #2e6da4;
+                border-color: #337ab7;
+            }
+
+        </style>
+
+
+        <br><br>
+        <div class="panel panel-green" id="panel_glowny">
+            <div class="panel-heading">
+                <table width="100%">
+                    <tr>
+                        <td><strong>Dokumenty</strong></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="panel-body">
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th width="50%">Nazwa</th>
+                            <th>Opis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for katalog in katalogi %}
+                        <tr data-id="{{ katalog.id }}" class="katalog-row">
+                            <td>{{ katalog.nazwa }}</td>
+                            <td>{{ katalog.opis }}</td>
+                        </tr>
+                        <tr class="pliki-row" style="display: none;">
+                            <td colspan="2">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td width="50%">
+                                            <ul class="pliki-list-pdf" id="ul1"></ul>
+                                        </td>
+                                        <td>
+                                            <ul class="pliki-list-no-pdf" id="ul2"></ul>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+
+<script>
+    $(document).ready(function() {
+        $('.katalog-row').click(function() {
+            var row = $(this);
+            var katalogId = row.data('id');
+            var plikiRow = row.next('.pliki-row');
+
+            if (plikiRow.is(':visible')) {
+                plikiRow.hide();
+                plikiRow.find('.pliki-list-pdf, .pliki-list-no-pdf').empty();
+            } else {
+                $.ajax({
+                    url: '/doc/' + katalogId + '/',
+                    method: 'GET',
+                    success: function(data) {
+                        var plikiListPdf = plikiRow.find('.pliki-list-pdf');
+                        var plikiListNoPdf = plikiRow.find('.pliki-list-no-pdf');
+
+                        plikiListPdf.empty();
+                        plikiListNoPdf.empty();
+
+                        data.pdf.forEach(function(plik) {
+                            var link = $('<a>').attr('href', plik.dokument).text(plik.nazwa);
+                            var listItem = $('<li>').append(link);
+                            plikiListPdf.append(listItem);
+                        });
+
+                        data.no_pdf.forEach(function(plik) {
+                            var link = $('<a>').attr('href', '/doc/pdf/' + plik.id + '/').text(plik.nazwa);
+                            var listItem = $('<li>').append(link);
+                            plikiListNoPdf.append(listItem);
+                        });
+
+                        plikiRow.show();
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
+
+{% endblock %}
+
+
+{% block script %}
+
+{% endblock %}
+
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}
+
+

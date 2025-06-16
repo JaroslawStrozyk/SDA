@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Sprzet, Profil, System
+from .models import Sprzet, Profil, System, Serwis
+
 
 class SystemAdmin(admin.ModelAdmin):
     list_display = ['nazwa', 'uwagi']
@@ -16,11 +17,15 @@ class ProfilAdmin(admin.ModelAdmin):
     search_fields = ['rodzaj_konta', 'kod', 'konto']
     ordering = ['-sprzet' ]
 
+class SystemSerwis(admin.ModelAdmin):
+    list_display = ['sprzet', 'data', 'problem', 'opis', 'uwagi']
+    ordering = ['-data']
+
 
 admin.site.register(System, SystemAdmin)
 admin.site.register(Sprzet, SprzetAdmin)
 admin.site.register(Profil, ProfilAdmin)
-
+admin.site.register(Serwis, SystemSerwis)
 
 admin.site.site_header = "SDA SmartDesign"
 admin.site.site_title = "SmartDesign"

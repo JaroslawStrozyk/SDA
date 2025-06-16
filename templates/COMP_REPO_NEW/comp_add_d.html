@@ -1,0 +1,433 @@
+{% extends "timber_dashboard.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block leftbutton %}
+{% endblock %}
+
+
+{% block retbutton %}
+{% endblock %}
+
+{% block userlog %}
+{{ name_log }}
+{% endblock %}
+
+
+{% block title %}
+{% endblock %}
+
+{% block leftmenu %}
+{% endblock %}
+
+
+{% block content %}
+       <style>
+            #id_koszt_przech_0, #id_stawka_0 {
+                width: 130px;
+                height: 34px;
+                text-align: right;
+                font-size: 14px;
+                border-radius: 4px;
+                border-width: 1px;
+                border: 1px solid #ccc;
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                color: #555;
+                background-color: #fff;
+            }
+            #id_koszt_przech_1, #id_stawka_1 {
+                width: 60px;
+                height: 34px;
+                font-size: 14px;
+                border-radius: 4px;
+            }
+
+            #id_stawka_1 {
+                pointer-events: none;  /* Zapobiega interakcji z elementem */
+                background-color: #e9ecef; /* Opcjonalne, zmienia kolor tła na jasnoszary */
+            }
+           #okno {
+                box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+           }
+           #div_id_silnik_poj {
+                margin-top: 30px;
+                margin-bottom: 0px;
+           }
+
+           #id_przech_pow, #id_zwroco_ilosc, #id_wydano_ilosc {
+                text-align: center;
+           }
+           #id_przech_sze, #id_przech_wys, #id_przech_gl {
+                text-align: center;
+           }
+
+           #div_id_zwolnione > label {
+                margin-top:15px;
+           }
+
+           #div_id_multi_uzycie > label {
+                margin-top:15px;
+           }
+
+            #wrapper > nav > ul.nav.navbar-top-links.navbar-right > li.dropdown > a {
+                decoration: none;
+                background-color: #404040;
+                color: #fff;
+            }
+
+            #wrapper > nav > ul.nav.navbar-top-links.navbar-right > li.dropdown > a:hover {
+                decoration: none;
+                background-color: #404040;
+                color: #fff;
+            }
+           #div_id_przech_zdjecie > label, #div_id_przech_zdjecie2 > label, #div_id_przech_zdjecie3 > label, #div_id_przech_zdjecie4 > label {
+                    color: #186A3B;
+           }
+
+           #div_id_uszkodz_zdjecie1 > label, #div_id_uszkodz_zdjecie2 > label, #div_id_uszkodz_zdjecie3 > label, #div_id_uszkodz_zdjecie4 > label {
+                    color: #7D6608;
+           }
+
+           #id_zwroco_uwagi {
+                height: calc((1.5em + 0.75rem + 2px) * 2); /* Wysokość jednej linii tekstu, zależna od rozmiaru fontu i paddingu */
+                overflow-y: auto; /* Automatyczne wyświetlanie paska przewijania, jeśli tekst przekroczy dostępną przestrzeń */
+                resize: none; /* Wyłączenie możliwości zmiany rozmiaru */
+           }
+           #id_uwagi {
+                height: calc((1.5em + 0.75rem + 2px) * 2); /* Wysokość jednej linii tekstu, zależna od rozmiaru fontu i paddingu */
+                overflow-y: auto; /* Automatyczne wyświetlanie paska przewijania, jeśli tekst przekroczy dostępną przestrzeń */
+                resize: none; /* Wyłączenie możliwości zmiany rozmiaru */
+           }
+           #div_id_zwolnione, #div_id_multi_uzycie {
+                margin-bottom:28px;
+           }
+
+           #id_czas_do, #id_czas_od {
+                margin-top:15px;
+                margin-bottom:27px;
+           }
+           #id_zwroco_data, #id_zwroco_ilosc, #id_wydano_data, #id_wydano_ilosc {
+                margin-top:15px;
+                margin-bottom:27px;
+           }
+           hr {
+                border-top: 1px solid #ddd;
+                margin-bottom: 0px;
+           }
+
+
+            .panel-green > .panel-heading {
+                border-color: #5cb85c;
+                color: white;
+                background-color: #999999;
+            }
+            .panel-green {
+                border-color: #999999;
+            }
+           #alert1 {
+                margin-bottom:10px;
+                box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+           }
+       </style>
+        <br><br>
+                <div class="col-lg-12"  style="height:100vh">
+                    <div class="panel panel-green" id="okno">
+                        <div class="panel-heading">
+                            <font style="font-size:18px;">{{ title }} <strong>{{ fi }}</strong> <i>{{ sk }}</i>
+                            </font>
+                        </div>
+                        <div class="panel-body" style="background-color: #f5f5f5;">
+                            <form id="your-form-id" method="POST"  class="post-form" enctype="multipart/form-data">{% csrf_token %}
+                                        <div class="form-row">
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.firma|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-4 mb-0">
+                                                        {{ form.nr_sde|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-4 mb-0">
+                                                        {{ form.okres|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                        {{ form.magazyn|as_crispy_field }}
+                                                  </div>
+                                        </div>
+                                        <div class="form-row">
+                                                  <div class="form-group col-md-3 mb-0">
+                                                        {{ form.magazyn_opis|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-7 mb-0">
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0" style="background-color: #D6EAF8;">
+                                                      {{ form.przech_nrpalet|as_crispy_field }}
+                                                  </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12 mb-0" style="margin-bottom:0px;">
+                                                <div class="alert alert-info" role="alert" id="alert1">
+                                                   <p align="justify">
+                                                       <strong>Uwaga!!!</strong> Jeśli dodajesz element z listy to używasz pola <strong>"Element z katalogu"</strong>
+                                                       i nie wypełniasz reszty pól! Jeśli wpisywany element jest jednorazowy to wypełniasz wszystkie pozostałe pola
+                                                       ("Element z Katalogu pozostaje pusty).
+                                                   </p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-row">
+                                                  <div class="form-group col-md-4 mb-0" style="background-color: #F6DDCC;">
+                                                        {{ form.element_katalogowy|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-4 mb-0" style="background-color: #F6DDCC;">
+                                                        {{ form.przech_nazwa|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0" style="background-color: #F6DDCC;">
+                                                        {{ form.przech_sze|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0" style="background-color: #F6DDCC;">
+                                                        {{ form.przech_gl|as_crispy_field }}
+                                                  </div>
+                                        </div>
+                                        <div class="form-row">
+                                                  <div class="form-group col-md-2 mb-0">
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0" style="background-color: #D5F5E3;">
+                                                        {{ form.wydano_ilosc|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0" style="background-color: #D5F5E3;">
+                                                        {{ form.wydano_data|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0" style="background-color: #FCF3CF;">
+                                                        {{ form.zwroco_ilosc|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0" style="background-color: #FCF3CF;">
+                                                        {{ form.zwroco_data|as_crispy_field }}
+                                                  </div>
+                                                  <div class="form-group col-md-2 mb-0">
+                                                  </div>
+                                        </div>
+                                        <div class="form-row">
+                                                  <div class="form-group col-md-12 mb-0">
+                                                      {{ form.zwroco_uwagi|as_crispy_field }}
+                                                  </div>
+                                        </div>
+
+                                        <table width="100%">
+                                            <tr>
+                                                <td align="right" width="50%"><button type="submit" class="save btn btn-success">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Zapisz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>&nbsp;</td>
+
+                                            {% if edycja %}
+                                                <td align="left"><a href="{% url 'ncomp_detail' mag=mag pk=det st='^' %}" class="btn btn-primary"><font color="#ffffff">Anuluj</font></a></td>
+                                                {% if tst %}
+                                                    <td align="right" width="50px">
+                                                        <a href="#"  data-toggle="modal" data-target="#info1" class="btn btn-danger" disabled>
+                                                            <font color="white"><i class="fa fa-trash-o fa-fw"></i></font>
+                                                        </a>
+                                                    </td>
+                                                {% else %}
+                                                    <td align="right" width="50px">
+                                                        <a href="#"  data-toggle="modal" data-target="#info1" class="primary btn btn-danger">
+                                                            <font color="white"><i class="fa fa-trash-o fa-fw"></i></font>
+                                                        </a>
+                                                    </td>
+                                                {% endif %}
+                                            {% else %}
+                                                <td align="left"><a href="{% url 'ncomp_detail' pk=pk mag=mag st='^' %}" class="btn btn-primary"><font color="#ffffff">Anuluj</font></a></td>
+
+                                            {% endif %}
+                                            </tr>
+                                        </table>
+                            </form>
+
+
+                        </div>
+                    </div>
+                    <br><br>
+                </div>
+
+
+    <div class="modal fade" id="info1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-title   panel-green" id="exampleModalLongTitle1">Kasowanie...</span>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                            Czy jesteś pewien, że chcesz nieodwracalnie skasować bieżące dane?
+                </div>
+                <div class="modal-footer">
+                    {% if edycja %}
+                    <a href="{% url 'ncomp_delete' pk=pk mag=mag det=det %}" class="primary btn btn-danger">
+                        <font color="white">&nbsp;&nbsp;TAK&nbsp;&nbsp;</font>
+                    </a>
+                    {% endif %}
+                    <button type="button" class="btn btn-success" data-dismiss="modal">&nbsp;&nbsp;NIE&nbsp;&nbsp;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+
+        $('#id_wydano_data').datetimepicker({
+              language:  'pl',
+              format: 'dd.mm.yyyy',
+              todayBtn:  1,
+              autoclose: 1,
+              minView: 2,
+              startDate: "2009-01-01",
+        });
+
+        $('#id_zwroco_data').datetimepicker({
+              language:  'pl',
+              format: 'dd.mm.yyyy',
+              todayBtn:  1,
+              autoclose: 1,
+              minView: 2,
+              startDate: "2009-01-01",
+        });
+
+        $('#id_czas_od').datetimepicker({
+              language:  'pl',
+              format: 'dd.mm.yyyy',
+              todayBtn:  1,
+              autoclose: 1,
+              minView: 2,
+              startDate: "2009-01-01",
+        });
+
+        $('#id_czas_do').datetimepicker({
+              language:  'pl',
+              format: 'dd.mm.yyyy',
+              todayBtn:  1,
+              autoclose: 1,
+              minView: 2,
+              startDate: "2009-01-01",
+        });
+
+        $(document).ready(function() {
+              $('#id_firma').select2();
+              $('#id_nr_sde').select2();
+              $('#id_okres').select2();
+              $('#id_magazyn').select2();
+              $('#id_element_katalogowy').select2();
+        });
+
+$(document).ready(function() {
+      $('#id_firma').select2();
+      $('#id_nr_sde').select2();
+      $('#id_okres').select2();
+      $('#id_magazyn').select2();
+      $('#id_element_katalogowy').select2();
+
+      // Nasz kod do dynamicznego filtrowania
+      $('#id_firma').on('change', function() {
+          var firmaId = $(this).val();
+
+          // Jeśli wybraliśmy OGÓLNE (indeks 0 lub 1), nie robimy nic specjalnego
+          if (firmaId <= 1) {
+              // Tu możemy zresetować pola do domyślnych wartości, jeśli chcemy
+              refreshSelectOptions();
+              return;
+          }
+
+          // W przeciwnym przypadku filtrujemy pola
+          $.ajax({
+              url: '{% url "get_filtered_data" %}',
+              data: {
+                  'firma_id': firmaId
+              },
+              dataType: 'json',
+              success: function(data) {
+                  // Aktualizujemy pole okresu
+                  var okresSelect = $('#id_okres');
+                  okresSelect.empty();
+                  okresSelect.append('<option value="">---------</option>');
+                  $.each(data.okresy, function(index, item) {
+                      okresSelect.append(
+                          $('<option></option>').val(item.id).html(item.display_text)
+                      );
+                  });
+
+                  // Aktualizujemy pole elementu katalogowego
+                  var elementSelect = $('#id_element_katalogowy');
+                  elementSelect.empty();
+                  elementSelect.append('<option value="">---------</option>');
+                  $.each(data.elementy, function(index, item) {
+                      elementSelect.append(
+                          $('<option></option>').val(item.id).html(item.display_text)
+                      );
+                  });
+
+                  // Odświeżamy widżety select2
+                  $('#id_okres').trigger('change');
+                  $('#id_element_katalogowy').trigger('change');
+              }
+          });
+      });
+
+      // Funkcja do resetowania pól
+      function refreshSelectOptions() {
+          $.ajax({
+              url: '{% url "get_filtered_data" %}',
+              data: {
+                  'firma_id': 0  // Wszystkie rekordy
+              },
+              dataType: 'json',
+              success: function(data) {
+                  // Aktualizujemy pole okresu
+                  var okresSelect = $('#id_okres');
+                  okresSelect.empty();
+                  okresSelect.append('<option value="">---------</option>');
+                  $.each(data.okresy, function(index, item) {
+                      okresSelect.append(
+                          $('<option></option>').val(item.id).html(item.display_text)
+                      );
+                  });
+
+                  // Aktualizujemy pole elementu katalogowego
+                  var elementSelect = $('#id_element_katalogowy');
+                  elementSelect.empty();
+                  elementSelect.append('<option value="">---------</option>');
+                  $.each(data.elementy, function(index, item) {
+                      elementSelect.append(
+                          $('<option></option>').val(item.id).html(item.display_text)
+                      );
+                  });
+
+                  // Odświeżamy widżety select2
+                  $('#id_okres').trigger('change');
+                  $('#id_element_katalogowy').trigger('change');
+              }
+          });
+      }
+});
+
+
+{% endblock %}
+
+{% block about %}
+                                 <tr><td class="text-right" width="300">
+                                     <br>Wersja:
+                                     <br>Ostatnia modyfikacja:<br>
+                                     <br>Firma:
+                                     <br>Autor:
+                                     <br>Email:
+                                     <br>Tel. kom.:<br>
+                                     <br>
+                                 </td><td>
+                                     {% for ab in about %}
+                                        <br>{{ ab.WERSJA }}
+                                        <br>{{ ab.MODYFIKACJA }}
+                                        <br>
+                                        <br>{{ ab.FIRMA }}
+                                        <br>{{ ab.AUTOR }}
+                                     {% endfor %}
+                                     <br><a href="mailto:biuro@edatabit.pl">biuro@edatabit.pl</a>
+                                     <br>+48 791-648-417<br>
+                                 </td></tr>
+{% endblock %}

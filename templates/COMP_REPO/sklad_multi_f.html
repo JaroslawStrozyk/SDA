@@ -1,0 +1,242 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pulpit SDA.</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link href="{% static 'COMP/css/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'COMP/comp.css' %}" rel="stylesheet" type="text/css">
+
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+    <style>
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" id="belka">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'desktop' %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SmartDesign&nbsp;&nbsp;Expo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            </div>
+
+            <ul class="nav navbar-top-links navbar-left">
+            </ul>
+            <ul class="nav navbar-top-links navbar-right">
+                <li>
+                    <a class="btn btn-primary" href="{% url 'sklad_multi' mag=mag fl=fl %}" id="ret">
+                        <font color="white">
+                            <i class="fa fa-reply-all" aria-hidden="true"></i>
+                        </font>
+                    </a>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="adt">
+                        <i class="fa fa-user fa-fw"></i>
+                        {{ name_log }}
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li>
+                                <form action="{% url 'logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-link"><i class="fa fa-sign-out fa-fw"></i> Wyjście z programu</button>
+                                </form>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+        </nav>
+
+        <div class="container" id="gpanel">
+
+            <div class="panel panel-default" style="border-color: #5cb85c;">
+                <div class="panel-heading" style="border-color: #5cb85c;background-color: #5cb85c;color: white;">
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <h3 class="panel-title"><strong>Zarządzanie Firmami</strong></h3>
+                            </td>
+                            <td width="50px" align="right">
+                                <button class="btn btn-danger" onclick="showCreateModal()">
+                                    <strong><font color="yellow">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dodaj Firmę&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></strong>
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="panel-body">
+
+                    <table class="table table-bordered">
+                        <head>
+                            <tr style="">
+                                <th style="height:40px;background-color:#F0FFF0;text-align:center;">Nazwa firmy</th><th style="width:150px;background-color:#F0FFF0;text-align:center;">Akcja</th>
+                            </tr>
+                        </head>
+                        <tbody id="firmaList" >
+                        </tbody>
+                    </table>
+
+
+
+                    <!-- Modal for Adding/Updating Firma -->
+                    <div class="modal fade" id="firmaModal" tabindex="-1" role="dialog" aria-labelledby="firmaModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="firmaModalLabel">Firma</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" id="firmaId">
+                                    <input type="text" id="nazwa" class="form-control" placeholder="Nazwa Firmy">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+                                    <button type="button" class="btn btn-primary" onclick="saveFirma()">Zapisz Firmę</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal for Confirming Delete -->
+                    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="confirmDeleteModalLabel">Potwierdź usunięcie</h4>
+                                </div>
+                                <div class="modal-body">
+                                    Czy na pewno chcesz usunąć tę firmę?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                                    <button type="button" class="btn btn-danger" onclick="deleteFirma()">Usuń Firmę</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- KONIEC DIV GŁÓWNEGO -->
+    <script src="{% static 'COMP/comp.js' %}"></script>
+<script>
+
+    var currentFirmaId = null;
+
+    function loadFirmy() {
+        $.ajax({
+            url: '/COMP/ewu/mag2/1/firmy/',
+            type: 'GET',
+            success: function(data) {
+                $('#firmaList').empty();
+                data.forEach(function(firma) {
+                    $('#firmaList').append(`<tr><td style="vertical-align:middle; text-align:center;">${firma.nazwa}</td><td> <button class="btn btn-info" onclick="showUpdateModal(${firma.id}, '${firma.nazwa}')">Edytuj</button> <button class="btn btn-danger" onclick="showDeleteConfirm(${firma.id})">Usuń</button></td></tr>`);
+                });
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        // Ustawienie globalne dla tokena CSRF dla każdego żądania AJAX
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!this.crossDomain) {  // Dodanie tokena CSRF tylko dla żądań do tego samego źródła
+                    xhr.setRequestHeader("X-CSRFToken", csrfToken);
+                }
+            }
+        });
+
+        loadFirmy();
+        $('#firmaModal').on('hidden.bs.modal', function () {
+            $('#firmaId').val('');
+            $('#nazwa').val('');
+            currentFirmaId = null;
+        });
+    });
+
+    function showCreateModal() {
+        $('#firmaModal').modal('show');
+    }
+
+    function showUpdateModal(id, nazwa) {
+        currentFirmaId = id;
+        $('#nazwa').val(nazwa);
+        $('#firmaModal').modal('show');
+    }
+
+function saveFirma() {
+    var nazwa = $('#nazwa').val();
+    var url = '/COMP/ewu/mag2/1/firmy/' + (currentFirmaId ? currentFirmaId + '/' : '');
+    var data = JSON.stringify({
+        'nazwa': nazwa,
+        'action': currentFirmaId ? 'update' : 'create'  // 'create' jest używane, gdy currentFirmaId jest null
+    });
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        contentType: 'application/json',
+        data: data,
+        success: function(response) {
+            console.log('Response:', response);
+            $('#firmaModal').modal('hide');
+            loadFirmy();
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', status, error);
+        }
+    });
+}
+
+    function showDeleteConfirm(id) {
+        currentFirmaId = id;
+        $('#confirmDeleteModal').modal('show');
+    }
+
+function deleteFirma() {
+    var url = '/COMP/ewu/mag2/1/firmy/' + currentFirmaId + '/';
+    var data = JSON.stringify({ 'action': 'delete' });
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        contentType: 'application/json',
+        data: data,
+        success: function() {
+            console.log('Delete successful');
+            $('#confirmDeleteModal').modal('hide');
+            loadFirmy();
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', status, error);
+        }
+    });
+}
+
+</script>
+</body>
+</html>
+
